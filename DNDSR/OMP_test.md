@@ -1,3 +1,10 @@
+---
+title: OMP Test
+date: 2025-01-21 
+type: post
+---
+
+
 # OMP Implementation in DNDSR
 
 Due to the status on THTJ (国家超算中心天津), where the ARM64 section has: 64 cores / node but maximum 56 ranks / node for high speed network, OMP implementation is considered.

@@ -1,3 +1,11 @@
+---
+title: Plans for DNDSR
+date: 2025-01-21 
+toc: true
+type: post
+---
+
+
 # Plans for DNDSR
 
 ## New features
