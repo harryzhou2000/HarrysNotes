@@ -1,8 +1,8 @@
 ---
 title: Plans for DNDSR
 date: 2025-01-21 
-toc: true
 type: post
+# image: default-cover.png
 ---
 
 
@@ -38,3 +38,7 @@ type: post
 
 - [ ] Consecutive 2nd order - to - high order
 - [ ] New overset
+
+
+
+![alt text](https://harryzhou2000.github.io/resources-0/curtain_A1C-screen.png)
