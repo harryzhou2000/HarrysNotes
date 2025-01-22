@@ -23,6 +23,7 @@ type: post
 - [ ] Better OMP utilization
 - [x] OMP implementation in direct methods (Failed, consider using libraries or sub-partitions)
 - [ ] Direct methods' structure
+- [ ] Comm-Comp Overlapping
   
 ## Structure improvements
 
