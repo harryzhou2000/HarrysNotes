@@ -8,8 +8,6 @@ image: ssh-icon.png
 # https://www.flaticon.com/
 ---
 
-
-
 # SSH Introduction
 
 SSH is the most commonly used development tool if you have a remote machine, like a supercomputer or a PC in your office. Plentiful introduction to SSH can be found by search engine, like [this one](https://www.geeksforgeeks.org/introduction-to-ssh-secure-shell-key). So I will only record some basic moves commonly used.
@@ -58,11 +56,11 @@ ssh office
 
 does the job.
 
-## SSH authorization with keys
+## SSH authentication with keys
 
 You are not allowed to automatically enter the password. So, when connecting SSH with password, you must manually enter it in the console. Moreover, sometimes it might be unsafe to use password.
 
-So, you are supposed to use a pair of public-private keys as ssh's authorization method whenever possible.
+So, you are supposed to use a pair of public-private keys as ssh's authentication method whenever possible.
 
 If you don't have ssh key pairs, just run in your client machine's shell:
 
@@ -104,10 +102,43 @@ After this, you should be able to simply `ssh office` to enter the remote shell.
 
 ## Other parameters
 
+```bash
+Host office1
+    HostName 192.168.31.3
+    User harry
+    Port 2222
+    ServerAliveCountMax 10
+    ServerAliveInterval 45
+    IdentityFile ~/.ssh/id_ecdsa
+    ProxyCommand "C:\Program Files\Git\mingw64\bin\connect.exe" -a none -S 1.2.3.4:1080 %h %p  
+```
+
+- `Port`: Sets the port on the host machine to connect ssh. Default is 22.
+- `ServerAliveCountMax`: This sets the maximum number of keepalive messages that can be sent without receiving a response.
+- `ServerAliveInterval`: This sets the interval (in seconds) between each keepalive message.
+- `IdentityFile`: Explicitly sets the private key to be used.
+- `ProxyCommand`: Used to connect to proxy before connecting ssh, in this case, we use a SOCKS5 proxy at `1.2.3.4:1080`.
+
+These parameters can be passed through `-o` option in command line.
+
+For a complete reference, see [Linux man page](https://www.man7.org/linux/man-pages/man5/ssh_config.5.html).
+
 ## SSH server on Windows
 
+If you have a Windows machine that you want to access by SSH, you can configure it to be an SSH server. 
 
+Before setting up a server, you should have a little network knowledge. See [Making server visible to the Internet](../../Server/PublicInternet/index.md).
 
+OpenSSH server feature and its service can be switched on by GUI or command-line on Windows. You can [read this tutorial](https://woshub.com/connect-to-windows-via-ssh/).
 
+Here we have a simple GUI tutorial for Windows 11.
+
+First, install OpenSSH. Search for features from the global search and choose the `optional features` in settings. Then select `Add an optional feature` and search for `openssh`:
+
+![alt text](search-features.png) ![alt text](search-openssh.png)
+
+go through until the end and Windows will install OpenSSH:
+
+![alt text](installing-openssh.png)
 
 

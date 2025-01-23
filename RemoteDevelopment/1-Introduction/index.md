@@ -4,7 +4,7 @@ date: 2025-01-23
 type: page
 categories: ["Introduction"]
 tags: ["Remote", "Tutorial"]
-# image: default-cover.png
+image: icon.png
 ---
 
 # Introduction to Remote Developing
