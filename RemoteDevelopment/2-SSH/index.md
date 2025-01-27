@@ -1,7 +1,7 @@
 ---
 title: SSH Introduction
 date: 2025-01-23 
-type: page
+type: post
 categories: ["Introduction"]
 tags: ["Remote", "Tutorial", "SSH"]
 image: ssh-icon.png

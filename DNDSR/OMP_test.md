@@ -50,7 +50,7 @@ No change (because the macro handles statically...).
 If `DNDS_DIST_MT_USE_OMP` is defined but `DNDS_DIST_OMP_NUM_THREADS` is not set or set to `1`, on `34abb36ca9418c123a7d516b6b68a6fea80ea8bc`:
 3.074
 
-That is $2.8\%$ slower. Due to the need to add a face-flux buffer in the EvaluateRHS.
+That is \(2.8\%\)  slower. Due to the need to add a face-flux buffer in the EvaluateRHS.
 
 ### Acceleration
 
@@ -65,7 +65,7 @@ DNDS_DIST_OMP_NUM_THREADS=2 OMP_SCHEDULE=GUIDED  mpirun --bind-to none -np 4 app
 Result:
 3.313
 
-More than $10\%$ slowdown.
+More than \( 10\% \) slowdown.
 
 #### Test 2
 
@@ -82,7 +82,12 @@ DNDS_DIST_OMP_NUM_THREADS=2 OMP_SCHEDULE=GUIDED  mpirun --bind-to none -np 16 ap
 
 Result:
 1.085
-Slow-down = $15\%$
+Slow-down = \( 15\% \)
+
+<!-- 
+\[
+\% \pdv{x}{u}
+\] -->
 
 
 ## Appendix

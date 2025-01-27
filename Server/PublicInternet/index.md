@@ -1,7 +1,7 @@
 ---
 title: Making server visible to the Internet
 date: 2025-01-23 
-type: page
+type: post
 categories: ["Introduction"]
 tags: ["Tutorial", "Server"]
 # image: ssh-icon.png

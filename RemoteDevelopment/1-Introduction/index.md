@@ -1,7 +1,7 @@
 ---
 title: Introduction to Remote Developing
 date: 2025-01-23 
-type: page
+type: post
 categories: ["Introduction"]
 tags: ["Remote", "Tutorial"]
 image: icon.png
