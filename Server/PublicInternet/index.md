@@ -17,11 +17,13 @@ To put it simply, you can only connect to a server that is *"visible"* to the cl
 
 ## Relay with cloud service
 
-You can set up a cloud machine with static public IP and establish connection, for example SSH tunnel, from your server, so that the server can be accessed with the static public IP. You can also set up reverse proxy application through the cloud machine to expose the service to public internet. See [frp](https://github.com/fatedier/frp) for example.
+You can set up a cloud machine with static public IP and establish connection, for example SSH tunnel, from your server, so that the server can be accessed with the static public IP. 
+
+You can also set up reverse proxy application through the cloud machine to expose the service to public internet. See [frp](https://github.com/fatedier/frp) for example.
 
 ## Apply for static IP
 
-You can ask your ISP, or your organization if you are in a research institution or company to assign a static public IP to your internet access. Usually the device connected to a cable from ISP directly gets the static public IP. If your cable is connected to the WAN port of a router (usually with wifi capabilities), the router has static public IP. In the latter case, your server's IP is within the local network allocated by the router, then you can use port forwarding to expose ports to the public internet.
+You can ask your ISP, or your organization if you are in a research institution or company to assign a static public IP to your internet access. Usually the device connected to a cable from ISP directly gets the static public IP. If your cable is connected to the WAN port of a router (usually with wifi capabilities), the router has static public IP. In the latter case, your server's IP is within the local network allocated by the router. You will need to set static DHCP by setting the router to allocate an unchanging local IP to your server host, then you can use port forwarding to expose ports to the public internet.
 
 ## Other methods
 

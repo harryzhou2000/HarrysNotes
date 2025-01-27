@@ -127,7 +127,9 @@ For a complete reference, see [Linux man page](https://www.man7.org/linux/man-pa
 
 If you have a Windows machine that you want to access by SSH, you can configure it to be an SSH server. 
 
-Before setting up a server, you should have a little network knowledge. See [Making server visible to the Internet](../../Server/PublicInternet/index.md).
+Before setting up a server, you should have a little network knowledge. See [Making server visible to the Internet](https://harryzhou2000.github.io/hugo-harry/p/publicinternet/).
+
+### Install OpenSSH server
 
 OpenSSH server feature and its service can be switched on by GUI or command-line on Windows. You can [read this tutorial](https://woshub.com/connect-to-windows-via-ssh/).
 
@@ -135,10 +137,75 @@ Here we have a simple GUI tutorial for Windows 11.
 
 First, install OpenSSH. Search for features from the global search and choose the `optional features` in settings. Then select `Add an optional feature` and search for `openssh`:
 
-![alt text](search-features.png) ![alt text](search-openssh.png)
+![Search features](search-features.png) ![Search OpenSSH](search-openssh.png)
 
 go through until the end and Windows will install OpenSSH:
 
-![alt text](installing-openssh.png)
+![Installing](installing-openssh.png)
 
+### Start OpenSSH service
 
+After OpenSSH is installed, go to services (run `services.msc` or search in the bar) and set `OpenSSH SSH Server` and `OpenSSH Authentication Agent`'s `Startup type` to `Automatic` and click OK. If they are not running, start them manually. They will start in the background automatically after next boot.
+
+![Setting ssh service](set-service-ssh.png)
+
+Using `netstat` in CMD will show if the service is listening to the 22 port:
+
+```cmd
+C:\Users\harry> netstat -na| find ":22"
+TCP    0.0.0.0:22             0.0.0.0:0              LISTENING
+...
+```
+
+Using this in Windows PowerShell line will see the status of firewall rule:
+
+```powershell
+PS C:\Users\harry> Get-NetFirewallRule -Name *OpenSSH-Server* |select Name, DisplayName, Description, Enabled
+
+Name                  DisplayName               Description                                Enabled
+----                  -----------               -----------                                -------
+OpenSSH-Server-In-TCP OpenSSH SSH Server (sshd) Inbound rule for OpenSSH SSH Server (sshd)    True
+```
+
+You can also test if ssh service is running by ssh to `localhost`:
+
+```powershell
+ssh harry@localhost
+```
+
+Substitute harry with your actual Windows **local account** username. The local account's username is not the same as your Microsoft username, as shown in your `Start` page or `Settings` if you have logged in with a Microsoft Account. You can get your username by checking the path of you home directory. Usually, your home is in `C:\users\<username>`, and with localization like 简体中文 it could look like `C:\用户\<username>` in File Explorer. An easy way is to start a fresh Windows PowerShell or CMD to check the username.
+
+You will be prompted to enter password, which is the **password** and not the **PIN** you use to log in your system.
+
+If you can successfully log in through `localhost`, the ssh service is running.
+
+The configuration of the service is in `C:\Programdata\ssh\sshd_config` by default, and within check the lines:
+
+```bash
+PubkeyAuthentication yes
+PasswordAuthentication yes
+```
+
+to make sure key and password are allowed in the login process.
+
+### Remote SSH access
+
+If you plan to remotely use your computer through SSH, inside or outside the local network, further checking is needed. You need to check the connectivity and use port forwarding + static public IP + static DHCP when necessary, see the [server notes](https://harryzhou2000.github.io/hugo-harry/p/publicinternet/#apply-for-static-ip).
+
+### Firewall rules
+
+You may find by default, `ssh harry@localhost` on the server runs fine, but doing this from any other machine inside or outside the local network gives a connection failure, which is most likely a result of firewall rules.
+
+In the `Windows Defender Firewall with Advanced Security` panel's `inbound` page, find the `OpenSSH` firewall rule we found earlier. Go to `Advanced` tab and check all the `Domain`, `Private` and `Public` profiles, to allow ssh inbound connections to the service from public internet. Click OK to save the changes.
+
+![alt text](ssh-firewall-rules-update.png)
+
+After updating the firewall rule's profile type, try again and this mostly works.
+
+If an existing firewall rule is nonexistent or the method above did not work, try creating an inbound firewall rule in the `Windows Defender Firewall with Advanced Security` panel (I'm using the vanilla Windows Defender, other security solutions like 火绒 or Kaspersky might need different procedures to set the firewall). In the wizard, select `Rule Type` `Port`, select `Protocol and Ports` `TCP` and `Specific local ports` being 22. `Action` is `Allow the connection`. In `Profile` select all. Give a descriptive name like `OpenSSH server inbound rule`.
+
+![Add inbound rule](ssh-firewall.png) ![Wizard](ssh-firewall-wizard.png)
+
+### Key authentication of administrator
+
+If your account is an administrator (which is the most case on Windows), you cannot log in through keys by simply adding your pubkey to `~/.ssh/authorized_keys`. You also need to add them to `C:\ProgramData\ssh\administrators_authorized_keys` (create new file if not existent).
