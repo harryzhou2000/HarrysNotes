@@ -29,6 +29,12 @@ type: post
 - [ ] Temporary TDof TRec allocator
 - [ ] RunImplicitEuler modularize
 - [ ] Packed long argument list
+  
+## Build System
+
+- [x] CMake distinguishes EulerModel's
+- [x] CCache acceleration 
+- [ ] CMake use external project to organize cfd_external?
 
 ## Development
 
@@ -38,7 +44,5 @@ type: post
 
 - [ ] Consecutive 2nd order - to - high order
 - [ ] New overset
-
-
 
 ![alt text](https://harryzhou2000.github.io/resources-0/curtain_A1C-screen.png)

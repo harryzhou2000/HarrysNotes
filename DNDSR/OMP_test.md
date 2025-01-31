@@ -4,7 +4,6 @@ date: 2025-01-21
 type: post
 ---
 
-
 # OMP Implementation in DNDSR
 
 Due to the status on THTJ (国家超算中心天津), where the ARM64 section has: 64 cores / node but maximum 56 ranks / node for high speed network, OMP implementation is considered.
@@ -33,6 +32,8 @@ mpirun --bind-to none -np 8 app/eulerSA.exe ../cases/eulerSA_config_0012_AOA15.j
 
 All tests carried out on `gpu704`.
 
+Set DNDS_UNSAFE_MATH_OPT to On and others default.
+
 ### Recovery
 
 Reference case: `cases/eulerSA_config_0012_AOA15.json` see Appendix.
@@ -40,17 +41,29 @@ Reference case: `cases/eulerSA_config_0012_AOA15.json` see Appendix.
 When `DNDS_DIST_MT_USE_OMP` is not defined, we hope it does not affect performance.
 
 Before OMP implementation: use `4743a171299e0403f2230780db1f418ea0815b70`, 10 iter time average: 
-2.989~2.998.
+3.035.
 
 After (`34abb36ca9418c123a7d516b6b68a6fea80ea8bc`): 
-2.989 
+3.025
 
 No change (because the macro handles statically...).
 
 If `DNDS_DIST_MT_USE_OMP` is defined but `DNDS_DIST_OMP_NUM_THREADS` is not set or set to `1`, on `34abb36ca9418c123a7d516b6b68a6fea80ea8bc`:
-3.074
+3.113
 
-That is \(2.8\%\)  slower. Due to the need to add a face-flux buffer in the EvaluateRHS.
+That is \(2.9\%\)  slower. Due to the need to add a face-flux buffer in the EvaluateRHS.
+
+Other optimizations & summary:
+
+| type                                         | time (s/10 iter)   |
+| -------------------------------------------- | ------------------ |
+| Before OMP implementation                    | 3.035              |
+| After OMP implementation (OMP_impl)          | 3.025 (\(-0.3\%\)) |
+| OMP_impl + `DNDS_DIST_MT_USE_OMP`            | 3.113 (\(+2.6\%\)) |
+| OMP_impl + UDOF_Pool                         | 3.049 (\(+0.5\%\)) |
+| OMP_impl + UDOF_Pool + `DNDS_NDEBUG`         | 2.850 (\(-6.1\%\)) |
+| OMP_impl + UDOF_Pool + jemalloc/tcmalloc_min | 2.995 (\(-1.3\%\)) |
+
 
 ### Acceleration
 
@@ -59,13 +72,13 @@ That is \(2.8\%\)  slower. Due to the need to add a face-flux buffer in the Eval
 Note that `OMP_SCHEDULE` should be set to improve scheduling.
 
 ``` bash
-DNDS_DIST_OMP_NUM_THREADS=2 OMP_SCHEDULE=GUIDED  mpirun --bind-to none -np 4 app/eulerSA.exe ../cases/eulerSA_config_0012_AOA15.json
+DNDS_DIST_OMP_NUM_THREADS=2 OMP_SCHEDULE=STATIC  mpirun --bind-to none -np 4 app/eulerSA.exe ../cases/eulerSA_config_0012_AOA15.json
 ```
 
 Result:
-3.313
+3.986
 
-More than \( 10\% \) slowdown.
+More than \( 30\% \) slowdown.
 
 #### Test 2
 
@@ -74,21 +87,20 @@ DNDS_DIST_OMP_NUM_THREADS=1 OMP_SCHEDULE=GUIDED  mpirun --bind-to none -np 32 ap
 ```
 
 Result:
-0.947
+1.029
 
 ``` bash
 DNDS_DIST_OMP_NUM_THREADS=2 OMP_SCHEDULE=GUIDED  mpirun --bind-to none -np 16 app/eulerSA.exe ../cases/eulerSA_config_0012_AOA15.json
 ```
 
 Result:
-1.085
-Slow-down = \( 15\% \)
+1.168
+Slow-down = \( 14\% \)
 
 <!-- 
 \[
 \% \pdv{x}{u}
 \] -->
-
 
 ## Appendix
 
