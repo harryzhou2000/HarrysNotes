@@ -4,7 +4,7 @@ date: 2025-01-23
 type: post
 categories: ["Introduction"]
 tags: ["Tutorial", "Server"]
-# image: ssh-icon.png
+image: internet.png
 slug: PublicInternet
 # https://www.flaticon.com/
 ---
