@@ -4,10 +4,11 @@ date: 2025-02-18T23:35:20+08:00
 type: post
 categories: ["Introduction"]
 tags: ["Remote", "Tutorial", "SSH", "EasyConnect"]
-# image: ssh-icon.png
+image: image.png
 # https://www.flaticon.com/
----
 
+---
+<!-- ![alt text](image.png) -->
 # Using EasyConnect To Proxy Connection to a Supercomputer
 
 ## Sangfor EasyConnect
