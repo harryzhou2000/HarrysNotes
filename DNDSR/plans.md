@@ -14,26 +14,30 @@ type: post
 - [ ] multi-block support
 - [ ] Cartesian interpolator + FFT
 - [ ] Point sampler
-- [ ] Parallel serializer of Array<>
+- [x] Parallel serializer of Array<>: HDF5 now usable, but different partition not inter-operable
+- [ ] Array / Solution / Mesh partition merger / remapping
 - [ ] Multilevel assert / exception
+- [x] Reordering local cells
+- [x] Write mesh with CGNS (parallel): need 4.5.0
 
 ## Optimization
 
-- [ ] Better OMP utilization
+- [x] Better OMP utilization: most places OMPed
 - [x] OMP implementation in direct methods (Failed, consider using libraries or sub-partitions)
-- [ ] Direct methods' structure
+- [ ] Sub-partition for direct methods in OMP
+- [ ] Direct methods' code structure
 - [ ] Comm-Comp Overlapping
   
 ## Structure improvements
 
-- [ ] Temporary TDof TRec allocator
-- [ ] RunImplicitEuler modularize
+- [x] Temporary TDof TRec allocator
+- [ ] RunImplicitEuler modularize: in proceeding
 - [ ] Packed long argument list
   
 ## Build System
 
 - [x] CMake distinguishes EulerModel's
-- [x] CCache acceleration 
+- [x] CCache acceleration
 - [ ] CMake use external project to organize cfd_external?
 
 ## Development
@@ -43,6 +47,9 @@ type: post
 ## Experimental
 
 - [ ] Consecutive 2nd order - to - high order
+- [ ] Implicit residual smoothing
 - [ ] New overset
+- [ ] Exponential Time Marching
+- [ ] FV P-Multigrid
 
 ![alt text](https://harryzhou2000.github.io/resources-0/curtain_A1C-screen.png)
