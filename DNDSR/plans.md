@@ -5,8 +5,6 @@ type: post
 # image: default-cover.png
 ---
 
-# Plans for DNDSR
-
 ## New features
 
 - [ ] 2nd order standalone FV solver

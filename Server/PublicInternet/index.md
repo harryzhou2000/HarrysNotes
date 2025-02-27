@@ -9,8 +9,6 @@ slug: PublicInternet
 # https://www.flaticon.com/
 ---
 
-# Making server visible to the Internet
-
 Computers connected to the Internet are generally speaking connected to each other. However, if you intend to host your own site or provide any internet service and access it anywhere without relying on some other people's resource, you will need to expose your server machine to the public internet.
 
 To put it simply, you can only connect to a server that is *"visible"* to the client. If your client and server are in the same local network, and your server is assigned a static ip `192.168.31.2` in the DHCP, you can see the server though the net. If your client machine is not in the local net, the IP address `192.168.31.2` does not direct to the server, because you and your server should be connected via the public internet. The server can access the public internet because of the NAT service on the router.

@@ -10,8 +10,6 @@ image: disk-usage.png
 ---
 <a href="https://www.flaticon.com/free-icons/www" title="www icons">Www icons created by Prosymbols - Flaticon</a>
 
-# Setting Up RAID in Linux
-
 Disks are good. SSDs are better. But sometimes even SSDs are a bit of slow for your application.
 
 In my case, the server has some SATA slots for 2.5 inch disks. The lab purchased some SATA SSDs. SATA SSDs have somewhat limited R/W bandwidth of about 550 MB/s. Sometimes you would want to load or write dataset files (like a CFD solution file) of multiple GBs, and repeatedly. Moreover, with multiple disks, each mounted disk is a separate file system and you would not like accessing them separately often times.

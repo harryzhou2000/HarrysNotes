@@ -5,7 +5,7 @@ type: post
 image: https://harryzhou2000.github.io/resources-0/fractalInf.png
 ---
 
-# Multigrid Test
+
 
 ## MG-FAS
 

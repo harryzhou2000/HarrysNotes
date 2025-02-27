@@ -8,8 +8,6 @@ image: ssh-icon.png
 # https://www.flaticon.com/
 ---
 
-# SSH Introduction
-
 SSH is the most commonly used development tool if you have a remote machine, like a supercomputer or a PC in your office. Plentiful introduction to SSH can be found by search engine, like [this one](https://www.geeksforgeeks.org/introduction-to-ssh-secure-shell-key). So I will only record some basic moves commonly used.
 
 ## Connect to an SSH server

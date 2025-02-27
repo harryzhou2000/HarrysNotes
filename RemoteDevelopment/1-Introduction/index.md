@@ -7,8 +7,6 @@ tags: ["Remote", "Tutorial"]
 image: icon.png
 ---
 
-# Introduction to Remote Developing
-
 According to [ChatGPT](https://chatgpt.com/share/679209a0-eb98-8001-8b0d-b5d9ae2c76fe):
 
 > Remote development has become a cornerstone of modern software engineering, driven by advancements in cloud computing, collaborative tools, and distributed version control systems. It allows developers to work from virtually anywhere while accessing shared resources, codebases, and even powerful remote hardware. Key tools like GitHub, GitLab, and Azure DevOps facilitate seamless collaboration on code, while cloud IDEs such as GitHub Codespaces, Replit, and JetBrains Space enable on-demand development environments that eliminate local setup challenges.

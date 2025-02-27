@@ -9,7 +9,6 @@ image: image.png
 
 ---
 <!-- ![alt text](image.png) -->
-# Using EasyConnect To Proxy Connection to a Supercomputer
 
 ## Sangfor EasyConnect
 
