@@ -12,10 +12,10 @@ type: post
 - 时空精度
 - 减少非守恒误差
 
-调研：西工大 caijinsheng zhengyao 
+调研：西工大 蔡晋生 zhengyao ?
     闫超
     二九基地的 谁
-    李书杰？
+    李书杰？not found 
 
 Mesh of background (Cartesian): \(G\)
 
