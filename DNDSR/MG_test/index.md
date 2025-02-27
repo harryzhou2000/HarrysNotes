@@ -2,6 +2,7 @@
 title: Multigrid Test
 date: 2025-02-27T16:54:08+08:00
 type: post
+image: https://harryzhou2000.github.io/resources-0/fractalInf.png
 ---
 
 # Multigrid Test
@@ -222,6 +223,3 @@ CL = 0.5, DPW6 settings
   - 残差收敛似乎加速明显
     - 需要针对此进行测试
   
-
-
-
