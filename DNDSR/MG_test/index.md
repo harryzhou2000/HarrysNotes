@@ -192,7 +192,7 @@ MGLP1:
 
 ### Test 3: CRM CL=0.5
 
-CRM no wing no plyon, AE @ AoA2.45
+CRM no wing no plyon, AE @ AoA2.75
 
 CL = 0.5, DPW6 settings
 
@@ -222,4 +222,76 @@ CL = 0.5, DPW6 settings
     - 这应该和CL Driver有关
   - 残差收敛似乎加速明显
     - 需要针对此进行测试
-  
+
+### Test 2+: NACA 0012 AOA 15
+
+With LLF flux on MG operator
+
+With ignore vis on MG operator
+
+With Implicit Residual Smoothing
+
+#### IRS: Implicit Residual Smoothing
+
+Using central form (fastest) (good for low mach) due to Jameson.
+
+see: [Blazek, J., Kroll, N., Radespiel, R. and Rossow, C.C., 1991. Upwind implicit residual smoothing method for multi-stage schemes. In 10th Computational Fluid Dynamics Conference (p. 1533).](https://link.springer.com/chapter/10.1007/3-540-56394-6_253)
+
+$$
+\tilde{u}_i + \varepsilon \sum_{j\in S_i}{(\tilde{u}_i - \tilde{u}_j)} = u_i
+$$
+
+When $\varepsilon\rightarrow 0$, no smoothing.
+
+#### Results:
+
+![Res ρ - t](0012_MG_smoothRMNoVis_AOA15_rt_all.png) ![Res ρ - iter](0012_MG_smoothRMNoVis_AOA15_ri_all.png)
+
+![Res ρ - t](0012_MG_smoothRMNoVis_AOA15_clstdT_all.png)
+
+
+### Test 4: NACA 0012 AOA 15
+
+#### Residual redefinition
+
+此前绘制的都是element-wise L1 残差
+
+$$
+\|\mathbf{r}\|_{e} = \sum_{i}{|r_i|}
+$$
+
+此后改用volume-wise残差：
+
+$$
+\|\mathbf{r}\|_{v } = \sum_{i}|r_i| \overline{\Omega}_i
+$$
+
+#### Residual-Iter:
+
+![Res ρ - iter](0012_MG_VRes_AOA15_ri_all.png)
+
+#### Residual-Time:
+
+
+![Res ρ - t: all](0012_MG_VRes_AOA15_rt_all.png) ![Res ρ - t: lusgs](0012_MG_VRes_AOA15_rt_lusgs.png)
+
+![Res ρ - t: ilu](0012_MG_VRes_AOA15_rt_ilu.png) ![Res ρ - t: gmres](0012_MG_VRes_AOA15_rt_gmres.png)
+
+
+#### CL std - Time:
+
+CL std is windowed standard deviation of CL.
+
+Windowsize: 100 iterations (now downsampled by 10)
+
+
+![CL std - t: all](0012_MG_VRes_AOA15_clstdT_all.png) ![CL std - t: lusgs](0012_MG_VRes_AOA15_clstdT_lusgs.png)
+
+![CL std - t: ilu](0012_MG_VRes_AOA15_clstdT_ilu.png) ![CL std - t: gmres](0012_MG_VRes_AOA15_clstdT_gmres.png)
+
+
+### Test 5: CRM CL ~ 0.5
+
+CRM no wing no plyon, AE @ AoA2.75
+
+Fixed AoA, 
