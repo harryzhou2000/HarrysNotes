@@ -294,4 +294,11 @@ Windowsize: 100 iterations (now downsampled by 10)
 
 CRM no wing no plyon, AE @ AoA2.75
 
-Fixed AoA, 
+Fixed AoA
+
+#### Results:
+
+
+![Res ρ - t: all](crm_noDri_VRes_rt_all.png) ![Res ρ - t: lusgs](crm_noDri_VRes_ri_all.png)
+
+![CL std - t: all](crm_noDri_VRes_clstdT_all.png) ![CL - t: all](crm_noDri_VRes_cl_all.png)
