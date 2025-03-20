@@ -36,11 +36,13 @@ type: post
 
 - [x] CMake distinguishes EulerModel's
 - [x] CCache acceleration
-- [ ] CMake use external project to organize cfd_external?
+- [x] ~~CMake use external project to organize cfd_external?~~ Using git submodule 
 
 ## Development
 
 - [ ] Documentation
+- [ ] Replace CGAL with MIT-compatible?
+- [ ] Replace METIS with SCOTCH 
 
 ## Experimental
 
