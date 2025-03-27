@@ -76,6 +76,10 @@ DNDS_DIST_OMP_NUM_THREADS=2 OMP_SCHEDULE=STATIC  mpirun --bind-to none -np 4 app
 Result:
 3.986
 
+- At `ce71614e8651c2c738e8a31304f9b46fb05cc0f1`:
+    - 3.533: 2x4
+    - 3.149: 1x8
+
 More than \( 30\% \) slowdown.
 
 #### Test 2
