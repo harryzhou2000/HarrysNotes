@@ -294,6 +294,8 @@ Windowsize: 100 iterations (now downsampled by 10)
 
 CRM no wing no plyon, AE @ AoA2.75
 
+CARDC grid (2.6M)
+
 Fixed AoA
 
 #### Results:
@@ -302,3 +304,13 @@ Fixed AoA
 ![Res ρ - t: all](crm_noDri_VRes_rt_all.png) ![Res ρ - t: lusgs](crm_noDri_VRes_ri_all.png)
 
 ![CL std - t: all](crm_noDri_VRes_clstdT_all.png) ![CL - t: all](crm_noDri_VRes_cl_all.png)
+
+### Test 6: CRM Boeing F grid CL 0.5
+
+CRM no wing no plyon, AE @ AoA2.75
+
+With CLDriver
+
+![Res ρ - t: all](crm_Dri_BoeingF_rt_all.png) ![Res ρ - t: lusgs](crm_Dri_BoeingF_ri_all.png)
+
+![CL std - t: all](crm_Dri_BoeingF_clstdT_all.png) ![CL - t: all](crm_Dri_BoeingF_cl_all.png)
