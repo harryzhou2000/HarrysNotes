@@ -1,4 +1,4 @@
----
+WB ---
 title: DPW6 Test
 date: 2025-03-27T15:14:54+08:00
 type: post
@@ -21,10 +21,10 @@ Meshes:
 
 | Name | Size (num cell) | Note                                        |
 | ---- | --------------- | ------------------------------------------- |
-| T    | 20657615        |                                             |
-| C    | 26271819        |                                             |
-| M    | 33683206        | Has 1 Pyramid distorted (negative jacobian) |
-| F    | 43126748        |                                             |
+| WB T | 20657615        |                                             |
+| WB C | 26271819        |                                             |
+| WB M | 33683206        | Has 1 Pyramid distorted (negative jacobian) |
+| WB F | 43126748        |                                             |
 
 SA-rot
 

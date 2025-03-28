@@ -282,7 +282,7 @@ $$
 
 CL std is windowed standard deviation of CL.
 
-Windowsize: 100 iterations (now downsampled by 10)
+Window size: 100 iterations (now downsampled by 10)
 
 
 ![CL std - t: all](0012_MG_VRes_AOA15_clstdT_all.png) ![CL std - t: lusgs](0012_MG_VRes_AOA15_clstdT_lusgs.png)
@@ -301,7 +301,7 @@ Fixed AoA
 #### Results:
 
 
-![Res ρ - t: all](crm_noDri_VRes_rt_all.png) ![Res ρ - t: lusgs](crm_noDri_VRes_ri_all.png)
+![Res ρ - t: all](crm_noDri_VRes_rt_all.png) ![Res ρ - t: all](crm_noDri_VRes_ri_all.png)
 
 ![CL std - t: all](crm_noDri_VRes_clstdT_all.png) ![CL - t: all](crm_noDri_VRes_cl_all.png)
 
@@ -311,6 +311,6 @@ CRM no wing no plyon, AE @ AoA2.75
 
 With CLDriver
 
-![Res ρ - t: all](crm_Dri_BoeingF_rt_all.png) ![Res ρ - t: lusgs](crm_Dri_BoeingF_ri_all.png)
+![Res ρ - t: all](crm_Dri_BoeingF_rt_all.png) ![Res ρ - t: all](crm_Dri_BoeingF_ri_all.png)
 
 ![CL std - t: all](crm_Dri_BoeingF_clstdT_all.png) ![CL - t: all](crm_Dri_BoeingF_cl_all.png)
