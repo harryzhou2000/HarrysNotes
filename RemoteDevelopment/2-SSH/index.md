@@ -2,7 +2,7 @@
 title: SSH Introduction
 date: 2025-01-23 
 type: post
-categories: ["Introduction"]
+categories: ["Tutorial"]
 tags: ["Remote", "Tutorial", "SSH"]
 image: ssh-icon.png
 # https://www.flaticon.com/
@@ -13,6 +13,14 @@ SSH is the most commonly used development tool if you have a remote machine, lik
 ## Connect to an SSH server
 
 SSH client is ready-to-use on modern Windows systems.
+
+>If you find that `ssh` command is missing on Windows, for Windows 10/11, you should install it from `Optional Features`:
+>
+>![alt text](windows_install_client.png)
+>
+>Click on `Add an optional feature` → `View Features` and find `OpenSSH Client` and install.
+> 
+> Make sure you can have output indicating the ssh executable's path like `where.exe ssh` or `which ssh` before you go on.
 
 Suppose you are given a server with:
 
