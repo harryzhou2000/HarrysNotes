@@ -1,4 +1,4 @@
-WB ---
+---
 title: DPW6 Test
 date: 2025-03-27T15:14:54+08:00
 type: post
