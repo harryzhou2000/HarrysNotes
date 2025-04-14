@@ -2,6 +2,7 @@
 title: SSH Introduction
 date: 2025-01-23 
 type: post
+slug: ssh-intro
 categories: ["Tutorial"]
 tags: ["Remote", "Tutorial", "SSH"]
 image: ssh-icon.png
@@ -28,13 +29,17 @@ Suppose you are given a server with:
 - user: harry
 - password: pass-word
 
-The username and password is same as the login information you use to log in that machine on the site. The hostname could be a domain name or raw IP like above.
+The username and password is same as the login information you use to log in that machine on the site. The hostname could be a domain name or raw IP like above. Meanwhile, sometimes the host service listens to another port other than default `22` port, say:
+
+- port: 2345
 
 You are supposed to be able to connect in your shell (of the client machine) with:
 
 ```bash
-ssh harry@192.168.31.2
+ssh harry@192.168.31.2 -p 2345
 ```
+
+The `-p <port>` can be omitted if the port is the ssh default 22.
 
 Ssh client program `ssh` will prompt you to enter the password, then your shell is connected to the remote machine `192.168.31.2`.
 
@@ -64,7 +69,9 @@ does the job.
 
 ## SSH authentication with keys
 
-You are not allowed to automatically enter the password. So, when connecting SSH with password, you must manually enter it in the console. Moreover, sometimes it might be unsafe to use password.
+You are not allowed to automatically enter the password. So, when connecting SSH with password, you must manually enter it in the console. 
+
+Sometimes it might be unsafe to use passwords and the server side forbids any password login.
 
 So, you are supposed to use a pair of public-private keys as ssh's authentication method whenever possible.
 
@@ -74,7 +81,7 @@ If you don't have ssh key pairs, just run in your client machine's shell:
 ssh-keygen -t ed25519
 ```
 
-and press enter (using all default parameters) when prompted until the end.
+and press enter (using default parameters) when prompted until the end. Using non-default parameters will need extra configuration.
 
 The parameter `-t ed25519` chooses `ed25519` as the signature algorithm. It is not recommended to use `rsa`, or you **should actually avoid using `rsa` anymore, [with the reason here](https://blog.trailofbits.com/2019/07/08/fuck-rsa/).**
 
@@ -84,7 +91,7 @@ Then, you have to inform the ssh server of you public key to be able to connect 
 
 ```bash
 ssh-copy-id -i ~/.ssh/id_ed25519.pub harry@192.168.31.2
-# or equivilantly
+# or equivalently
 ssh-copy-id -i ~/.ssh/id_ed25519.pub office
 ```
 
