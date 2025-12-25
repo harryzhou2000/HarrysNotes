@@ -4,7 +4,7 @@ date: 2025-04-09T16:22:57+08:00
 type: post
 categories: ["Tutorial"]
 tags: ["Remote", "Tutorial", "SSH"]
-# image: ssh-icon.png
+image: ssh-icon.png
 # https://www.flaticon.com/
 ---
 
@@ -22,7 +22,7 @@ Host office
     IdentityFile ~/ssh/id_ed25519
 ```
 
-Now in you client machine, you can `ssh office` into the host machine's shell and open a remote terminal. 
+Now in you client machine, you can `ssh office` into the host machine's shell and open a remote terminal.
 
 Of course various operations could be done over a ssh connection, including persistent connection, and using many tools to achieve arbitrary data connection.
 
@@ -116,12 +116,11 @@ There is also WinSCP, which is popular on Windows. I will use WinSCP as an examp
 
 ### Password Connection
 
-Click `NewTab`, or just opening a new window, WinSCP will spawn a `Login` dialogue window. 
+Click `NewTab`, or just opening a new window, WinSCP will spawn a `Login` dialogue window.
 
 Click on `New Site` and it should be like this:
 
 ![login window](winscp-login.png)
-
 
 Use the default `SFTP` protocol. Fill in the `Host name`, `Port number`, `User Name` and `Password` you use to login `office`.
 
@@ -139,7 +138,7 @@ Now, drag-and-drop across local and remote filesystem, or `ctrl-c` `ctrl-v` will
 
 ### Key Connection
 
-Recall [the key connection part of ssh tutorial](/p/ssh-intro/#ssh-authentication-with-keys), sometimes you are not allowed password authentication. 
+Recall [the key connection part of ssh tutorial](/p/ssh-intro/#ssh-authentication-with-keys), sometimes you are not allowed password authentication.
 
 WinSCP indeed support using key instead of password.
 
@@ -151,14 +150,13 @@ Notice `Private Key File` field is initially empty. Click the dots at the right,
 
 ![winscp-select-advanced-key](winscp-select-advanced-key.png)
 
-If you generated a OpenSSH ed25519 key pair like in [the tutorial](/p/ssh-intro/#ssh-authentication-with-keys), you will only find `id_ed25519` and `id_ed25519.pub` files in it. 
+If you generated a OpenSSH ed25519 key pair like in [the tutorial](/p/ssh-intro/#ssh-authentication-with-keys), you will only find `id_ed25519` and `id_ed25519.pub` files in it.
 
-Choose the **Private Key File**: `id_ed25519` and follow the prompt to convert it into a putty format key. 
+Choose the **Private Key File**: `id_ed25519` and follow the prompt to convert it into a putty format key.
 
 Save the generated key file `id_ed25519.ppk` (maybe in the same location) as WinSCP prompt you and select the generated .ppk file in the `Advanced/SSH/Authentication` dialogue.
 
 Now, fill in the `Host name`, `Port number`, `User Name`, and leave the `Password` field empty. Click `Login` and it should connect.
-
 
 ## `sshfs` mounting
 
@@ -198,7 +196,7 @@ Host office
     Port 2222 # Default is 22
     User harry
     IdentityFile ~/ssh/id_ed25519
-``` 
+```
 
 use the following command to mount the remote file system:
 
@@ -228,7 +226,7 @@ fusermount -u ~/remote_mount
 
 ### Windows `sshfs` usage
 
-sshfs uses FUSE under the hood. It is not trivial to use sshfs on windows. 
+sshfs uses FUSE under the hood. It is not trivial to use sshfs on windows.
 
 Fortunately, a splendid free solution, [SSHFS-Win](https://github.com/winfsp/sshfs-win) is present.
 
