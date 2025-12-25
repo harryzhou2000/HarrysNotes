@@ -10,7 +10,7 @@ tags: ["Remote", "Tutorial", "SSH"]
 
 Some basic file transferring techniques used on ssh connections are introduced here.
 
-[A introduction of using ssh connections is here](/p/ssh-intro).
+[A introduction of using ssh connections is here](https://harryzhou2000.github.io/hugo-harry/p/ssh-intro/).
 
 Suppose you have ssh connection to some host, in the ssh `config`:
 
@@ -278,5 +278,3 @@ When you open a folder in a remote VSCode session, the file explorer reveals the
 You can then use either drag-and-drop, `ctrl-c`-`ctrl-v` or right-click/download to upload/download files.
 
 Be careful when you have to operate on large files or directories, because VSCode does not reveal the progress of file transfer and the bandwidth might be suboptimal.
-
-
