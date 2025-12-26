@@ -9,7 +9,7 @@ tags: ["DNDSR", "DES", "test-case"]
 
 ## DES formulations
 
-Good question — there are actually quite a few **DES (Detached Eddy Simulation)** formulations that are based on the **Spalart–Allmaras (SA)** model, because SA is compact, robust, and easily extendable. Let’s go through them systematically:
+ChatGPT and Grok seem to understand DES and SA at an accessible level.
 
 ---
 
