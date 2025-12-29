@@ -9,7 +9,7 @@ tags: ["DNDSR", "DES", "test-case"]
 
 ## DES formulations
 
-ChatGPT and Grok seem to understand DES and SA at an accessible level.
+ChatGPT and Grok seem to understand DES and SA at an acceptable level.
 
 ---
 
