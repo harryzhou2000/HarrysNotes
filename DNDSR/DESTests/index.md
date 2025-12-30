@@ -364,22 +364,24 @@ with $C_{dF}=0.2$.
 | CylinderB1_L8U2_Rawstart2_PdT05_restart2_TH3_IDDES0_.log    | 1.3309e+00 | 909.3   | 18000 |
 | CylinderB1_L8U2_Rawstart2_PdT05_restart2_TH3_IDDES0_O4_.log | 1.1945e+00 | -454.6  | 18000 |
 | CylinderB1_L8U2_Rawstart3_PdT05_TH3_ILES_O4_.log            | 1.0525e+00 | -1874.7 | 18000 |
-| CylinderB1_L8U2_Rawstart4_PdT05_TH3_ILES_dF02R_O4_.log      | 1.0250e+00 | -2149.7 | 11155 |
-| CylinderB1_L8U2_Rawstart4_PdT05_TH3_ILES_dF02R_O4_GW2_.log  | 9.5064e-01 | -2893.6 | 2036  |
+| CylinderB1_L8U2_Rawstart4_PdT05_TH3_ILES_dF02R_O4_.log      | 1.0370e+00 | -2029.9 | 11607 |
+| CylinderB1_L8U2_Rawstart4_PdT05_TH3_ILES_dF02R_O4_GW2_.log  | 9.8482e-01 | -2551.8 | 11942 |
 | CylinderB1_L8U2_Rawstart4_PdT05_TH3_IDDES3RR1_.log          | 1.2726e+00 | 326.0   | 18000 |
 | CylinderB1_L8U2_Rawstart4_PdT05_TH3_IDDES3RR1_dF02_.log     | 1.2477e+00 | 77.4    | 17586 |
 | CylinderB1_L8U2_Rawstart4_PdT05_TH3_IDDES5RR2_.log          | 1.2855e+00 | 455.0   | 18000 |
 | CylinderB1_L8U2_Rawstart4_PdT05_TH3_IDDES3RR2_.log          | 1.2654e+00 | 253.9   | 18000 |
-| CylinderB1_L8U2_Rawstart4_PdT05_TH3_IDDES3RR2_O4_.log       | 1.2246e+00 | -153.6  | 10024 |
-| CylinderB1_L8U2_Rawstart4_PdT05_TH3_IDDES3RR2_dF02_O4_.log  | 1.0547e+00 | -1852.6 | 8669  |
-| CylinderB1_L8U2_Rawstart4_PdT05_TH3_IDDES3R_O4_.log         | 1.3132e+00 | 732.3   | 12888 |
+| CylinderB1_L8U2_Rawstart4_PdT05_TH3_IDDES3RR2_O4_.log       | 1.2005e+00 | -395.1  | 17823 |
+| CylinderB1_L8U2_Rawstart4_PdT05_TH3_IDDES3RR2_dF02_O4_.log  | 1.1362e+00 | -1038.2 | 10520 |
+| CylinderB1_L8U2_Rawstart4_PdT05_TH3_IDDES3R_O4_.log         | 1.2586e+00 | 186.1   | 18000 |
 | CylinderB1_L8U2_Rawstart4_PdT05_TH3_IDDES3R_dF02_.log       | 1.2136e+00 | -264.4  | 17670 |
 | CylinderB1_L8U2_Rawstart4_PdT05_TH3_IDDES3R_.log            | 1.3048e+00 | 648.1   | 18000 |
 | CylinderB1_L8U2_Raw4dT05_TH2_dF02_O4_GW2_.log               | 1.0958e+00 | -1441.8 | 2739  |
 | CylinderB1_L8U2_Raw4dT05_TH2_dF02_O4_.log                   | 9.4938e-01 | -2906.2 | 0     |
-| CylinderB1_L8U2_Raw4dT05_TH2_O4_GW2_.log                    | 1.1956e+00 | -444.1  | 5869  |
-| CylinderB1_L8U2_Raw4dT05_TH3_O4_GW2_.log                    | 1.1986e+00 | -414.0  | 5913  |
-| CylinderB1_L8U2_Raw4dT05_TH3_O4_.log                        | 1.2324e+00 | -76.4   | 5443  |
+| CylinderB1_L8U2_Raw4dT05_TH2_O4_GW2_.log                    | 1.2364e+00 | -36.1   | 18000 |
+| CylinderB1_L8U2_Raw4dT05_TH3_O4_GW2_.log                    | 1.2654e+00 | 254.1   | 18000 |
+| CylinderB1_L8U2_Raw4dT05_TH3_O4_.log                        | 1.2876e+00 | 476.5   | 18000 |
+| CylinderB1_L8U2_Raw4dT05_TH3R_O4_GW2_.log                   | 1.2706e+00 | 306.4   | 12820 |
+| CylinderB1_L8U2_Raw4dT05_TH3R_O4_.log                       | 1.2178e+00 | -222.1  | 12871 |
 
 ![Drag Coefficients, filter window 500 (25 time units)](drags_All.png)
 
