@@ -101,7 +101,7 @@ Safe pattern:
 ```
 int tid_global = blockDim.x * blockIdx.x + threadIdx.x; 
 t_buffer real_data;
-if (tid_global <> max) 
+if (tid_global < max) 
 { 
   do_calculation.... 
 } 
