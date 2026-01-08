@@ -2249,7 +2249,7 @@ These often appear with deadlock or performance reasoning.
 
 ---
 
-### 3. Collectives (Very Important for DevTech)
+### 3. Collectives
 
 Expect **performance-oriented** questions here.
 
@@ -2314,6 +2314,14 @@ This is **core DevTech territory**.
 1. **What is Amdahl’s Law vs Gustafson’s Law?**
 
 * Strong vs weak scaling interpretation
+
+\[
+S(N) = \frac{1}{(1 - P) + \frac{P}{N}}
+\]
+
+\[
+S(N) = N - (1 - P)(N - 1)
+\]
 
 ---
 
@@ -2427,43 +2435,2316 @@ Often mixed with performance.
 
 ---
 
-### Other distributed infra
+### RDMA ?
 
-#### RDMA
+## NCCL
+
+### Basics
+
+#### 1. Communicator
+
+A **communicator** defines:
+
+* Which GPUs participate
+* Their ranks
+* Their topology
+
+Created once, reused across iterations:
+
+```cpp
+ncclCommInitRank(...)
+```
+
+At system level:
+
+* Expensive → cache it
+* Initialization cost matters for short jobs
+
+---
+
+#### 2. AllReduce (core AI primitive)
+
+Used for:
+
+* Gradient synchronization
+* Model parameter aggregation
+
+Mathematically:
+
+```
+Each GPU has X
+All GPUs get sum(X) / or sum(X)
+```
+
+NCCL implements **ring**, **tree**, or **hybrid** algorithms depending on:
+
+* Message size
+* Topology
+* Number of GPUs
+
+---
+
+#### 3. Topology awareness (very important)
+
+NCCL **discovers system topology at runtime**:
+
+* GPU ↔ GPU (NVLink, PCIe)
+* GPU ↔ NIC (NVLink-NIC, PCIe switch)
+* NUMA domains
+
+It builds **communication rings/trees** that:
+
+* Prefer NVLink over PCIe
+* Minimize PCIe root crossings
+* Optimize NIC usage
+
+👉 **Bad topology → bad scaling**
+
+---
+
+#### 4. Intra-node vs Inter-node NCCL
+
+**Intra-node**
+
+* NVLink / PCIe
+* Very high bandwidth, low latency
+* Typically near-ideal scaling
+
+**Inter-node**
+
+* Uses:
+
+  * InfiniBand (RDMA)
+  * Ethernet (RoCE)
+* GPU Direct RDMA (GDR) if enabled
+
+Key system-level factors:
+
+* NIC placement
+* GPU-NIC affinity
+* NUMA alignment
+
+---
+
+#### 5. GPU Direct RDMA (GDR)
+
+Allows:
+
+```
+GPU memory ↔ NIC
+(no host memory bounce)
+```
+
+Benefits:
+
+* Lower latency
+* Higher bandwidth
+* Less CPU overhead
+
+System requirements:
+
+* Supported NIC (e.g. Mellanox)
+* Correct driver stack
+* IOMMU / ACS settings matter
+
+### NCCL execution model
+
+* NCCL calls are **asynchronous**
+* Enqueued into a **CUDA stream**
+* Synchronization happens via:
+
+  * CUDA events
+  * Stream waits
+
+Example (conceptual):
+
+```cpp
+ncclAllReduce(..., stream);
+cudaKernel<<<..., stream>>>();
+```
+
+👉 Enables **communication–computation overlap**
+
+---
+
+### NCCL in AI frameworks
+
+#### PyTorch
+
+* Uses **NCCL backend** for `DistributedDataParallel`
+* One NCCL communicator per process group
+* Gradient buckets → AllReduce
+
+Performance knobs:
+
+* Bucket size
+* Overlap on/off
+* Stream usage
+
+---
+
+#### Multi-node training stack
+
+Typical flow:
+
+```
+SLURM / mpirun
+↓
+1 process per GPU
+↓
+NCCL communicators
+↓
+CUDA streams
+```
+
+MPI is often used only for:
+
+* Rank assignment
+* Environment setup
+
+---
+
+### Common system-level performance issues
+
+#### 1. Wrong GPU–NIC affinity
+
+Symptoms:
+
+* Low bandwidth
+* Unbalanced traffic
+
+Fix:
+
+* Bind processes correctly
+* Match GPU closest to NIC
+
+---
+
+#### 2. NUMA misalignment
+
+Symptoms:
+
+* High CPU usage
+* Inconsistent iteration time
+
+Fix:
+
+* CPU pinning
+* Correct process placement
+
+---
+
+#### 3. Oversubscription
+
+* Too many processes per socket
+* Competes for PCIe / memory bandwidth
+
+---
+
+#### 4. Small message sizes
+
+* NCCL bandwidth not saturated
+* Ring startup dominates
+
+Common in:
+
+* Small models
+* Too many gradient buckets
+
+### NCCL APIs
+
+#### 1. Communicator & Initialization APIs
+
+These define *who participates* in collectives.
+
+##### Core communicator APIs
+
+```c
+ncclGetUniqueId(ncclUniqueId* id);
+ncclCommInitRank(ncclComm_t* comm,
+                 int nranks,
+                 ncclUniqueId id,
+                 int rank);
+```
+
+* `ncclGetUniqueId`
+  Generates a unique ID (usually on rank 0, broadcast via MPI)
+
+* `ncclCommInitRank`
+  Creates a communicator for one rank
+
+📌 **System-level note**
+
+* Communicator creation is **expensive**
+* Should be done **once**, reused across iterations
+
+---
+
+##### Multi-GPU per process
+
+```c
+ncclCommInitAll(ncclComm_t* comms,
+                int ndev,
+                const int* devlist);
+```
+
+* Used when **one process controls multiple GPUs**
+* Common in single-node setups
+
+---
+
+##### Communicator teardown
+
+```c
+ncclCommDestroy(ncclComm_t comm);
+```
+
+---
+
+#### 2. Collective Communication APIs (Core NCCL Value)
+
+##### Most common collectives
+
+```c
+ncclAllReduce(...)
+ncclReduce(...)
+ncclBroadcast(...)
+ncclAllGather(...)
+ncclReduceScatter(...)
+```
+
+##### Full prototype (example: AllReduce)
+
+```c
+ncclAllReduce(const void* sendbuf,
+              void* recvbuf,
+              size_t count,
+              ncclDataType_t datatype,
+              ncclRedOp_t op,
+              ncclComm_t comm,
+              cudaStream_t stream);
+```
+
+##### Supported reductions
+
+```c
+ncclSum
+ncclProd
+ncclMax
+ncclMin
+```
+
+#### 3. Group APIs (Latency Optimization)
+
+Used to **batch multiple NCCL calls**.
+
+```c
+ncclGroupStart();
+ncclGroupEnd();
+```
+
+Example:
+
+```c
+ncclGroupStart();
+ncclAllReduce(..., stream1);
+ncclAllReduce(..., stream2);
+ncclGroupEnd();
+```
+
+📌 **Why this matters**
+
+* Reduces launch and synchronization overhead
+* Improves performance when launching many collectives
+* Common inside DL frameworks
+
+---
+
+#### 4. CUDA Stream Integration (Critical)
+
+Every collective takes a:
+
+```c
+cudaStream_t stream
+```
+
+Meaning:
+
+* NCCL ops are **enqueued**, not executed immediately
+* They respect stream dependencies
+* They can **overlap with computation**
+
+Example:
+
+```c
+cudaStream_t s;
+ncclAllReduce(..., s);
+kernel<<<..., s>>>();
+```
+
+#### 5. CUDA Graph Compatibility
+
+NCCL collectives **can be captured in CUDA Graphs**.
+
+Flow:
+
+```c
+cudaStreamBeginCapture(stream, ...);
+ncclAllReduce(..., stream);
+cudaStreamEndCapture(stream, &graph);
+cudaGraphInstantiate(&graphExec, graph, ...);
+```
+
+📌 Benefits:
+
+* Removes CPU launch overhead
+* Important for **short-iteration AI workloads**
+* Used in high-performance training loops
+
+#### Point-to-point
+
+NCCL **does have point-to-point** now.
+
+Since NCCL 2.7+:
+
+```c
+ncclSend()
+ncclRecv()
+```
+
+These are:
+
+* GPU-to-GPU
+* CUDA-stream-aware
+* NVLink / IB optimized
+
+So pipeline parallelism can use:
+
+* `ncclSend/Recv`
+* CUDA IPC
+* Or even CUDA memcpy (same node)
+
+---
+
+#### How pipeline parallelism is actually implemented
+
+##### Option 1: NCCL Send / Recv (common today)
+
+Forward:
+
+```text
+GPU i:
+  compute(layer_i)
+  ncclSend(activation → GPU i+1)
+```
+
+Backward:
+
+```text
+GPU i:
+  ncclRecv(grad → GPU i+1)
+  compute_backward(layer_i)
+```
+
+This is **streamed**, overlappable with compute.
+
+---
+
+##### Option 2: CUDA-aware MPI (less common in DL)
+
+Used sometimes for:
+
+* Inter-node activation passing
+* Research frameworks
+
+But:
+
+* NCCL is preferred in production DL
+
+---
+
+##### Option 3: Collectives (less common for PP)
+
+Some frameworks:
+
+* Use `AllGather` instead of send/recv
+* Especially when multiple next stages exist
+
+---
+
+##### 6. Why NCCL collectives still matter in PP
+
+Even in pipeline parallelism:
+
+| Phase     | Communication             |
+| --------- | ------------------------- |
+| Forward   | Send activations          |
+| Backward  | Send activation gradients |
+| Optimizer | DP AllReduce              |
+| TP        | AllReduce / ReduceScatter |
+| MoE       | AllToAll                  |
+
+## LLM
+
+### 1. System-Level View: What Is an LLM?
+
+At the highest level, a modern LLM is:
+
+> **A large autoregressive sequence model that predicts the next token, trained on massive corpora, and deployed with aggressive parallelism and memory optimization.**
+
+Key properties:
+
+* **Autoregressive**: predict `token_t` given `token_<t`
+* **Token-based**: text → tokens → embeddings
+* **Scale-driven**: performance comes primarily from model/data/compute scaling
+* **GPU-first**: designed around dense linear algebra
+
+### 2. Model Family Level: Transformer-Based Models
+
+Nearly all modern LLMs are based on **Transformers**, with variations.
+
+#### Canonical examples
+
+* GPT-3/4, LLaMA, Mistral, Qwen → *Decoder-only Transformers*
+* PaLM, Gemini → Transformer variants
+* Mixtral → *Mixture-of-Experts Transformer*
+
+#### Why Transformers?
+
+* No recurrence → **parallelizable**
+* Attention → **global context**
+* Works extremely well with matrix multiply accelerators
+
+---
+
+### 3. Macro Architecture: Decoder-Only Transformer
+
+Most LLMs you’ll encounter are **decoder-only**:
+
+```
+Input Tokens
+   ↓
+Token Embedding + Positional Encoding
+   ↓
+[ Transformer Block ] × N
+   ↓
+LayerNorm
+   ↓
+Linear Projection → Vocabulary
+   ↓
+Softmax → Next Token
+```
+
+Important:
+
+* No encoder
+* Causal (masked) attention
+* Same block repeated `N` times (e.g., 32–120 layers)
+
+---
+
+### 4. Transformer Block Anatomy (Critical)
+
+Each **Transformer block** consists of:
+
+```
+x
+│
+├─ LayerNorm
+│
+├─ Multi-Head Self Attention
+│
+├─ Residual Add
+│
+├─ LayerNorm
+│
+├─ Feed Forward Network (MLP)
+│
+└─ Residual Add
+```
+
+This is where **90%+ of compute** happens.
+
+---
+
+### 5. Attention Mechanism (The Core Idea)
+
+#### Scaled Dot-Product Attention
+
+For each token:
+
+```
+Q = X Wq
+K = X Wk
+V = X Wv
+
+Attention(Q,K,V) = softmax(QKᵀ / √d) V
+```
+
+Properties:
+
+* **Quadratic complexity**: O(seq²)
+* **Memory heavy** (attention matrix)
+* Dominates inference latency at long context
+
+#### Causal Masking
+
+* Prevents attending to future tokens
+* Enables autoregressive generation
+
+---
+
+### 6. Multi-Head Attention (MHA)
+
+Instead of one attention:
+
+* Split into `h` heads
+* Each head attends to different subspaces
+
+```
+d_model = h × d_head
+```
+
+Benefits:
+
+* Better representation
+* Still maps to GEMMs → GPU-friendly
+
+---
+
+### 7. Feed-Forward Network (MLP)
+
+Typical form:
+
+```
+FFN(x) = W2 σ(W1 x)
+```
+
+Modern variants:
+
+* **GELU / SiLU**
+* **SwiGLU / GeGLU** (used in LLaMA, Mistral)
+
+Key facts:
+
+* FFN often costs **more FLOPs than attention**
+* Extremely GEMM-heavy
+* Memory bandwidth sensitive
+
+---
+
+### 8. Normalization & Residuals
+
+#### LayerNorm / RMSNorm
+
+* Stabilizes training
+* RMSNorm removes mean → cheaper
+
+#### Residual Connections
+
+* Enable deep networks
+* Improve gradient flow
+* Important for numerical stability
+
+---
+
+### 9. Positional Information
+
+Since attention is permutation-invariant, position must be injected.
+
+#### Common approaches
+
+* **Absolute embeddings** (older)
+* **RoPE (Rotary Positional Embedding)** ← dominant today
+* **ALiBi** (linear bias)
+
+RoPE:
+
+* Enables better extrapolation to long context
+* Implemented inside Q/K projection
+
+---
+
+### 10. Tokenization & Embeddings
+
+#### Tokenization
+
+* BPE / SentencePiece
+* Subword-based
+* Vocabulary ~32k–100k
+
+#### Embedding Layer
+
+* Token ID → dense vector
+* Often tied with output projection weights
+
+---
+
+### 11. Training Objective
+
+LLMs are trained with:
+
+```
+Cross-Entropy Loss
+```
+
+Objective:
+
+```
+maximize log P(token_t | token_<t)
+```
+
+Training:
+
+* Teacher forcing
+* Massive batch sizes
+* Trillions of tokens
+
+---
+
+### 12. Scaling Laws (Why Size Matters)
+
+Empirical laws:
+
+* Performance scales smoothly with:
+
+  * Model size
+  * Dataset size
+  * Compute budget
+
+This motivates:
+
+* Bigger models
+* Better parallelism
+* Memory optimization
+
+---
+
+### 13. Parallelism Strategies (System-Level Critical)
+
+Modern LLMs **cannot fit or run on one GPU**.
+
+#### Parallelism types
+
+1. **Data Parallelism (DP)**
+2. **Tensor Parallelism (TP)** – split matrices
+3. **Pipeline Parallelism (PP)** – split layers
+4. **Sequence Parallelism**
+5. **Expert Parallelism (MoE)**
+
+Frameworks:
+
+* Megatron-LM
+* DeepSpeed
+* FSDP
+* NCCL underneath all of them
+
+---
+
+### 14. Mixture of Experts (MoE)
+
+Instead of dense FFN:
+
+```
+Router → select top-k experts → sparse FFN
+```
+
+Benefits:
+
+* More parameters
+* Same compute cost
+* Harder to scale (communication heavy)
+
+Used in:
+
+* Mixtral
+* Switch Transformer
+
+---
+
+### 15. Inference-Time Architecture Changes
+
+#### KV Cache
+
+* Cache K/V from previous tokens
+* Reduces attention cost from O(T²) → O(T)
+
+#### Autoregressive Loop
+
+```
+for t in tokens:
+  run model
+  sample next token
+```
+
+#### Bottlenecks
+
+* Memory bandwidth
+* Small batch sizes
+* Kernel launch overhead
+
+---
+
+### 16. Performance-Critical Kernels (GPU View)
+
+At the lowest level, everything reduces to:
+
+* **GEMM**
+* **Softmax**
+* **LayerNorm**
+* **Memory movement**
+
+Optimizations:
+
+* FlashAttention
+* Fused kernels
+* Tensor Cores (FP16 / BF16 / FP8)
+* CUDA Graphs
+* NCCL collectives
+
+---
+
+### 17. Summary Stack (One Slide Mental Model)
+
+```
+LLM System
+├─ Distributed Training / Inference
+│   └─ NCCL / CUDA-aware MPI
+├─ Transformer Model
+│   ├─ Decoder Blocks
+│   │   ├─ Attention
+│   │   ├─ MLP
+│   │   └─ Norm + Residual
+│   └─ Token + Position Embeddings
+├─ Math
+│   ├─ GEMMs
+│   ├─ Softmax
+│   └─ Normalization
+└─ Hardware
+    ├─ GPUs
+    ├─ HBM
+    └─ NVLink / IB
+```
+
+## Attention layer
+
+We consider multihead self attention:
+
+$$
+X_{t,d}\quad\text{shaped}\quad [T,D]
+$$
+
+$$
+W^Q_{d1,d2},W^K_{d1,d2},W^V_{d1,d2}\quad\text{shaped}\quad [D,D]
+$$
+
+$$
+W^Q_{d1,d2},W^K_{d1,d2},W^V_{d1,d2}\quad\text{shaped}\quad [D,D]
+$$
+
+QKV:
+
+$$
+\begin{aligned}
+Q_{t,d} &= X_{t,d1}W^Q_{d1,d}\\
+K_{t,d} &= X_{t,d1}W^K_{d1,d}\\
+V_{t,d} &= X_{t,d1}W^V_{d1,d}\\
+\end{aligned}
+$$
+
+Multihead reshaping:
+
+$$
+\begin{aligned}
+Q_{t,h,dh}&\\
+K_{t,h,dh}&\\
+V_{t,h,dh}& \quad
+{shaped}\quad [T,H,D/H]
+\end{aligned}
+$$
+
+Score:
+$$
+S_{t1,t2,h} = \frac{1}{\sqrt{D/H}} Q_{t1, h, dh} K_{t2, h, dh} \quad \text{(no sum on h)}
+$$
+
+Attention:
+$$
+A_{t1,t2,h} = \text{softmax}(S_{t1,t2,h}, t2)
+$$
+
+Output:
+$$
+O_{t,h, dh} = A_{t, t1, h} V_{t1, h, dh} \quad \text{(no sum on h)}
+$$
+
+Reshape back heads (concat):
+$$
+O_{t, d}
+$$
+
+Output linear:
+$$
+Y_{t,d} = O_{t,d1} W^O_{d1,d}
+$$
+
+### Backward
+
+Given
+$$
+\pdv{L}{Y_{t,d}}
+$$
+
+Then as
+$$
+\pdv{Y_{t,d2}}{W^O_{d1,d3}} = O_{t,d1} \delta_{d2,d3}
+$$
+
+We have
+
+$$
+\pdv{L}{W^O_{d1,d}} = \pdv{L}{Y_{t,d2}} \pdv{Y_{t,d2}}{W^O_{d1,d}}
+= \pdv{L}{Y_{t,d2}} O_{t,d1} \delta_{d2,d}
+= \pdv{L}{Y_{t,d}} O_{t,d1}
+$$
+
+$$
+\pdv{L}{W^O_{d1,d}} = \pdv{L}{Y_{t,d}} O_{t,d1} \Box
+$$
+
+Similarly
+
+$$
+\pdv{L}{O_{t,d1}} = \pdv{L}{Y_{t,d}} W^O_{d1,d} \Box
+$$
+
+Then
+
+$$
+\pdv{L}{V_{t1, h, dh}} = \pdv{L}{O_{t,h, dh}} A_{t, t1, h} \quad \text{(no sum on h)} \Box
+$$
+
+$$
+\pdv{L}{A_{t, t1, h}} = \pdv{L}{O_{t,h, dh}} V_{t1, h, dh} \quad \text{(no sum on h)} \Box
+$$
+
+$$
+\pdv{L}{S_{t, t1, h}} = \text{softmax_grad}\left(\pdv{L}{A_{t, t1, h}}, A_{t, t1, h}\right) \Box
+$$
+
+Then
+
+$$
+\pdv{L}{Q_{t1, h, dh}} = \pdv{L}{S_{t1,t2,h}} \frac{1}{\sqrt{D/H}} K_{t2, h, dh} \quad \text{(no sum on h)} \Box
+$$
+
+$$
+\pdv{L}{K_{t2, h, dh}} = \pdv{L}{S_{t1,t2,h}} \frac{1}{\sqrt{D/H}} Q_{t1, h, dh} \quad \text{(no sum on h)} \Box
+$$
+
+At last:
+
+$$
+\begin{aligned}
+\pdv{L}{W^Q_{d1,d}} & = \pdv{L}{Q_{t,d}} X_{t,d1}  \Box \\
+\pdv{L}{W^K_{d1,d}} & = \pdv{L}{K_{t,d}} X_{t,d1}  \Box \\
+\pdv{L}{W^V_{d1,d}} & = \pdv{L}{V_{t,d}} X_{t,d1}  \Box \\
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+\pdv{L}{X_{t,d1}} & = \pdv{L}{Q_{t,d}} W^Q_{d1,d}  \Box \\
+                  & + \pdv{L}{K_{t,d}} W^K_{d1,d}  \Box \\
+                  & + \pdv{L}{V_{t,d}} W^V_{d1,d}  \Box \\
+\end{aligned}
+$$
+
+### Flash attention
+
+For each output element ($O_{t,:}$):
+
+Softmax for row (i):
+
+\[
+\text{softmax}(s_{ij}) = \frac{e^{s_{ij}}}{\sum_k e^{s_{ik}}}
+\]
+
+This can be computed incrementally.
+
+#### Maintain running statistics
+
+For query (i), process keys in blocks:
+
+* Running max: \(m\)
+* Running normalization: \(l = \sum e^{s - m}\)
+* Running output accumulator: \(o\)
+
+#### Initialize
+
+\[
+m = -\infty,\quad l = 0,\quad o = 0
+\]
+
+#### For each block of keys (K_b, V_b)
+
+1. Compute scores:
+   \[
+   s_b = q_i K_b^\top
+   \]
+
+2. Update max:
+   \[
+   m_{\text{new}} = \max(m, \max(s_b))
+   \]
+
+3. Rescale old contributions:
+   \[
+   \alpha = e^{m - m_{\text{new}}}
+   \]
+
+4. Update normalization:
+   \[
+   l = l \cdot \alpha + \sum e^{s_b - m_{\text{new}}}
+   \]
+
+5. Update output:
+   \[
+   o = o \cdot \alpha + \sum e^{s_b - m_{\text{new}}} \cdot V_b
+   \]
+
+6. Set \(m = m_{\text{new}}\)
+
+After all blocks:
+\[
+o_i = \frac{o}{l}
+\]
 
 ## CPU HPC
 
-### System and arch
+### 1. CPU & Core Architecture
 
-### Multithreading and concurrency
+**Q: What matters more for HPC: core count or clock frequency?**
+A: Depends on workload.
 
-### NUMA
+* **Compute-bound** → higher clock, wider vector units
+* **Memory-bound** → memory bandwidth + cache
+* **Latency-sensitive** → fewer, faster cores often win
+
+---
+
+**Q: What are SIMD / vector units and why do they matter?**
+A:
+
+* AVX2 (256-bit), AVX-512 (512-bit)
+* One instruction operates on many data elements
+* Essential for CFD, linear algebra, stencil codes
+  Missing vectorization can cause **5–10× slowdown**.
+
+---
+
+**Q: Why does AVX-512 sometimes reduce frequency?**
+A:
+
+* AVX-512 increases power & thermal load
+* CPUs often **downclock** to stay within limits
+* Can hurt mixed scalar + vector workloads
+
+---
+
+### 2. Memory System & NUMA
+
+**Q: What is NUMA and why does it matter?**
+A:
+
+* Memory is attached to CPU sockets
+* Local memory ≫ remote memory in bandwidth & latency
+* Bad NUMA placement can cost **2× slowdown**
+
+---
+
+**Q: What is “first-touch” memory policy?**
+A:
+
+* Memory is allocated on the NUMA node of the **first thread that writes it**
+* Initialize arrays in parallel with correct binding
+
+---
+
+**Q: How many memory channels should be populated?**
+A:
+
+* **Always all channels**
+* Bandwidth scales almost linearly with channels
+* Example: EPYC (12 channels) → missing DIMMs = wasted performance
+
+---
+
+**Q: Why is my scaling bad even though CPUs are idle?**
+A:
+
+* Memory bandwidth saturation
+* Cache thrashing
+* NUMA imbalance
+* False sharing
+
+---
+
+### 3. Cache Hierarchy
+
+**Q: What is cache blocking / tiling?**
+A:
+
+* Reorganize loops so working set fits into cache
+* Crucial for matrix ops and stencils
+
+---
+
+**Q: What is false sharing?**
+A:
+
+* Multiple threads write to different variables in the **same cache line**
+* Causes cache line ping-pong
+* Fix with padding or structure reordering
+
+---
+
+**Q: Why does L3 cache sometimes hurt performance?**
+A:
+
+* Shared L3 can become a contention point
+* Cross-core traffic increases latency
+
+---
+
+### 4. Parallel Programming Models
+
+**Q: MPI vs OpenMP: when to use which?**
+A:
+
+* **MPI**: distributed memory, multi-node
+* **OpenMP**: shared memory, intra-node
+* Best practice: **MPI + OpenMP hybrid**
+
+---
+
+**Q: Why hybrid MPI+OpenMP instead of pure MPI?**
+A:
+
+* Reduces MPI rank count
+* Better memory locality
+* Less communication overhead
+
+---
+
+**Q: How many MPI ranks per node should I use?**
+A:
+
+* Often **1 rank per NUMA domain**
+* Or per socket
+* Rarely 1 rank per core for memory-heavy codes
+
+---
+
+### 5. Thread & Process Binding
+
+**Q: Why does binding matter?**
+A:
+
+* Prevents thread migration
+* Improves cache reuse
+* Avoids NUMA penalties
+
+---
+
+**Q: What is core affinity vs NUMA affinity?**
+A:
+
+* **Core affinity**: bind threads to cores
+* **NUMA affinity**: bind memory + threads to node
+
+---
+
+**Q: What happens if I don’t bind processes?**
+A:
+
+* OS may migrate threads
+* Cache invalidation
+* Unpredictable performance
+
+---
+
+### 6. Scaling & Performance
+
+**Q: Why does strong scaling stop working?**
+A:
+
+* Communication dominates computation
+* Memory bandwidth limit
+* Load imbalance
+
+---
+
+**Q: Why does performance drop when using *more* cores?**
+A:
+
+* Bandwidth saturation
+* Cache contention
+* NUMA traffic
+* Frequency throttling
+
+---
+
+**Q: What is Amdahl’s Law in practice?**
+A:
+
+* Small serial sections dominate at scale
+* Even 1% serial → max 100× speedup
+
+---
+
+### 7. Compiler & Toolchain
+
+**Q: Does compiler choice matter?**
+A:
+Yes, a lot.
+
+* GCC, Clang, Intel, AOCC generate different vector code
+* Auto-vectorization quality varies
+
+---
+
+**Q: Which compiler flags matter most?**
+A:
+
+* `-O3`
+* `-march=native` / `-xHost`
+* `-ffast-math` (if allowed)
+* Vectorization reports (`-fopt-info-vec`)
+
+---
+
+**Q: Why does debug build run 10× slower?**
+A:
+
+* No inlining
+* No vectorization
+* Extra bounds checks
+
+---
+
+### 8. MPI & Communication
+
+**Q: Why is MPI slow inside a node?**
+A:
+
+* Shared memory transport not enabled
+* Too many ranks
+* NUMA-unaware placement
+
+---
+
+**Q: What is eager vs rendezvous protocol?**
+A:
+
+* Small messages: eager (buffered)
+* Large messages: rendezvous (handshake + RDMA)
+
+---
+
+**Q: Why does message size matter so much?**
+A:
+
+* Latency dominates small messages
+* Bandwidth dominates large ones
+
+---
+
+### 9. Power, Frequency & Thermal Effects
+
+**Q: Why does my CPU run slower at full load?**
+A:
+
+* Power limits
+* Thermal throttling
+* AVX frequency offset
+
+---
+
+**Q: Should I disable turbo boost?**
+A:
+
+* Sometimes yes for stability
+* Sometimes no for latency-sensitive work
+* Benchmark both
+
+---
+
+### 10. Profiling & Diagnostics
+
+**Q: How do I know if I’m memory-bound?**
+A:
+
+* Low IPC
+* Flat performance with more cores
+* Hardware counters: bandwidth near peak
+
+---
+
+**Q: What tools are commonly used?**
+A:
+
+* `perf`
+* VTune / uProf
+* LIKWID
+* MPI profilers (mpiP, Score-P)
+
+---
+
+### 11. Storage & I/O
+
+**Q: Why does parallel I/O scale poorly?**
+A:
+
+* Metadata contention
+* Small I/O operations
+* File locking
+
+---
+
+**Q: MPI-IO vs POSIX I/O?**
+A:
+
+* MPI-IO supports collective buffering
+* POSIX often simpler but less scalable
+
+---
+
+### 12. Common “Gotchas”
+
+**Q: Why does my code run faster with fewer cores?**
+A:
+
+* Cache fits
+* Less NUMA traffic
+* Higher frequency
+
+---
+
+**Q: Why does performance differ across nodes?**
+A:
+
+* BIOS settings
+* Memory population
+* Thermal conditions
+* Background daemons
 
 ## C++
 
-### Containers
+### 1. Core C++ Language Fundamentals (Must-know)
 
-### Multithreading
+These are **baseline expectations**. You should be able to explain them clearly and concisely.
 
-### Memory management
+#### Object Lifetime & RAII
 
-### Concept and TMP
+* **RAII principle**: resource acquisition is initialization
+* Constructors / destructors control ownership
+* Why RAII is critical for:
 
-### Onto CUDA
+  * Memory
+  * File handles
+  * CUDA resources (`cudaMalloc`, streams, events)
+
+Example explanation:
+
+> “RAII ensures exception safety and deterministic cleanup, which is essential for long-running HPC or GPU jobs.”
+
+---
+
+#### Copy vs Move Semantics
+
+* Rule of **0 / 3 / 5**
+* When move is invoked:
+
+  * Returning by value
+  * `std::vector::push_back`
+* Difference between:
+
+  * Copy constructor
+  * Move constructor
+  * Copy elision (RVO / NRVO)
+
+Key interview point:
+
+* Why move semantics reduce **allocation + memcpy**
+* When move is *not* free (e.g., deep ownership, ref-counted memory)
+
+---
+
+#### References & Pointers
+
+* `T*` vs `T&`
+* `const T*` vs `T* const`
+* `const T&` for function arguments
+* Dangling references and lifetime issues
+
+---
+
+### 2. Memory Management
+
+#### Stack vs Heap
+
+* Stack:
+
+  * Fast
+  * Limited size
+  * Automatic lifetime
+* Heap:
+
+  * Explicit allocation
+  * Fragmentation
+  * NUMA considerations (important in HPC)
+
+You should know:
+
+* When stack allocation is preferred
+* Why large arrays go on heap
+
+---
+
+#### `new/delete` vs `malloc/free`
+
+* `new`:
+
+  * Calls constructors
+  * Type-safe
+* `malloc`:
+
+  * Raw memory
+  * No constructors
+* Why mixing them is **UB**
+
+DevTech angle:
+
+* CUDA uses **C-style APIs** → careful ownership handling
+
+---
+
+#### Smart Pointers
+
+* `std::unique_ptr`
+
+  * Exclusive ownership
+  * Zero overhead abstraction
+* `std::shared_ptr`
+
+  * Ref-counting overhead
+  * Atomic ops
+* `std::weak_ptr`
+
+Common pitfall question:
+
+> “Why is `shared_ptr` dangerous in performance-critical code?”
+
+---
+
+#### Alignment & Padding
+
+* `alignas`
+* Cache-line alignment (64B)
+* False sharing
+
+You should be ready to explain:
+
+* Why misalignment hurts SIMD / GPU transfers
+* How aligned allocation improves bandwidth
+
+---
+
+### 3. Const-Correctness (Often Tested Verbally)
+
+You should be fluent in:
+
+```cpp
+const T* p;   // pointer to const
+T* const p;   // const pointer
+const T& ref;
+```
+
+Why it matters:
+
+* Express intent
+* Enables compiler optimizations
+* API design clarity
+
+DevTech angle:
+
+* Large codebases + customer code → const safety matters
+
+---
+
+### 4. Templates & Compile-Time Concepts (Medium Depth)
+
+You **don’t need TMP wizardry**, but must understand basics.
+
+#### Function & Class Templates
+
+* Template instantiation
+* Header-only requirement (usually)
+* `typename` vs `class`
+
+---
+
+#### `constexpr`
+
+* Compile-time evaluation
+* Difference between `constexpr` and `const`
+
+Useful example:
+
+* Fixed tile sizes
+* Static array dimensions
+* Kernel configuration parameters
+
+---
+
+#### SFINAE / Concepts (High-level only)
+
+* What problem they solve
+* Why concepts improve error messages
+
+You don’t need to write them, but explain **why they exist**.
+
+---
+
+### 5. STL & Performance Awareness
+
+#### Containers
+
+You should know **complexities and memory layouts**:
+
+| Container            | Notes                      |
+| -------------------- | -------------------------- |
+| `std::vector`        | Contiguous, cache-friendly |
+| `std::deque`         | Non-contiguous             |
+| `std::list`          | Bad for cache              |
+| `std::unordered_map` | Hash cost, poor locality   |
+| `std::map`           | Tree, O(log n)             |
+
+DevTech emphasis:
+
+* Why `vector` is almost always preferred
+* When `unordered_map` is a bad idea
+
+---
+
+#### Iterators & Algorithms
+
+* Prefer algorithms (`std::transform`, `std::reduce`)
+* Iterator invalidation rules
+
+---
+
+### 6. Concurrency & Thread Safety (Important)
+
+#### `std::thread`, `mutex`, `atomic`
+
+* Data races vs race conditions
+* Mutex vs atomic trade-offs
+* False sharing
+
+DevTech angle:
+
+* CPU-side orchestration of GPU work
+* MPI + threading interaction
+
+---
+
+#### Memory Model (High-level)
+
+* Sequential consistency
+* Relaxed atomics (know they exist)
+* Why atomics are expensive
+
+---
+
+### 7. C++ & ABI / Toolchain Awareness (DevTech-specific)
+
+You stand out if you know these.
+
+* ABI compatibility
+* `libstdc++` vs `libc++`
+* ODR violations
+* Static vs dynamic linking
+
+Very relevant given your **HPC + distribution experience**.
+
+---
+
+### 8. C++ + CUDA Awareness (Big Plus)
+
+You don’t need kernel details, but:
+
+* Host vs device code
+* `__host__ __device__`
+* POD types for device transfers
+* Why virtual functions are problematic on device
+
+RAII with CUDA:
+
+```cpp
+class CudaBuffer {
+  float* ptr;
+public:
+  CudaBuffer(size_t n) { cudaMalloc(&ptr, n*sizeof(float)); }
+  ~CudaBuffer() { cudaFree(ptr); }
+};
+```
+
+---
+
+### 9. Common Interview “Explain” Questions
+
+Prepare crisp answers to:
+
+* Why is RAII better than manual cleanup?
+* Difference between `const` and `constexpr`
+* When would you avoid `shared_ptr`?
+* Why does `vector` reallocation invalidate pointers?
+* What causes undefined behavior?
+* Why is cache locality important?
+
+### C++ threading
+
+### 1. `std::thread`, `std::mutex`, `std::atomic`
+
+#### `std::thread`
+
+* Represents a **native OS thread**
+* Executes a callable concurrently
+
+```cpp
+std::thread t([] { do_work(); });
+t.join();   // wait for completion
+```
+
+Key points:
+
+* Threads run **in parallel** on multi-core CPUs
+* Programmer is responsible for:
+
+  * Synchronization
+  * Lifetime (`join()` or `detach()`)
+
+DevTech angle:
+
+* Often used for **CPU-side orchestration** (I/O, MPI progress, GPU launches)
+* Creating many threads is expensive → use thread pools
+
+---
+
+#### `std::mutex`
+
+* Provides **mutual exclusion**
+* Ensures **only one thread** enters a critical section at a time
+
+```cpp
+std::mutex m;
+{
+  std::lock_guard<std::mutex> lock(m);
+  shared_data++;
+}
+```
+
+Key points:
+
+* Blocks threads → context switches
+* Must avoid deadlocks
+* Use RAII (`std::lock_guard`, `std::unique_lock`)
+
+---
+
+#### `std::atomic<T>`
+
+* Provides **lock-free** operations on a single variable
+
+```cpp
+std::atomic<int> counter{0};
+counter.fetch_add(1, std::memory_order_relaxed);
+```
+
+Key points:
+
+* Guarantees **no data races**
+* Uses CPU atomic instructions
+* Limited to **simple operations**
+
+---
+
+### 2. Data Races vs Race Conditions (Very Common Interview Question)
+
+#### Data Race (Undefined Behavior ⚠️)
+
+A **language-level** concept.
+
+> Two threads access the same memory location **without synchronization**, and at least one access is a write.
+
+```cpp
+int x = 0;
+std::thread t1([&]{ x++; });
+std::thread t2([&]{ x++; }); // data race → UB
+```
+
+Characteristics:
+
+* **Undefined behavior**
+* Compiler may reorder or optimize aggressively
+* Can produce *seemingly correct* results sometimes
+
+---
+
+#### Race Condition (Logical Bug)
+
+A **program logic** issue.
+
+> Program correctness depends on timing or interleaving of threads.
+
+```cpp
+if (!initialized) {
+  init();     // may run twice
+  initialized = true;
+}
+```
+
+Characteristics:
+
+* May still be data-race-free
+* Produces **wrong results**
+* Deterministic under some schedules, wrong under others
+
+---
+
+##### Relationship
+
+| Concept        | Level            | UB? |
+| -------------- | ---------------- | --- |
+| Data race      | C++ memory model | Yes |
+| Race condition | Algorithm logic  | No  |
+
+💡 **All data races are race conditions, but not all race conditions are data races.**
+
+---
+
+### 3. Mutex vs Atomic — Trade-offs
+
+#### Mutex
+
+##### Pros
+
+* Works for **complex critical sections**
+* Easy to reason about
+* Strong synchronization guarantees
+
+##### Cons
+
+* Blocking
+* Context switches
+* Cache-line bouncing
+* Poor scalability under contention
+
+```cpp
+std::mutex m;
+void update() {
+  std::lock_guard<std::mutex> lock(m);
+  a += b * c;
+}
+```
+
+---
+
+#### Atomic
+
+##### Pros
+
+* Non-blocking
+* Very fast for low contention
+* Scales better for counters, flags
+
+##### Cons
+
+* Limited operations
+* Harder to reason about
+* Still expensive under heavy contention
+
+```cpp
+counter.fetch_add(1, std::memory_order_relaxed);
+```
+
+---
+
+#### Performance Comparison
+
+| Aspect         | Mutex             | Atomic           |
+| -------------- | ----------------- | ---------------- |
+| Blocking       | Yes               | No               |
+| Context switch | Possible          | No               |
+| Complexity     | Low               | Higher           |
+| Scalability    | Poor (contention) | Better           |
+| Use case       | Complex state     | Counters / flags |
+
+DevTech rule of thumb:
+
+> **Use atomics for simple state, mutexes for complex invariants.**
+
+---
+
+### 4. False Sharing (Very Important for HPC)
+
+#### What is False Sharing?
+
+* Two threads modify **different variables**
+* Variables reside on the **same cache line**
+* Causes unnecessary cache invalidations
+
+```cpp
+struct Bad {
+  int a;  // thread 1
+  int b;  // thread 2
+}; // likely same cache line
+```
+
+Even though `a` and `b` are independent:
+
+* Cache line ping-pongs between cores
+* Performance collapses
+
+---
+
+#### Why It Hurts Performance
+
+* Cache coherence protocol invalidates entire cache line
+* High-frequency writes → massive traffic
+* Especially bad on NUMA systems
+
+---
+
+#### How to Fix It
+
+##### Padding
+
+```cpp
+struct Good {
+  alignas(64) int a;
+  alignas(64) int b;
+};
+```
+
+##### Or use padding explicitly
+
+```cpp
+struct Padded {
+  int a;
+  char pad[64 - sizeof(int)];
+};
+```
+
+---
+
+* Common in:
+
+  * Thread-local counters
+  * Work queues
+  * Performance monitoring
+* Can cause **10× slowdowns** with no visible bug
+
+Interview one-liner:
+
+> “False sharing doesn’t break correctness, but it kills scalability.”
+
+---
+
+### 5. Memory Ordering (Bonus, High-Level)
+
+You don’t need details, but know:
+
+* `memory_order_relaxed` → no ordering, just atomicity
+* `memory_order_acquire/release` → synchronization
+* Default is `seq_cst` (strongest, slowest)
 
 ## CUTLASS, CUB and more
 
+### CUB (CUDA UnBound)
+
+**Purpose:** High-performance **parallel primitives** for CUDA.
+
+* Provides building blocks like:
+
+  * `scan` (prefix sum)
+  * `reduce`
+  * `sort` (radix sort)
+  * `histogram`
+  * `select`, `partition`
+* Focuses on **thread / warp / block / device-level** primitives.
+* Header-only, template-based.
+* Used when you are writing **custom CUDA kernels** and need fast, correct primitives.
+
+**Abstraction level:**
+👉 Low–mid level (kernel author productivity + performance)
+
+**Example use cases:**
+
+* Implementing your own algorithms (e.g. graph, CFD, ML ops)
+* Writing custom CUDA kernels that need scans/sorts
+* Often used *inside* other libraries (Thrust, PyTorch, etc.)
+
+---
+
+### CUTLASS (CUDA Templates for Linear Algebra Subroutines)
+
+**Purpose:** High-performance **GEMM / tensor contraction** kernels.
+
+* Specializes in:
+
+  * GEMM (matrix multiply)
+  * Convolutions
+  * Tensor contractions
+* Heavily optimized for:
+
+  * **Tensor Cores**
+  * MMA / WMMA instructions
+  * Memory tiling, pipelining
+* Template-heavy, meta-programming driven.
+* Often used to *generate kernels*, not called like a normal library.
+
+**Abstraction level:**
+👉 Mid–low level (near-hardware math kernels)
+
+**Example use cases:**
+
+* Deep learning frameworks (cuBLAS uses similar ideas)
+* Writing custom GEMM kernels
+* Research / tuning kernel performance
+
+---
+
+### One-line comparison
+
+| Library     | Main role              | Typical ops        | Level              |
+| ----------- | ---------------------- | ------------------ | ------------------ |
+| **CUB**     | Parallel primitives    | scan, reduce, sort | Algorithm / kernel |
+| **CUTLASS** | Linear algebra kernels | GEMM, conv         | Math / tensor core |
+
+---
+
+### How they relate in practice
+
+* **CUB** → general-purpose GPU algorithms
+* **CUTLASS** → specialized math kernels
+* Frameworks like **PyTorch / cuBLAS / cuDNN** internally use ideas or code from both.
+
 ## PyTorch
 
-### Computing graphs and backward()
+### 1. Tensors (the core data structure)
 
-### Custom operators
+#### What is a tensor?
 
-### Parallel AI models
+A **`torch.Tensor`** is:
+
+* An **n-dimensional array**
+* With **device** (CPU / CUDA)
+* **dtype** (float32, float16, int64, …)
+* **layout** (strided, sparse, etc.)
+* **autograd metadata** (for gradient tracking)
+
+```python
+x = torch.randn(3, 4, device="cuda", dtype=torch.float32)
+```
+
+##### Key attributes
+
+```python
+x.shape      # torch.Size([3, 4])
+x.dtype      # torch.float32
+x.device     # cuda:0
+x.requires_grad
+```
+
+---
+
+#### Tensor creation
+
+```python
+torch.zeros, torch.ones
+torch.randn, torch.rand
+torch.arange, torch.linspace
+torch.empty
+torch.tensor([...])       # copies data
+torch.from_numpy(ndarray) # shared memory (CPU only)
+```
+
+⚠️ **`from_numpy` shares memory** → modifying one affects the other.
+
+---
+
+#### View vs Copy (VERY IMPORTANT)
+
+| Operation     | Behavior                      |
+| ------------- | ----------------------------- |
+| `view()`      | No copy (requires contiguous) |
+| `reshape()`   | View if possible, else copy   |
+| `transpose()` | View (changes stride)         |
+| `clone()`     | Deep copy                     |
+| `detach()`    | Shares data, drops autograd   |
+
+```python
+y = x.view(-1)      # same storage
+z = x.clone()       # new storage
+```
+
+---
+
+#### Contiguity & strides
+
+```python
+x.is_contiguous()
+x.stride()
+```
+
+Many CUDA kernels require **contiguous tensors**:
+
+```python
+x = x.contiguous()
+```
+
+---
+
+### 2. Autograd (Automatic Differentiation)
+
+#### Dynamic computation graph
+
+PyTorch builds the graph **at runtime**:
+
+* Each tensor stores a `grad_fn`
+* Graph is **re-created every forward pass**
+
+```python
+x = torch.tensor(2.0, requires_grad=True)
+y = x**2 + 3*x
+y.backward()
+x.grad  # 7
+```
+
+Graph nodes:
+
+```
+x → Pow → Add → y
+```
+
+---
+
+#### Leaf vs non-leaf tensors
+
+```python
+x = torch.randn(3, requires_grad=True)  # leaf
+y = x * 2                               # non-leaf
+```
+
+Only **leaf tensors accumulate `.grad`** by default.
+
+To keep grad for non-leaf:
+
+```python
+y.retain_grad()
+```
+
+---
+
+#### Gradient accumulation
+
+```python
+loss.backward()  # adds to .grad
+optimizer.zero_grad()
+```
+
+⚠️ Forgetting `zero_grad()` → wrong gradients.
+
+---
+
+#### Disabling autograd
+
+Used for **inference / evaluation**:
+
+```python
+with torch.no_grad():
+    y = model(x)
+```
+
+Or permanently:
+
+```python
+x = x.detach()
+```
+
+---
+
+### 3. Backward pass mechanics
+
+#### `backward()`
+
+```python
+loss.backward()
+```
+
+* Computes ∂loss/∂leaf
+* Frees graph by default
+
+To reuse graph:
+
+```python
+loss.backward(retain_graph=True)
+```
+
+---
+
+#### Custom gradients
+
+```python
+class MyFunc(torch.autograd.Function):
+    @staticmethod
+    def forward(ctx, x):
+        ctx.save_for_backward(x)
+        return x**2
+
+    @staticmethod
+    def backward(ctx, grad_out):
+        (x,) = ctx.saved_tensors
+        return grad_out * 2 * x
+```
+
+Used when:
+
+* Writing custom CUDA ops
+* Fusing ops
+* Non-standard backward logic
+
+---
+
+### 4. Modules (`nn.Module`)
+
+#### What is a Module?
+
+A **stateful computation unit**:
+
+* Parameters (`nn.Parameter`)
+* Buffers (running stats)
+* Submodules
+
+```python
+class MLP(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.fc = nn.Linear(128, 64)
+
+    def forward(self, x):
+        return self.fc(x)
+```
+
+---
+
+#### Parameters vs buffers
+
+```python
+self.weight = nn.Parameter(...)
+self.register_buffer("running_mean", torch.zeros(10))
+```
+
+| Type      | Trained | Saved | Device moved |
+| --------- | ------- | ----- | ------------ |
+| Parameter | ✅       | ✅     | ✅            |
+| Buffer    | ❌       | ✅     | ✅            |
+
+---
+
+#### Train vs Eval mode
+
+```python
+model.train()
+model.eval()
+```
+
+Affects:
+
+* `Dropout`
+* `BatchNorm`
+* `LayerNorm` (partially)
+
+---
+
+### 5. Losses & Optimizers
+
+#### Loss functions
+
+```python
+nn.MSELoss()
+nn.CrossEntropyLoss()   # includes softmax
+```
+
+⚠️ **Do NOT apply softmax before CrossEntropyLoss**
+
+---
+
+#### Optimizers
+
+```python
+optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
+optimizer.step()
+optimizer.zero_grad()
+```
+
+Optimizer updates **parameters**, not tensors.
+
+---
+
+### 6. CUDA & device semantics
+
+#### Moving tensors
+
+```python
+x = x.to("cuda")
+model = model.cuda()
+```
+
+Model and input **must be on same device**.
+
+---
+
+#### Async execution
+
+CUDA ops are **asynchronous**:
+
+```python
+torch.cuda.synchronize()
+```
+
+Useful for timing.
+
+---
+
+#### Mixed precision
+
+```python
+from torch.cuda.amp import autocast, GradScaler
+```
+
+Reduces memory + increases throughput.
+
+---
+
+### 7. In-place operations (⚠️ important)
+
+```python
+x += 1      # in-place
+x.add_(1)   # in-place
+```
+
+Problems:
+
+* Can **break autograd**
+* Can overwrite values needed for backward
+
+Safe rule:
+
+> Avoid in-place ops on tensors requiring grad unless you know the graph.
+
+---
+
+### 8. Common tensor ops (you MUST know)
+
+#### Broadcasting
+
+```python
+x.shape = (B, C)
+y.shape = (C,)
+z = x + y
+```
+
+#### Reduction
+
+```python
+x.sum(dim=1, keepdim=True)
+x.mean()
+```
+
+#### Indexing
+
+```python
+x[:, 0]
+x[mask]
+torch.gather
+torch.scatter
+```
+
+---
+
+### 9. Data loading
+
+```python
+Dataset + DataLoader
+```
+
+Key ideas:
+
+* Lazy loading
+* Multi-worker
+* Pinned memory for CUDA
+
+```python
+DataLoader(
+    dataset,
+    batch_size=32,
+    shuffle=True,
+    num_workers=4,
+    pin_memory=True
+)
+```
+
+---
+
+### 10. Typical training loop (canonical)
+
+```python
+for x, y in loader:
+    x, y = x.cuda(), y.cuda()
+
+    optimizer.zero_grad()
+    out = model(x)
+    loss = criterion(out, y)
+    loss.backward()
+    optimizer.step()
+```
+
+---
+
+### 11. Mental model (important for interviews)
+
+#### PyTorch philosophy
+
+* **Define-by-run**
+* Python controls graph
+* Easy debugging
+* Slight overhead vs static graphs
+
+#### Key invariants
+
+1. Tensors carry gradient history
+2. Graph is dynamic
+3. Gradients accumulate
+4. Optimizer owns parameter updates
+5. Device consistency is mandatory
+
+---
 
 ## HPC general
-
-### Parallel performance
 
 ### Roofline model
 
