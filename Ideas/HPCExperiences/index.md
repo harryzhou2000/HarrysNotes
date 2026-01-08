@@ -4744,10 +4744,757 @@ for x, y in loader:
 
 ---
 
+## Internet
+
+### The Big Picture
+
+Think of networking like sending a letter:
+
+* You write a message (application)
+* Put it in envelopes with addresses and tracking info (transport & internet)
+* The postal system moves it physically (link & physical)
+
+Each layer **wraps (encapsulates)** the data from the layer above.
+
+---
+
+### TCP/IP Model (What the Internet Actually Uses)
+
+This is the practical model with **4 layers**.
+
+#### 1️⃣ Application Layer
+
+**What it does:**
+Defines *how applications talk to the network*.
+
+**Examples:**
+
+* **HTTP / HTTPS** – web
+* **FTP / SFTP** – file transfer
+* **SMTP / IMAP / POP3** – email
+* **DNS** – name → IP resolution
+* **SSH** – remote login
+
+**Key idea:**
+
+* Application protocols define **message formats and semantics**
+* They do **not care** how data is routed or transmitted
+
+---
+
+#### 2️⃣ Transport Layer
+
+**What it does:**
+Provides **end-to-end communication between processes**.
+
+**Main protocols:**
+
+* **TCP (Transmission Control Protocol)**
+
+  * Reliable
+  * Ordered
+  * Congestion-controlled
+  * Stream-based
+* **UDP (User Datagram Protocol)**
+
+  * Unreliable
+  * No ordering
+  * Low latency
+  * Message-based
+
+**Responsibilities:**
+
+* Ports (e.g., HTTP uses port 80)
+* Segmentation & reassembly
+* Flow control
+* Error recovery (TCP)
+* Congestion control (TCP)
+
+**Key distinction:**
+
+> IP talks to machines, **TCP/UDP talk to processes**
+
+---
+
+#### 3️⃣ Internet Layer
+
+**What it does:**
+Moves packets **between machines across networks**.
+
+**Main protocol:**
+
+* **IP (Internet Protocol)**
+
+**Responsibilities:**
+
+* Logical addressing (IP addresses)
+* Routing across networks
+* Packet fragmentation (IPv4)
+
+**Supporting protocols:**
+
+* **ICMP** – errors, diagnostics (`ping`)
+* **ARP** – IP → MAC mapping (local network)
+* **IPsec** – security at IP level
+
+**Key idea:**
+
+* IP is **best-effort**: no guarantees of delivery or order
+
+---
+
+#### 4️⃣ Link Layer
+
+**What it does:**
+Moves frames **within a single physical network**.
+
+**Examples:**
+
+* Ethernet
+* Wi-Fi (802.11)
+* Cellular
+* PPP
+
+**Responsibilities:**
+
+* MAC addressing
+* Framing
+* Error detection (CRC)
+* Medium access (CSMA/CD, CSMA/CA)
+
+**Key idea:**
+
+* This layer is **local only** (no routing)
+
+---
+
+### OSI Model (Conceptual Reference)
+
+The **OSI model** has **7 layers**, mainly used for teaching and reasoning.
+
+| OSI Layer      | TCP/IP Equivalent |
+| -------------- | ----------------- |
+| 7 Application  | Application       |
+| 6 Presentation | Application       |
+| 5 Session      | Application       |
+| 4 Transport    | Transport         |
+| 3 Network      | Internet          |
+| 2 Data Link    | Link              |
+| 1 Physical     | Link              |
+
+#### Extra OSI layers explained
+
+* **Presentation:** encoding, compression, encryption (e.g., TLS fits here conceptually)
+* **Session:** session management, checkpoints, recovery
+
+In practice, these are merged into the **application layer**.
+
+---
+
+### Encapsulation Example (HTTP Request)
+
+When you load a webpage:
+
+```
+HTTP Request
+↓
+TCP Segment (adds ports, sequence numbers)
+↓
+IP Packet (adds source/destination IP)
+↓
+Ethernet Frame (adds MAC addresses)
+↓
+Bits on the wire
+```
+
+On receive, the process is **reversed**.
+
+---
+
+### Where Common Technologies Fit
+
+| Technology    | Layer                           |
+| ------------- | ------------------------------- |
+| TLS / SSL     | Between Application & Transport |
+| NAT           | Internet / Link boundary        |
+| Firewall      | Internet / Transport            |
+| Load Balancer | Transport or Application        |
+| VPN           | Internet or Application         |
+
+---
+
+### Important Mental Models
+
+#### Layer Independence
+
+* Each layer **only relies on the layer below**
+* Changes in Wi-Fi don’t affect HTTP
+
+#### End-to-End Principle
+
+* Reliability belongs at the **endpoints**, not the network (why IP is simple)
+
+#### Best-effort Core
+
+* The Internet core is unreliable
+* Intelligence lives at the edges (TCP, apps)
+
+---
+
+### Minimal Summary
+
+```
+Application → what data means
+Transport   → how processes communicate
+Internet    → how packets find machines
+Link        → how bits move locally
+```
+
 ## HPC general
 
 ### Roofline model
 
 ### Memory hierarchies
 
-### Performance Analysis
+#### CPU
+
+##### 2.1 Typical CPU hierarchy (x86 / ARM)
+
+```
+Registers
+↓
+L1 Cache (per core)
+  - L1i (instruction)
+  - L1d (data)
+↓
+L2 Cache (per core or per cluster)
+↓
+L3 Cache (shared, last-level cache / LLC)
+↓
+Main Memory (DDR5 / LPDDR)
+↓
+Storage (NVMe, SSD, HDD)
+```
+
+##### 2.2 Key properties
+
+###### 🔹 Registers
+
+* **Latency**: ~1 cycle
+* **Scope**: per hardware thread
+* **Managed by**: compiler + ISA
+
+---
+
+###### 🔹 L1 Cache
+
+* **Latency**: ~3–5 cycles
+* **Size**: ~32–64 KB
+* **Policy**:
+
+  * Write-back
+  * Hardware-managed
+* **Fully coherent**
+
+---
+
+###### 🔹 L2 Cache
+
+* **Latency**: ~10–15 cycles
+* **Size**: ~256 KB – 2 MB
+* Still **private** or semi-private
+* Hardware-prefetched
+
+---
+
+###### 🔹 L3 Cache (LLC)
+
+* **Latency**: ~30–60 cycles
+* **Size**: tens of MB
+* **Shared across cores**
+* Critical for NUMA locality
+
+---
+
+###### 🔹 Main Memory (DRAM)
+
+* **Latency**: ~80–120 ns (~200–300 cycles)
+* **Bandwidth**: ~50–200 GB/s (socket-level)
+* **NUMA effects**:
+
+  * Local vs remote memory access costs differ
+
+---
+
+##### 2.3 Coherence & consistency (very important)
+
+* **Cache coherence**: MESI/MOESI
+* **Consistency model**:
+
+  * x86: strong (TSO-like)
+  * ARM: weaker, explicit barriers
+* **Programmer experience**:
+
+  * You assume *a single coherent address space*
+  * Synchronization primitives (mutex, atomic) enforce ordering
+
+---
+
+##### 2.4 Programmer visibility
+
+| Level     | Visible to programmer?        |
+| --------- | ----------------------------- |
+| Registers | Yes                           |
+| L1/L2/L3  | ❌ (mostly implicit)           |
+| Prefetch  | Optional intrinsics           |
+| NUMA      | Yes (first-touch, numa_alloc) |
+
+**CPU philosophy**:
+
+> *Hide memory hierarchy as much as possible.*
+>
+
+#### GPU
+
+GPU hierarchy is **explicit, throughput-oriented, and programmer-visible**.
+
+---
+
+##### 3.1 Typical GPU hierarchy (NVIDIA-like)
+
+```
+Registers (per thread)
+↓
+Shared Memory / L1 (per SM)
+↓
+L2 Cache (global, on-chip)
+↓
+Global Memory (VRAM)
+↓
+Host Memory (PCIe / NVLink)
+```
+
+---
+
+##### 3.2 Key components
+
+###### 🔹 Registers
+
+* **Latency**: 1 cycle
+* **Scope**: per thread
+* **Size pressure**:
+
+  * Limits occupancy
+* **Spilling** → local memory (in VRAM!)
+
+---
+
+###### 🔹 Shared Memory
+
+* **Latency**: ~10–20 cycles
+* **Size**: ~64–228 KB per SM (configurable)
+* **Explicitly managed**
+* Banked SRAM
+
+**Used for:**
+
+* Tiling
+* Data reuse
+* Inter-thread cooperation
+
+> This has **no CPU equivalent**.
+
+---
+
+###### 🔹 L1 Cache
+
+* Often **unified with shared memory**
+* Caches global loads
+* Not coherent across SMs
+
+---
+
+###### 🔹 L2 Cache
+
+* **Latency**: ~200 cycles
+* **Size**: ~10–100 MB (modern GPUs)
+* **Globally shared**
+* **Atomic operations resolved here**
+* Coherent across SMs
+
+---
+
+###### 🔹 Global Memory (VRAM)
+
+* **Latency**: ~400–800 cycles
+* **Bandwidth**:
+
+  * GDDR6: ~500–1000 GB/s
+  * HBM3: >3 TB/s
+* **Access pattern sensitive**:
+
+  * Coalescing is critical
+
+---
+
+###### 🔹 Local Memory (misleading name)
+
+* Thread-private but **physically in VRAM**
+* Triggered by:
+
+  * Register spill
+  * Large arrays
+* Very slow
+
+---
+
+###### 🔹 Host Memory (CPU RAM)
+
+* Accessed via:
+
+  * PCIe (~16–64 GB/s)
+  * NVLink (much faster)
+* CUDA Unified Memory can migrate pages
+
+---
+
+##### 3.3 Coherence & consistency
+
+* **No global cache coherence**
+* Explicit synchronization:
+
+  * `__syncthreads()`
+  * memory fences
+* Atomics scoped:
+
+  * thread / block / device / system
+* Memory model is **weak** by default
+
+**GPU philosophy**:
+
+> *Expose memory hierarchy so programmers can control it.*
+
+---
+
+| Aspect             | CPU          | GPU                    |
+| ------------------ | ------------ | ---------------------- |
+| Core count         | Few (8–128)  | Many (10k+ threads)    |
+| Latency hiding     | Caches + OoO | Massive multithreading |
+| Cache management   | Hardware     | Mostly explicit        |
+| Shared memory      | ❌            | ✔                      |
+| Cache coherence    | Strong       | Limited                |
+| Bandwidth focus    | Moderate     | Extreme                |
+| Memory model       | Stronger     | Weaker                 |
+| Programmer control | Low          | High                   |
+
+---
+
+### Performance analysis
+
+#### 1. Fundamental axes of profiling
+
+Every profiler sits somewhere along these axes:
+
+##### (A) *How data is collected*
+
+* **Sampling**: periodically interrupts execution (PC / stack / counters)
+* **Instrumentation**: inserts hooks around functions, regions, APIs
+* **Tracing**: records every event (often timestamped)
+
+##### (B) *What is being observed*
+
+* **Control flow** (where time goes)
+* **Microarchitecture** (why it is slow)
+* **Concurrency & overlap** (what runs in parallel, what waits)
+* **Communication** (who talks to whom, how much, when)
+* **Memory behavior** (latency, bandwidth, locality)
+
+##### (C) *Level of abstraction*
+
+* Instruction / micro-op
+* Function / call stack
+* Runtime API (CUDA, MPI, OpenMP)
+* Algorithmic phase / region
+* System-wide (CPU ↔ GPU ↔ NIC ↔ filesystem)
+
+---
+
+#### 2. What different classes of tools actually tell you
+
+##### 2.1 Stack sampling profilers (perf, py-spy, async-profiler)
+
+**What they do**
+
+* Periodically sample **PC + call stack**
+* Optionally attach **hardware counters** to samples
+
+**What you get**
+
+* 🔥 **Flame graphs** (inclusive/exclusive time)
+* Hot functions and call paths
+* Time distribution across code paths
+
+**What they are good for**
+
+* “Where does time go?”
+* Unexpected hotspots
+* Regression detection
+* Works even on uninstrumented binaries
+
+**What they *cannot* tell you**
+
+* Exact ordering or overlap
+* Per-event latency
+* MPI/GPU causality
+* Fine-grained synchronization behavior
+
+**Typical insights**
+
+* A “small” helper function dominating runtime
+* Python/C++ boundary overhead
+* Poor inlining / abstraction cost
+* Load imbalance (indirectly)
+
+> perf answers: **“Where am I burning cycles?”**
+
+---
+
+##### 2.2 Hardware counter–driven profilers (perf, VTune, LIKWID, PAPI)
+
+**What they do**
+
+* Sample or count **PMU events**
+
+  * cache misses
+  * branch mispredicts
+  * memory bandwidth
+  * stalls (frontend/backend)
+  * vectorization usage
+
+**What you get**
+
+* CPI breakdowns
+* Cache miss rates per function
+* Roofline placement
+* NUMA locality info
+
+**What they are good for**
+
+* “Why is this loop slow?”
+* Memory-bound vs compute-bound
+* Vectorization effectiveness
+* NUMA / cache pathologies
+* False sharing
+
+**What they *cannot* tell you**
+
+* Algorithmic correctness
+* Timeline causality
+* GPU kernel behavior
+* Communication semantics
+
+**Typical insights**
+
+* L3 misses dominate → bandwidth-bound
+* Scalar remainder loop killing SIMD
+* Remote NUMA access dominating stalls
+
+> These tools answer: **“What microarchitectural wall am I hitting?”**
+
+---
+
+##### 2.3 Timeline / tracing tools (Nsight Systems, VTune timeline, TAU trace)
+
+**What they do**
+
+* Record **timestamped events**
+
+  * CPU threads
+  * GPU kernels
+  * Memcpy / DMA
+  * CUDA API calls
+  * MPI calls
+  * Synchronization events
+
+**What you get**
+
+* 📊 Unified timelines
+* Overlap visualization (CPU–GPU, comm–compute)
+* Idle / wait regions
+* Dependency chains
+
+**What they are good for**
+
+* “Are things overlapping as I expect?”
+* Pipeline bubbles
+* Synchronization bottlenecks
+* CPU–GPU orchestration quality
+* MPI wait vs compute time
+
+**What they *cannot* tell you**
+
+* Deep microarchitectural causes
+* Precise per-instruction behavior
+* Cache-level detail (usually)
+
+**Typical insights**
+
+* GPU idle waiting for CPU launch
+* MPI ranks stuck in `MPI_Wait`
+* Memcpy serialization
+* Too many small kernels / launches
+
+> nsys answers: **“What happens when?”**
+
+---
+
+##### 2.4 GPU kernel profilers (Nsight Compute, rocprof, OmniPerf)
+
+**What they do**
+
+* Instrument or replay kernels
+* Collect **SM-level metrics**
+
+  * occupancy
+  * warp stalls
+  * memory transactions
+  * instruction mix
+
+**What you get**
+
+* Per-kernel performance breakdown
+* Warp stall reasons
+* Memory coalescing efficiency
+* Tensor core utilization
+
+**What they are good for**
+
+* Kernel-level optimization
+* Mapping kernel to roofline
+* Understanding register/shared-memory tradeoffs
+
+**What they *cannot* tell you**
+
+* Application-level scheduling issues
+* Multi-kernel orchestration
+* MPI effects
+
+**Typical insights**
+
+* Occupancy limited by registers
+* Memory dependency stalls dominate
+* Tensor cores underutilized
+* Poor L2 reuse
+
+> These answer: **“Why is this kernel slow?”**
+
+---
+
+##### 2.5 MPI-focused profilers (Scalasca, Intel Trace Analyzer, TAU MPI)
+
+**What they do**
+
+* Intercept MPI calls
+* Measure message sizes, timing, partners
+* Detect wait states and imbalance
+
+**What you get**
+
+* Communication matrices
+* Wait-for relationships
+* Load imbalance reports
+* Critical-path analysis
+
+**What they are good for**
+
+* Strong/weak scaling analysis
+* Communication patterns
+* Synchronization inefficiencies
+* Network pressure diagnosis
+
+**What they *cannot* tell you**
+
+* Node-local microarchitecture issues
+* GPU kernel inefficiencies
+* Algorithmic correctness
+
+**Typical insights**
+
+* Rank imbalance dominating runtime
+* Collective operations scaling poorly
+* Unexpected all-to-all patterns
+* Small-message latency overhead
+
+> MPI profilers answer: **“Who is waiting for whom, and why?”**
+
+---
+
+##### 2.6 Region / phase instrumentation tools (TAU, NVTX, manual timers)
+
+**What they do**
+
+* User-defined regions
+* Phase-based timing & counters
+
+**What you get**
+
+* Per-algorithm phase breakdown
+* Repeatable, low-noise measurements
+* Cross-run comparisons
+
+**What they are good for**
+
+* Algorithmic tradeoff analysis
+* Regression tracking
+* Scaling studies
+* Validating theoretical complexity
+
+**What they *cannot* tell you**
+
+* Unexpected hotspots inside regions
+* Fine-grained microbehavior
+
+**Typical insights**
+
+* Preconditioner dominates solver
+* Communication cost overtakes compute at scale
+* Phase imbalance across ranks
+
+> These answer: **“Which algorithmic phase dominates?”**
+
+---
+
+#### 3. Putting it all together (how experts actually use them)
+
+A **typical HPC performance workflow** looks like this:
+
+1. **Stack sampling / flame graph**
+
+   * Find hotspots
+2. **Timeline tracing**
+
+   * Check overlap, stalls, synchronization
+3. **Hardware counters / roofline**
+
+   * Determine compute vs memory limits
+4. **MPI analysis**
+
+   * Identify scaling bottlenecks
+5. **Kernel-level GPU profiling**
+
+   * Optimize inner loops
+
+Each tool answers a **different why-question**, not the same one.
+
+---
+
+#### 4. One-sentence cheat sheet
+
+| Tool class           | Answers                                  |
+| -------------------- | ---------------------------------------- |
+| Flame graphs         | *Where is time spent?*                   |
+| Hardware counters    | *Why is this code slow on this CPU/GPU?* |
+| Timelines            | *What runs when, and what is waiting?*   |
+| MPI profilers        | *Who waits for whom across nodes?*       |
+| GPU kernel profilers | *Why is this kernel inefficient?*        |
+| Instrumentation      | *Which algorithmic phase dominates?*     |
