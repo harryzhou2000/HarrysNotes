@@ -1,6 +1,6 @@
 ---
 title: HPC Notes
-date: 2025-01-01 
+date: 2026-01-06 20:46:47+08:00 
 type: post
 slug: hpc-notes
 categories: ["Note"]
