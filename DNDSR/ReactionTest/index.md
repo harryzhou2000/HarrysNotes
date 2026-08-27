@@ -72,25 +72,25 @@ Because $e_{base,k}$ is constant, $\rho E_{base}$ depends only on the species fi
 
 DNDSR does **not** enforce $T > 0$ directly. Instead, every positivity-preserving check enforces
 
-$
+$$
 \rho e_{\text{sensible}} > 0.
-$
+$$
 
 Because
 
-$
+$$
 e_{\text{sensible}}(T,Y)
 = \sum_k Y_k \bigl(u_k^{abs}(T) - e_{\text{base},k}\bigr)
 = e_{\text{tot}}(T,Y) - e_{\text{tot}}(T_{\text{base}},Y),
-$
+$$
 
 and the mixture heat capacity at constant volume is positive, $e_{\text{sensible}}(T,Y)$ is strictly increasing with $T$. Therefore
 
-$
+$$
 \rho e_{\text{sensible}} > 0
 \;\Longleftrightarrow\;
 T > T_{\text{base}}.
-$
+$$
 
 That is why `AssertMeanValuePP`, `EvaluateCellRHSAlpha`, and `EvaluateURecBeta` all operate on the sensible energy rather than on temperature: requiring $T > T_{\text{base}}$ is the same physical requirement as $T$ staying above the lowest thermodynamically tabulated temperature. A cell with $T \le T_{\text{base}}$ would have non-positive sensible energy and would be rejected by the limiter.
 
@@ -203,6 +203,18 @@ Configuration highlights:
 - Limiter: PP reconstruction limiter enabled from step 0.
 - MPI: 8 ranks.
 
+### Physical setup
+
+The flame run is driven by [`config_1d_premixed_stoichiometric.json`](https://github.com/harryzhou2000/DNDSR/blob/91630810/cases/eulerEX/config_1d_premixed_stoichiometric.json) in the DNDSR repository.
+
+- **Mechanism:** `h2o2.yaml` with Cantera mixture-averaged viscosity, conductivity, and species diffusivity.
+- **Reactants (right side):** stoichiometric H2/air, $T_u = 300$ K, $p = 101325$ Pa, $Y_{H_2}=0.028$, $Y_{O_2}=0.222$, $Y_{N_2}=0.75$ (derived by closure).
+- **Products (left side):** Cantera free-flame outlet, $T_b = 2358.89$ K, $p = 101325$ Pa.
+- **Domain:** 2 cm, `Uniform_01_400.cgns` with `meshScale = 0.02`, giving $\Delta x = 0.05$ mm.
+- **Boundaries:** BCIn on both ends, burned products on the left and unburned reactants on the right.
+- **Initial field:** tanh profile centered at $x = 5$ mm with width 1 mm.
+- **Time marching:** ESDIRK2, CFL 10, 200 internal pseudo-time steps per physical step (`sourceStrangSplitting = 1`).
+
 The front is tracked by the midpoint-temperature crossing ($T_{mid} \approx 1330$ K), and the flame speed is recovered as
 
 $$
@@ -241,6 +253,17 @@ Configuration highlights:
 - Initial spark: $T = 3500$ K, $p = 20$ bar in $x < 1$ mm.
 - MPI: 16 ranks.
 
+### Physical setup
+
+The detonation run is driven by [`config_1d_detonation.json`](https://github.com/harryzhou2000/DNDSR/blob/91630810/cases/eulerEX/config_1d_detonation.json) in the DNDSR repository.
+
+- **Mechanism:** `h2o2.yaml`.
+- **Reactants:** stoichiometric H2/O2, $T = 300$ K, $p = 101325$ Pa, $Y_{H_2}=0.1111$, $Y_{O_2}=0.8889$ (no N2 filler).
+- **Spark (left of $x = 1$ mm):** $T = 3500$ K, $p = 20$ bar, CJ-equilibrium composition ($Y_{H_2O}=0.487$, $Y_{OH}=0.229$, $Y_{O_2}=0.137$, $Y_O=0.103$, $Y_{H_2}=0.031$, $Y_H=0.013$).
+- **Domain:** 5 cm, `Uniform_01_5000.cgns` with `meshScale = 0.05`, giving $\Delta x = 10$ $\mu$m (about 5 cells across the induction zone).
+- **Boundaries:** left BCWallInvis (reflecting, adiabatic), right BCIn with unburned H2/O2 at rest.
+- **Time marching:** non-Strang coupled (`sourceStrangSplitting = 0`), $\Delta t = 4 \times 10^{-6}$, CFL 10, 100 internal pseudo-time steps.
+
 ![Shock-front position vs. time for the four detonation runs](https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/dndsr-reaction-experiments/detonation_speed_final.png)
 
 ### Results
@@ -259,7 +282,90 @@ Observations:
 - Strang is also cheaper (2h47m vs. 3h05m wall time at $\Delta t = 4\times10^{-6}$).
 - The ZND structure is clearly visible: shock front → induction zone → reaction zone → expansion products.
 
-## 7. Takeaways
+## 7. 2-D H2/O2 detonation test
+
+To exercise the reactive solver in two dimensions we initialize a ZND detonation profile and propagate it in a shock-attached frame. The same base configuration, [`config_2d_detonation_largeS1.json`](https://github.com/harryzhou2000/DNDSR/blob/91630810/cases/eulerEX/config_2d_detonation_largeS1.json), is run at two geometric scales: 1.0× and 0.3×.
+
+### Physical setup
+
+- **Mechanism:** `h2o2.yaml`.
+- **Unburned state:** $T = 300$ K, $p = 6667$ Pa, $Y_{H_2}=0.01277$, $Y_{O_2}=0.10136$, $Y_{N_2}=0.88587$ (dilute stoichiometric H2/O2, H2:O2:Ar = 2:1:7).
+- **Initial condition:** a 1-D CJ/ZND profile mapped into the 2-D domain; a small transverse-velocity perturbation is added to seed instability. The shock-attached inflow velocity is $D \approx 1616.6$ m/s.
+- **Boundaries:** periodic in $y$; BCIn on the left (post-shock products) and on the right (unburned inflow), both in the shock-attached frame.
+- **Time marching:** non-Strang coupled (`sourceStrangSplitting = 0`) with Roe-M9 (`Roe_M9`), CFL ramping 1 to 10 and the PP reconstruction limiter enabled. Base runs use 40 internal pseudo-time steps ($\Delta t = 4 \times 10^{-5}$ at 1.0× and $\Delta t = 2 \times 10^{-5}$ at 0.3×); the O4 restart runs use `nInternalRecStep = 4` and 20 internal pseudo-time steps.
+- **Output:** VTK-HDF cell snapshots every 20 physical steps; HDF5 restart files every 100 physical steps.
+
+
+The two runs use the same two-zone mesh file `Uniform_5x2-10x2_1000.cgns`: a coarse 10×2 inflow block on the left ($x \in [-1.0, 0]$ at 1.0× scale) and the major (fine) 5×2 detonation block on the right ($x \in [0, 0.5]$ at 1.0× scale), so the joined physical domain is 15×2 (width×height) before scaling (1.5 m × 0.2 m at 1.0×; 0.45 m × 0.06 m at 0.3×). The videos render the right-hand 5×2 detonation block; $x$ in the frames is relative to the left boundary of that block.
+
+| Scale | Mesh scale | Right-block $x$ range | $y$ range | Frame $x_{\text{shock}}$ | Purpose |
+|-------|-----------:|----------------------:|----------:|-------------------------:|---------|
+| 1.0×  | 0.10       | 0.0 – 0.5 m           | 0 – 0.2 m | 0.4 m                   | Larger domain, longer transverse-wavelength development |
+| 0.3×  | 0.03       | 0.0 – 0.15 m          | 0 – 0.06 m | 0.12 m                  | Smaller, cheaper domain used for stability screening |
+
+### ZND reference profile
+
+The one-dimensional CJ/ZND profile used to initialize the two-dimensional runs is computed with the DNDSR `cj-detonation` skill (SDToolbox, Cantera `h2o2.yaml`) for the diluted 2:1:7 mixture at $T_1 = 300$ K, $p_1 = 6667$ Pa. The minimum wave speed solution gives $U_{CJ} = 1616.6$ m/s with an induction length of 1.51 mm, and the profile below is plotted in the shock-fixed frame.
+
+![ZND profile for the diluted 2:1:7 mixture at 300 K and 6667 Pa](https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/dndsr-reaction-experiments/znd_dilute_profile.png)
+
+### 1.0× scale results
+
+The base coupled run is RM9EFIX (`Roe_M9` with `nInternalRecStep = 1`); the restart group (`O4-restartFromO2`) advances with four reconstruction stages per internal step (`nInternalRecStep = 4`).
+
+**Base run — pressure**
+<video controls width="100%"><source src="https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/dndsr-reaction-experiments/videos/2d-detonation-1x/out-T0-coupled-RM9EFIX_P.mp4" type="video/mp4"></video>
+
+**Base run — density**
+<video controls width="100%"><source src="https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/dndsr-reaction-experiments/videos/2d-detonation-1x/out-T0-coupled-RM9EFIX_R.mp4" type="video/mp4"></video>
+
+**Base run — temperature**
+<video controls width="100%"><source src="https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/dndsr-reaction-experiments/videos/2d-detonation-1x/out-T0-coupled-RM9EFIX_T.mp4" type="video/mp4"></video>
+
+**Base run — H2O mass fraction**
+<video controls width="100%"><source src="https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/dndsr-reaction-experiments/videos/2d-detonation-1x/out-T0-coupled-RM9EFIX_Y_H2O.mp4" type="video/mp4"></video>
+
+**O4-restartFromO2 — pressure**
+<video controls width="100%"><source src="https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/dndsr-reaction-experiments/videos/2d-detonation-1x/out-T0-coupled-RM9EFIX-O4-restartFromO2_P.mp4" type="video/mp4"></video>
+
+**O4-restartFromO2 — density**
+<video controls width="100%"><source src="https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/dndsr-reaction-experiments/videos/2d-detonation-1x/out-T0-coupled-RM9EFIX-O4-restartFromO2_R.mp4" type="video/mp4"></video>
+
+**O4-restartFromO2 — temperature**
+<video controls width="100%"><source src="https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/dndsr-reaction-experiments/videos/2d-detonation-1x/out-T0-coupled-RM9EFIX-O4-restartFromO2_T.mp4" type="video/mp4"></video>
+
+**O4-restartFromO2 — H2O mass fraction**
+<video controls width="100%"><source src="https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/dndsr-reaction-experiments/videos/2d-detonation-1x/out-T0-coupled-RM9EFIX-O4-restartFromO2_Y_H2O.mp4" type="video/mp4"></video>
+
+### 0.3× scale results
+
+The 0.3× case uses the same numerical settings on the scaled domain; the restart group (`O4-restart4000`) continues from step 4000 with four reconstruction stages per internal step.
+
+**Base run — pressure**
+<video controls width="100%"><source src="https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/dndsr-reaction-experiments/videos/2d-detonation-03x/out-T0-coupled-RM9EFIX_P.mp4" type="video/mp4"></video>
+
+**Base run — density**
+<video controls width="100%"><source src="https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/dndsr-reaction-experiments/videos/2d-detonation-03x/out-T0-coupled-RM9EFIX_R.mp4" type="video/mp4"></video>
+
+**Base run — temperature**
+<video controls width="100%"><source src="https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/dndsr-reaction-experiments/videos/2d-detonation-03x/out-T0-coupled-RM9EFIX_T.mp4" type="video/mp4"></video>
+
+**Base run — H2O mass fraction**
+<video controls width="100%"><source src="https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/dndsr-reaction-experiments/videos/2d-detonation-03x/out-T0-coupled-RM9EFIX_Y_H2O.mp4" type="video/mp4"></video>
+
+**O4-restart4000 — pressure**
+<video controls width="100%"><source src="https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/dndsr-reaction-experiments/videos/2d-detonation-03x/out-T0-coupled-RM9EFIX-O4-restart4000_P.mp4" type="video/mp4"></video>
+
+**O4-restart4000 — density**
+<video controls width="100%"><source src="https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/dndsr-reaction-experiments/videos/2d-detonation-03x/out-T0-coupled-RM9EFIX-O4-restart4000_R.mp4" type="video/mp4"></video>
+
+**O4-restart4000 — temperature**
+<video controls width="100%"><source src="https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/dndsr-reaction-experiments/videos/2d-detonation-03x/out-T0-coupled-RM9EFIX-O4-restart4000_T.mp4" type="video/mp4"></video>
+
+**O4-restart4000 — H2O mass fraction**
+<video controls width="100%"><source src="https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/dndsr-reaction-experiments/videos/2d-detonation-03x/out-T0-coupled-RM9EFIX-O4-restart4000_Y_H2O.mp4" type="video/mp4"></video>
+
+## 8. Takeaways
 
 1. The sensible-energy split with a species-dependent $\rho E_{base}$ is essential for positivity-preserving reactive flow, but it introduces a clipped vs. raw bookkeeping mismatch that must be tracked consistently through the limiter, the Riemann solver, and the source term.
 2. Species positivity has two stages: mean-state simplex assertions and reconstruction quadrature checks. Repairing mass fractions should only touch temporary buffers passed to Cantera.
