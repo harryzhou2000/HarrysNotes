@@ -365,6 +365,20 @@ The 0.3× case uses the same numerical settings on the scaled domain; the restar
 **O4-restart4000 — H2O mass fraction**
 <video controls width="100%"><source src="https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/dndsr-reaction-experiments/videos/2d-detonation-03x/out-T0-coupled-RM9EFIX-O4-restart4000_Y_H2O.mp4" type="video/mp4"></video>
 
+The same O4 restart is also run with Strang splitting (sourceStrangSplitting = 1) instead of the coupled scheme.
+
+**Strang O4-restart4000 — pressure**
+<video controls width="100%"><source src="https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/dndsr-reaction-experiments/videos/2d-detonation-03x/out-T0-strang-RM9EFIX-O4-restart4000_P.mp4" type="video/mp4"></video>
+
+**Strang O4-restart4000 — density**
+<video controls width="100%"><source src="https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/dndsr-reaction-experiments/videos/2d-detonation-03x/out-T0-strang-RM9EFIX-O4-restart4000_R.mp4" type="video/mp4"></video>
+
+**Strang O4-restart4000 — temperature**
+<video controls width="100%"><source src="https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/dndsr-reaction-experiments/videos/2d-detonation-03x/out-T0-strang-RM9EFIX-O4-restart4000_T.mp4" type="video/mp4"></video>
+
+**Strang O4-restart4000 — H2O mass fraction**
+<video controls width="100%"><source src="https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/dndsr-reaction-experiments/videos/2d-detonation-03x/out-T0-strang-RM9EFIX-O4-restart4000_Y_H2O.mp4" type="video/mp4"></video>
+
 ## 8. Takeaways
 
 1. The sensible-energy split with a species-dependent $\rho E_{base}$ is essential for positivity-preserving reactive flow, but it introduces a clipped vs. raw bookkeeping mismatch that must be tracked consistently through the limiter, the Riemann solver, and the source term.
