@@ -4,6 +4,7 @@ date: 2026-08-27T17:00:00+08:00
 type: post
 categories: ["DNDSR"]
 tags: ["DNDSR", "reactive flow", "Cantera", "positivity-preserving", "detonation", "premixed flame"]
+image: cover.png
 ---
 
 This note summarizes the current reactive-flow implementation in DNDSR and the practical pitfalls we hit while validating it against 1-D premixed-flame and detonation problems. The discussion is anchored to actual commits in the DNDSR repository.
