@@ -186,6 +186,30 @@ The one-dimensional profiles below give an intuitive view. In flames, the couple
 
 This is a useful distinction. The underlying chemical and diffusion rates are physical diagnostics, whereas the final selector is allowed to depend on the step size because it decides between numerical treatments. These plots keep the flow state fixed, so they reveal the selector's behavior but do not by themselves prove trajectory accuracy.
 
+### One-dimensional a-priori profiles
+
+The fixed-profile view is also useful at the level of the individual indicator ingredients. The flame and detonation panels below evaluate the same formula before a mixed trajectory is evolved. They answer a deliberately narrow question: where would the selector request coupled treatment for this stored thermochemical structure?
+
+![A-priori H2/O2 flame indicator profile](https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/reaction-region-indicator-progress/1d-apriori-flame.png)
+
+*Figure — Fixed H2/O2 flame profile at \(\Delta t_{\mathrm{code}}=2\times10^{-3}\). From top to bottom: temperature and pressure; major species; radical mass fractions; the chemical and diffusive one-step activities \(a\) and \(b\); their saturated factors, shock gate, and coupled score; and the final Strang fraction \(\chi\) with its coupled complement \(1-\chi\). The narrow coupled band is aligned with the flame transition. This is an a-priori classification of a fixed profile, not a propagation result.*
+
+![A-priori H2/O2 detonation indicator profile](https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/reaction-region-indicator-progress/1d-apriori-detonation.png)
+
+*Figure — Fixed H2/O2 detonation profile at \(\Delta t_{\mathrm{code}}=4\times10^{-6}\). The upper panels show the shock-adjacent thermochemical transition and radicals; the next panels show \(a\), \(b\), saturation, the pressure-jump gate, and the resulting score. Although chemical activity rises near the leading structure, the shock gate collapses at the discontinuity, leaving the displayed split fraction overwhelmingly Strang-dominant. This is a frozen-state diagnostic, not an accuracy assessment.*
+
+### One-dimensional a-posteriori profiles
+
+The next two figures are different evidence: they are taken from completed mixed simulations. Each compares the nontrivial logistic and tuned selector fields on their own evolved states, so it shows the selector as it actually participated in the calculation. It must not be read as an independent test of the fixed-state calibration.
+
+![A-posteriori mixed indicator profiles for a coarse-step ESDIRK2 flame](https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/reaction-region-indicator-progress/1d-posterior-flame-esdirk2-dt4e-3.png)
+
+*Figure — A-posteriori ESDIRK2 flame profiles at \(\Delta t=4\times10^{-3}\), relative to the propagated front. The logistic result occupies the top row and the tuned result the bottom row. Left panels give temperature and pressure, centre panels give the resulting chemical and diffusive activities, and right panels give the shock sensor, coupled score, and \(\chi\). Both mixed solutions retain a compact coupled interval around the flame transition, despite the different final states. This is a posterior record from a completed coarse-step calculation; it demonstrates behavior of the mixed treatments, not convergence.*
+
+![A-posteriori mixed indicator profiles for a U2R1 detonation](https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/reaction-region-indicator-progress/1d-posterior-detonation-u2r1-dt8e-6.png)
+
+*Figure — A-posteriori U2R1 detonation profiles at \(\Delta t=8\times10^{-6}\), relative to the propagated shock. Logistic and tuned treatments again occupy the upper and lower rows. Activity concentrates upstream of the discontinuity, while the shock sensor and score are sharply localized at the front; \(\chi\) remains close to one over almost the entire plotted length. The plot makes the intended detonation behavior visible: mixed integration is localized rather than a blanket replacement of Strang splitting. It does not establish mesh or inner-solver convergence.*
+
 ## A two-dimensional detonation picture
 
 The same ingredients were examined on a cellular detonation snapshot. The temperature field has a wrinkled reaction front; the coupled-fraction panel follows that front rather than filling the entire hot product region. The shock gate makes the leading discontinuity visibly different from the reactive structure behind it.
