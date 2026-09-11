@@ -316,6 +316,31 @@ For detonation, the independent Chapman--Jouguet reference is \(D_{\mathrm{CJ}}=
 
 There is an important qualification: these are progress results, not a final accuracy claim. The flame calculations are not yet mesh-converged against the independent reference, and nonlinear solves often reached their iteration cap. The evidence is therefore strongest for the selector's localized behavior and its potential to improve robustness; quantitative accuracy still needs better-converged, carefully controlled follow-up calculations.
 
+## Final choices comparison
+
+The latest tuning screen reduces the earlier threshold, power, time-step, and spatial-pass variants to four named choices. Every curve was recomputed with the current threshold-and-power activity saturation, pressure-jump gate, Hill outer map, endpoint snapping, and optional face-neighbor expansion. The inputs remain frozen profiles and snapshots, so this evidence describes *where the selector would request coupling*—not propagated-solution accuracy.
+
+| Role | Chemical threshold | Diffusive threshold | Power | Spatial passes | Status |
+|---|---:|---:|---:|---:|---|
+| Default | 1 | 1 | 1 | 0 | Production default, unchanged |
+| Broad transition | 5.6234 | 1.7783 | 0.5 | 0 | Primary next posterior candidate |
+| Broad + 2 passes | 5.6234 | 1.7783 | 0.5 | 2 | Separate spatial-edge experiment |
+| Upper-bound screen | 0.001 | 0.17783 | 1 | 0 | A-priori stress test only |
+
+The broad transition uses gentler saturation shoulders without adopting the large coupled plateau of the upper-bound screen. Keeping the two-pass case separate makes its mesh-neighbor dependency visible rather than folding it into a threshold recommendation.
+
+![Final one-dimensional comparison of the retained selector choices](https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/reaction-region-indicator-progress/final-choices-1d.png)
+
+*Figure — Frozen one-dimensional H2/O2 flame and detonation, GRI30 methane/air flame, and GRI30 methane/oxygen ZND profiles. Columns hold each physical profile fixed at time-step factors 0.1, 1, and 10; gray shading is normalized temperature and colored curves give coupled fraction `1-chi`. At the base step, the broad choice raises the active-zone mean coupled fraction from 13.62% to 20.07% in the H2/O2 flame, from 0.00% to 2.81% in the H2/O2 detonation, from 15.28% to 28.20% in the methane/air flame, and from 26.42% to 56.64% in the methane/oxygen ZND profile. The green upper-bound curve is intentionally much broader and is not a production recommendation.*
+
+![Active-zone coupled fraction over time-step factor for the retained choices](https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/reaction-region-indicator-progress/final-choices-dt-metrics.png)
+
+*Figure — Length-weighted active-zone mean coupled fraction versus time-step factor for the same four frozen profiles. Endpoint snapping makes sufficiently small steps exactly Strang rather than leaving a small logistic residue. The broad transition moves activation to smaller factors than the default but remains materially less aggressive than the upper-bound screen; the two-pass curve differs chiefly at coupled-region edges. At large steps, saturation makes the pressure-jump gate the dominant remaining limiter.*
+
+![Final two-dimensional comparison of retained selector choices](https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/reaction-region-indicator-progress/final-choices-2d.png)
+
+*Figure — Frozen O4-Strang cellular-detonation field on the retained `x > 0` domain. Each row repeats the temperature field and then shows coupled fraction at time-step factors 0.1, 1, and 10 for one retained choice. At the base step, default and both broad choices are exactly Strang on this snapshot; the upper-bound screen alone activates (1.098% of the domain above coupled fraction 0.1). At ten times the base step, the broad choice selects 1.154% of the domain above that level, broad plus two passes selects 1.572%, and the upper-bound screen reaches 15.574%. These are fixed-snapshot selector footprints, not two-dimensional propagation results.*
+
 ## Where this is heading
 
-The next step is to test a moderate threshold-and-power variant in posterior flame and detonation calculations. That variant is designed to smooth the edge of the selected region without converting most of a flame to fully coupled integration. The main questions are straightforward: does it preserve the shock-aware localization, does it improve stability at useful time steps, and does it do so without hiding errors that belong to the temporal method or mesh instead?
+The primary next posterior experiment is now the broad transition with zero spatial passes. It is designed to smooth the edge of the selected region without converting most of a flame to fully coupled integration. The paired two-pass choice remains a separate spatial-continuity experiment. The main questions are straightforward: do these choices preserve shock-aware localization, improve stability at useful time steps, and avoid hiding errors that belong to the temporal method or mesh instead?
