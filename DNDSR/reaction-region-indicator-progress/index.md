@@ -180,9 +180,11 @@ In words: each cell receives its \(\chi_i\)-weighted chemistry in two source-onl
 
 ## What the profiles show
 
-The one-dimensional profiles below give an intuitive view. In flames, the coupled region follows the thin part of the thermal and chemical structure. In detonations it stays much narrower and does not simply cover the leading shock. Increasing the chosen time step broadens the selected region, which is expected: the indicator is responding to the numerical challenge of taking a larger step through a reactive, diffusive layer.
+The one-dimensional H2/O2 flame example below gives an intuitive view. In flames, the coupled region follows the thin part of the thermal and chemical structure. In detonations it stays much narrower and does not simply cover the leading shock. Increasing the chosen time step broadens the selected region, which is expected: the indicator is responding to the numerical challenge of taking a larger step through a reactive, diffusive layer.
 
 ![Frozen-profile response of the coupled fraction as the numerical step changes](https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/reaction-region-indicator-progress/one_dimensional_profiles.png)
+
+*Figure — Frozen H2/O2 flame at three numerical time-step factors. The dotted black curve is normalized temperature; blue, orange, and green curves are the original selector's coupled fraction \(1-\chi\) at \(\Delta t/\Delta t_0=0.01\), 1, and 1000. The physical profile is unchanged between curves. The very large factor is an intentionally formal sensitivity probe, included to show the selector's limiting tendency rather than a usable solver step.*
 
 This is a useful distinction. The underlying chemical and diffusion rates are physical diagnostics, whereas the final selector is allowed to depend on the step size because it decides between numerical treatments. These plots keep the flow state fixed, so they reveal the selector's behavior but do not by themselves prove trajectory accuracy.
 
@@ -214,17 +216,17 @@ The next two figures are different evidence: they are taken from completed mixed
 
 The same ingredients were examined on a cellular detonation snapshot. The temperature field has a wrinkled reaction front; the coupled-fraction panel follows that front rather than filling the entire hot product region. The shock gate makes the leading discontinuity visibly different from the reactive structure behind it.
 
-![Temperature, chemistry, diffusion, shock gate, and coupled fraction on a cellular detonation snapshot](https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/reaction-region-indicator-progress/cellular_detonation_selector.png)
+![Temperature and aggressive coupled fraction on a cellular detonation snapshot](https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/reaction-region-indicator-progress/cellular-detonation-temperature-aggressive.png)
 
-*Figure — Five stacked cell-field maps for the O4-Strang cellular-detonation snapshot. From top to bottom: temperature, chemical saturation, diffusion saturation, the pressure-jump shock gate, and the resulting coupled fraction \(1-\chi\). White isolines follow the cellular structure. The bright coupled band lies behind the shock rather than filling the hot products; its nonzero trace near a pressure jump is why this aggressive setting remains a demonstration rather than a default.*
+*Figure — A deliberately compact two-panel view of the O4-Strang cellular-detonation snapshot: temperature at left and the aggressive-setting coupled fraction \(1-\chi\) at right. Both panels use the same retained \(x>0\) field; the isoline traces the corrugated front. The coupled request remains a narrow band behind that front rather than filling the hot products. Because this is an aggressive setting, it is a spatial illustration rather than a default recommendation.*
 
 The particular setting shown here is intentionally aggressive, so it is best read as a spatial demonstration rather than a recommended default. It also exposes the remaining tuning question: a useful selector must retain a sharp response to shocks while giving a sufficiently smooth transition around reaction layers.
 
-The comparison below puts several threshold-and-power choices on the same cellular-detonation snapshot. The legacy and moderate settings remain almost entirely split at this step; the broader candidates activate along the corrugated reaction front. It is a helpful visual reminder that tuning controls *where* coupled integration is requested, not just the peak value of a scalar score.
+The comparison below puts four restrained threshold-and-power choices on the same cellular-detonation snapshot. The legacy, moderate, and conservative settings remain almost entirely split at this step; the balanced candidate activates along the corrugated reaction front. It is a helpful visual reminder that tuning controls *where* coupled integration is requested, not just the peak value of a scalar score.
 
-![Two-dimensional comparison of five selector candidates on the same cellular detonation](https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/reaction-region-indicator-progress/cellular_detonation_candidate_comparison.png)
+![Two-dimensional comparison of restrained selector candidates on the same cellular detonation](https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/reaction-region-indicator-progress/cellular_detonation_candidate_comparison.png)
 
-*Figure — Coupled fraction \(1-\chi\) for five threshold-and-power candidates at the same physical step and on the same \(x>0\) cellular-detonation field. The legacy, moderate, and conservative candidates are visually near zero; the balanced and maximum-feasible settings light up a narrow corrugated front. The shared color scale makes the contrast a selector choice, not a change in the underlying flow state.*
+*Figure — Coupled fraction \(1-\chi\) for the legacy, moderate-transition, conservative, and balanced candidates at the same physical step and on the same \(x>0\) cellular-detonation field. Only the balanced candidate visibly lights up a narrow corrugated front. The shared color scale makes the contrast a selector choice, not a change in the underlying flow state.*
 
 Time step matters in two dimensions as well. Holding the snapshot fixed, the legacy selector requests essentially no coupling at a very small step, remains near Strang splitting at the recorded base step, and becomes much more expansive at an intentionally extreme step. This sensitivity is expected for a method selector, but it also makes clear why threshold choices must be assessed together with the temporal discretization.
 
@@ -232,23 +234,35 @@ Time step matters in two dimensions as well. Holding the snapshot fixed, the leg
 
 *Figure — One fixed O4-Strang temperature field at left, followed by the legacy coupled fraction \(1-\chi\) at \(\Delta t/\Delta t_0=10^{-2}\), \(1\), and \(10^3\). The near-uniform dark middle panels are the expected small-step logistic tail, not missing data. At the deliberately extreme factor, coupled treatment expands through the cellular burned-gas structure, illustrating numerical-method sensitivity rather than an evolved trajectory.*
 
-## Full two-dimensional field galleries
+## Two-dimensional field galleries
 
-The following unmodified source figures are included at their native resolution so that the weak contours and the cell-wise colorbars remain inspectable. Each uses the retained \(x>0\) domain of an archived H2/O2/Ar cellular-detonation snapshot. In the 12-panel maps, rows show thermochemical state and selector ingredients; the final row compares the original logistic and tuned coupled fractions. These are frozen-state classifications, not new two-dimensional propagation calculations.
+The originally dense 12-panel maps have been redrawn as paired, readable pages. Each pair uses the retained \(x>0\) domain of one archived H2/O2/Ar cellular-detonation snapshot: the first page shows composition and the two activity inputs; the second shows the pressure-jump gate, score, and two coupled-fraction outputs. These are frozen-state classifications, not new two-dimensional propagation calculations.
 
 ### Baseline selector fields at the archived step
 
-![O2 coupled 12-panel two-dimensional field map at the archived step](https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/reaction-region-indicator-progress/2d-extended-o2-coupled.png)
+![O2-coupled composition and activity fields](https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/reaction-region-indicator-progress/2d-extended-o2-coupled-composition-activity.png)
 
-*Figure — O2-coupled snapshot at \(\Delta t_{\mathrm{code}}=2\times10^{-5}\). The first two rows show temperature, pressure, heat-release magnitude, and the H2/O2/H2O mass fractions. The third row shows chemical and diffusive one-step activities and the shock gate; the last row shows their product and the logistic and tuned coupled fractions. Chemistry and diffusion retain cellular structure, while the very small final coupled fractions show that this short step selects almost pure Strang treatment.* [Open the full-resolution figure](https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/reaction-region-indicator-progress/2d-extended-o2-coupled.png).
+*Figure — O2-coupled snapshot at \(\Delta t_{\mathrm{code}}=2\times10^{-5}\). Top row: hydrogen and oxygen mass fractions; bottom row: \(\log_{10}a\) and \(\log_{10}b\), the chemical and diffusive one-step activities. The aligned corrugations locate the reactive cellular layer, but activity alone does not determine the requested coupled treatment.*
 
-![O4 coupled 12-panel two-dimensional field map at the archived step](https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/reaction-region-indicator-progress/2d-extended-o4-coupled.png)
+![O2-coupled selector fields](https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/reaction-region-indicator-progress/2d-extended-o2-coupled-selectors.png)
 
-*Figure — O4-coupled snapshot at the same step. Read the panels in the same order: state variables above, one-step chemical and diffusion activities plus shock gate in the third row, then coupled score and the two output maps below. The wrinkled pressure discontinuity suppresses the shock gate, while the logistic and tuned maps retain only a thin, low-amplitude reaction-layer signature. This permits a like-for-like comparison with the O2 field without treating different archived orders as accuracy rankings.* [Open the full-resolution figure](https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/reaction-region-indicator-progress/2d-extended-o4-coupled.png).
+*Figure — Selector page for the same O2-coupled snapshot. Top row: pressure-jump gate \(g_h\) and \(\log_{10}C\); bottom row: logistic and tuned coupled fractions \(1-\chi\), each on a 0--1 scale. The gate suppresses the leading discontinuity and the coupled-fraction maps remain close to zero at this archived step.*
 
-![O4 Strang 12-panel two-dimensional field map at the archived step](https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/reaction-region-indicator-progress/2d-extended-o4-strang.png)
+![O4-coupled composition and activity fields](https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/reaction-region-indicator-progress/2d-extended-o4-coupled-composition-activity.png)
 
-*Figure — O4-Strang snapshot at the same archived step. The temperature, pressure, composition, activity, and shock-gate panels identify a cellular reaction zone similar to the O4-coupled snapshot. Yet the final coupled-fraction panels remain close to zero because the product score is far below the logistic midpoint at this \(\Delta t\). The image therefore separates visible physical activity from the time-step-dependent request for coupled integration.* [Open the full-resolution figure](https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/reaction-region-indicator-progress/2d-extended-o4-strang.png).
+*Figure — O4-coupled snapshot at the same code step. Hydrogen and oxygen composition are shown above the logarithmic chemical and diffusive activities. The view uses the same field convention as the O2 case, making the cellular structures comparable without turning different archived orders into accuracy rankings.*
+
+![O4-coupled selector fields](https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/reaction-region-indicator-progress/2d-extended-o4-coupled-selectors.png)
+
+*Figure — Selector page for the O4-coupled snapshot: shock gate and score above, logistic and tuned coupled fractions below. The wrinkled pressure discontinuity is visibly gated, while both output maps preserve only a thin, low-amplitude reaction-layer trace at this step.*
+
+![O4-Strang composition and activity fields](https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/reaction-region-indicator-progress/2d-extended-o4-strang-composition-activity.png)
+
+*Figure — O4-Strang snapshot at the same archived step. The composition maps and the two activity maps identify a cellular reaction zone behind the front. Shared layout and scales make this a visual counterpart to the O4-coupled snapshot, not a propagated-method comparison.*
+
+![O4-Strang selector fields](https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/reaction-region-indicator-progress/2d-extended-o4-strang-selectors.png)
+
+*Figure — Selector page for the O4-Strang snapshot. The shock gate tracks the corrugated discontinuity and the score is concentrated behind it, yet the logistic and tuned coupled fractions are visually near zero because the score is below the switch scale at this \(\Delta t\). This separates physical activity from the time-step-dependent numerical request for coupled integration.*
 
 ### Fixed-snapshot time-step response
 
@@ -329,17 +343,33 @@ The latest tuning screen reduces the earlier threshold, power, time-step, and sp
 
 The broad transition uses gentler saturation shoulders without adopting the large coupled plateau of the upper-bound screen. Keeping the two-pass case separate makes its mesh-neighbor dependency visible rather than folding it into a threshold recommendation.
 
-![Final one-dimensional comparison of the retained selector choices](https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/reaction-region-indicator-progress/final-choices-1d.png)
+![Final H2/O2 flame comparison of the retained selector choices](https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/reaction-region-indicator-progress/final-choices-1d-h2-flame.png)
 
-*Figure — Frozen one-dimensional H2/O2 flame and detonation, GRI30 methane/air flame, and GRI30 methane/oxygen ZND profiles. Columns hold each physical profile fixed at time-step factors 0.1, 1, and 10; gray shading is normalized temperature and colored curves give coupled fraction `1-chi`. At the base step, the broad choice raises the active-zone mean coupled fraction from 13.62% to 20.07% in the H2/O2 flame, from 0.00% to 2.81% in the H2/O2 detonation, from 15.28% to 28.20% in the methane/air flame, and from 26.42% to 56.64% in the methane/oxygen ZND profile. The green upper-bound curve is intentionally much broader and is not a production recommendation.*
+*Figure — Frozen H2/O2 flame selector profiles. The three data panels hold the same physical flame fixed at \(\Delta t/\Delta t_0=0.1\), 1, and 10; the fourth panel is the shared legend. Gray shading is normalized temperature and colored curves are coupled fraction \(1-\chi\). At the base step, the broad transition increases the active-zone mean from 13.62% to 20.07%; the upper-bound screen is intentionally much broader and is not a production recommendation.*
+
+![Final H2/O2 detonation comparison of the retained selector choices](https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/reaction-region-indicator-progress/final-choices-1d-h2-detonation.png)
+
+*Figure — Frozen H2/O2 detonation profiles at the same three time-step factors. The compact panels make the shock-adjacent pocket readable: at the base step, default selection is 0.00% in the active zone, while the broad transition selects 2.81% and the two-pass variant 3.65%. The profiles are a-priori selector footprints, not propagated detonation results.*
+
+![Final GRI30 methane-air flame comparison of the retained selector choices](https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/reaction-region-indicator-progress/final-choices-1d-gri30-flame.png)
+
+*Figure — Frozen GRI30 methane/air flame profiles. At the base step, the broad transition raises the active-zone mean coupled fraction from 15.28% to 28.20%; two passes change it only to 28.45%, consistent with their primarily edge-local action in a smooth one-dimensional flame. The upper-bound screen reaches 89.34%, which is why it remains a stress test only.*
+
+![Final GRI30 methane-oxygen ZND comparison of the retained selector choices](https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/reaction-region-indicator-progress/final-choices-1d-gri30-znd.png)
+
+*Figure — Frozen GRI30 methane/oxygen ZND profiles. The base-step broad transition raises the active-zone mean from 26.42% to 56.64%, while the upper-bound screen reaches 78.94%. The figure shows the chosen numerical treatment across a fixed structure; it does not validate a ZND trajectory.*
 
 ![Active-zone coupled fraction over time-step factor for the retained choices](https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/reaction-region-indicator-progress/final-choices-dt-metrics.png)
 
 *Figure — Length-weighted active-zone mean coupled fraction versus time-step factor for the same four frozen profiles. Endpoint snapping makes sufficiently small steps exactly Strang rather than leaving a small logistic residue. The broad transition moves activation to smaller factors than the default but remains materially less aggressive than the upper-bound screen; the two-pass curve differs chiefly at coupled-region edges. At large steps, saturation makes the pressure-jump gate the dominant remaining limiter.*
 
-![Final two-dimensional comparison of retained selector choices](https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/reaction-region-indicator-progress/final-choices-2d.png)
+![Broad-transition two-dimensional selector footprint](https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/reaction-region-indicator-progress/final-choices-2d-broad.png)
 
-*Figure — Frozen O4-Strang cellular-detonation field on the retained `x > 0` domain. Each row repeats the temperature field and then shows coupled fraction at time-step factors 0.1, 1, and 10 for one retained choice. At the base step, default and both broad choices are exactly Strang on this snapshot; the upper-bound screen alone activates (1.098% of the domain above coupled fraction 0.1). At ten times the base step, the broad choice selects 1.154% of the domain above that level, broad plus two passes selects 1.572%, and the upper-bound screen reaches 15.574%. These are fixed-snapshot selector footprints, not two-dimensional propagation results.*
+*Figure — Broad-transition choice on the frozen O4-Strang cellular-detonation field, shown on the retained \(x>0\) domain. Temperature occupies the upper-left panel; the other panels show coupled fraction at \(\Delta t/\Delta t_0=0.1\), 1, and 10. The first two choices are exact Strang on this snapshot. At ten times the base step, 1.154% of the domain exceeds coupled fraction 0.1 along the wrinkled reaction front. This is a fixed-snapshot selector footprint, not a two-dimensional propagation result.*
+
+![Upper-bound two-dimensional selector footprint](https://raw.githubusercontent.com/harryzhou2000/resources-0/main/2026/reaction-region-indicator-progress/final-choices-2d-upper-bound.png)
+
+*Figure — Upper-bound screen on that same fixed O4-Strang field and time-step sequence. Unlike the moderate broad transition, it already selects 1.098% of the domain above coupled fraction 0.1 at the base step and reaches 15.574% at ten times the step. This deliberately large footprint is useful as a robustness envelope, but is not a production setting.*
 
 ## Where this is heading
 
