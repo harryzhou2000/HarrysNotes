@@ -1,0 +1,105 @@
+{
+  "source_report": "ORION_LVR_TEST_REPORT-2026-10-19.md",
+  "source_report_sha256": "80ac890cd37628dafd203715fb9c56bae32faee976444a3d50bf50a9e1e14ef3",
+  "DNDSR_commit": "03891f8b",
+  "publication_state": "Local draft; commit only, no push/deployment",
+  "post_sha256": "3372ab9a9e0e74a5cdaa189c6c802298e60bafd80e8b7cb3ca051019c901b7f0",
+  "assets": [
+    {
+      "filename": "o2_backin_checkpoint.png",
+      "lvr_source": "studies/2026-10-19_orion_lvr_test/figures/o2_backin_checkpoint.png",
+      "sha256": "c2442a257401cdd4e5bc696727ee66f48c95ad582850d914a493eed84b7a1047",
+      "bytes": 576979
+    },
+    {
+      "filename": "steady_absolute_residuals.png",
+      "lvr_source": "studies/2026-10-17_orion_iddes/latest_20261019/figures/steady_absolute_residuals.png",
+      "sha256": "114efacc6cdabea739ee04619a4db18548c4ab9a7f1d5ba25dd55726640b1d2f",
+      "bytes": 210461
+    },
+    {
+      "filename": "steady_forces_separate_scales.png",
+      "lvr_source": "studies/2026-10-17_orion_iddes/latest_20261019/figures/steady_forces_separate_scales.png",
+      "sha256": "f76cbb467de77383a35849db1f587fb3f630007984f33f3cf0b1c703f8391d2e",
+      "bytes": 178588
+    },
+    {
+      "filename": "lvr_terminal_20261019_symmetry.png",
+      "lvr_source": "studies/2026-10-16_orion_steady_lvr/figures/lvr_terminal_20261019_symmetry.png",
+      "sha256": "c925237d4b2e8a92312c233e10adc5456f23dbb311ea168dd087cac9dcf7e6b2",
+      "bytes": 693889
+    },
+    {
+      "filename": "3wbap_terminal_20261019_symmetry.png",
+      "lvr_source": "studies/2026-10-16_orion_steady_lvr/figures/3wbap_terminal_20261019_symmetry.png",
+      "sha256": "5497c344917d6e10ee99bb46c253a5f14fb9dcaea6fb9f3d7fe172a6715e7a2f",
+      "bytes": 669340
+    },
+    {
+      "filename": "iddes_timing_and_forces.png",
+      "lvr_source": "studies/2026-10-17_orion_iddes/latest_20261019/figures/iddes_timing_and_forces.png",
+      "sha256": "be489b0d4f2f815600740fdec3b473eeab103cfba014fa682d7ff3e83da9476c",
+      "bytes": 221641
+    },
+    {
+      "filename": "iddes_absolute_residuals.png",
+      "lvr_source": "studies/2026-10-17_orion_iddes/latest_20261019/figures/iddes_absolute_residuals.png",
+      "sha256": "e7d732767b298e4b1ee4ce8af0b71d723757b6ad0b826f9994f129a7ab5caa2d",
+      "bytes": 217297
+    },
+    {
+      "filename": "iddes_step5000_20261019_symmetry.png",
+      "lvr_source": "studies/2026-10-17_orion_iddes/figures/iddes_step5000_20261019_symmetry.png",
+      "sha256": "e533958430267de8301e4e83cc48287b2b0b9e7dfec5a810e96e07a6bc457dce",
+      "bytes": 689908
+    },
+    {
+      "filename": "iddes_evolution_rhoNuTilde.png",
+      "lvr_source": "studies/2026-10-17_orion_iddes/latest_20261019/figures/iddes_evolution_rhoNuTilde.png",
+      "sha256": "5396f0bab8cf60a5f842d2d5d1e6c6c375f975b1b30494159026fcb028c6f415",
+      "bytes": 539551
+    },
+    {
+      "filename": "iddes_evolution_speed.png",
+      "lvr_source": "studies/2026-10-17_orion_iddes/latest_20261019/figures/iddes_evolution_speed.png",
+      "sha256": "c2d3d47999a0388dd8e24dd4dd474d73251fdabe0c4254c5a5f02c3b7e1e023e",
+      "bytes": 531885
+    },
+    {
+      "filename": "iddes_evolution_changes.png",
+      "lvr_source": "studies/2026-10-17_orion_iddes/latest_20261019/figures/iddes_evolution_changes.png",
+      "sha256": "fd8b3d1f241d02bf19f194176fae82bd63ee0d956152f9a0f950917a8454aa28",
+      "bytes": 420724
+    },
+    {
+      "filename": "iddes_evolution_wake_metrics.png",
+      "lvr_source": "studies/2026-10-17_orion_iddes/latest_20261019/figures/iddes_evolution_wake_metrics.png",
+      "sha256": "db360c146a1552bb949384b8bfc4778fe353add58f69c18b1a74a8985b8e133f",
+      "bytes": 214943
+    },
+    {
+      "filename": "model_switch_diagnostics.png",
+      "lvr_source": "studies/2026-10-17_orion_iddes/figures/model_switch_diagnostics.png",
+      "sha256": "2c2b0756e4465e53a0414083bdfa307657a5d7d405ce9df6954f5a6f6b470b85",
+      "bytes": 238775
+    },
+    {
+      "filename": "force_details.png",
+      "lvr_source": "studies/2026-10-18_sa_rotation_correction/three_way_15min/figures/force_details.png",
+      "sha256": "e5f6e75e2bb0fa0f41ec1b8ae796bac423e177455d530445e9ac8faab84cd8dd",
+      "bytes": 165950
+    },
+    {
+      "filename": "matched_cell_nuTilde.png",
+      "lvr_source": "studies/2026-10-18_sa_rotation_correction/three_way_15min/figures/matched_cell_nuTilde.png",
+      "sha256": "ac705682377e695671b24a3e765447253efd84779706e4815b835263ef174ae3",
+      "bytes": 449853
+    },
+    {
+      "filename": "cover.png",
+      "lvr_source": "studies/2026-10-19_orion_lvr_test/figures/orion_lvr_mach_cover.png",
+      "sha256": "5d97e9ed439f3101d7e77345e0b452775131dcef4d34731b9ed8b56f2eaeb680",
+      "bytes": 573180
+    }
+  ]
+}
