@@ -3,10 +3,10 @@ title: "Orion with LVR: steady robustness, IDDES trials and an SA-R correction"
 slug: orion-lvr-test-2026-10-19
 date: 2026-10-19T13:37:23+08:00
 type: post
-draft: true
+draft: false
 categories: ["DNDSR"]
 tags: ["CFD", "LVR", "SA", "IDDES", "Orion"]
-image: cover.png
+image: cover-art.png
 ---
 
 Recorded October 19, 2026. This report consolidates the Orion experiments on thtj1 and the separate NACA0012 source-model check. The main outcome is **a useful steady robustness result for LVR v3, rather than a demonstrated high-order DES result**. P3 LVR retains plausible fields through 20,000 steady updates; full P3 3WBAP becomes unphysical. Neither reaches the requested steady density threshold. O2 WBAP IDDES advances reliably with converged implicit stages, but the high-order LVR IDDES attempts do not yet provide an acceptable transient result.

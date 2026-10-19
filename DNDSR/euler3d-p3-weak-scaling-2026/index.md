@@ -6,7 +6,7 @@ type: post
 draft: false
 categories: ["DNDSR"]
 tags: ["CFD", "HPC", "MPI", "benchmark"]
-image: weak-scaling.png
+image: cover.png
 ---
 
 How well does DNDSR scale when each CPU core has roughly the same amount of
