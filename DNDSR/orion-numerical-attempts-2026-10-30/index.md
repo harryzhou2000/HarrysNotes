@@ -4,7 +4,7 @@ slug: orion-numerical-attempts-2026-10-30
 description: "A results-first review of the checked Orion steady and IDDES attempts, from LVR and 3WBAP controls to corrected-model whole-domain O2 evolution."
 date: 2026-10-30T11:53:00+08:00
 type: post
-draft: true
+draft: false
 categories: ["DNDSR"]
 tags: ["CFD", "Orion", "LVR", "SA", "IDDES"]
 image: whole-q5-oblique.png
@@ -253,7 +253,7 @@ A gate-only off/on comparison on the same frozen time-95 means increased active 
 
 The low-memory diagnostic retained degree-5 quadrature for target positivity checks while allocating only linear reconstruction storage and executing no O4 solve. Ordinary detection samples face centers. It establishes the change in the gate alone; it does not demonstrate improved O4 convergence or reduced reconstruction PP.
 
-## 8. O4 marching trials: separate outlet and forebody failure patterns
+## 8. LVR failure analysis: separate outlet and forebody failure patterns
 
 ### Trials from the time-95 checkpoint
 
@@ -361,9 +361,19 @@ The latest selected **saved fields** are at \(t=135,140,145\), so the following 
 
 ![Whole-domain center-plane speed evolution](whole-speed.png)
 
+![Whole-domain center-plane Mach evolution](whole-mach.png)
+
+![Whole-domain center-plane transported SA-state evolution](whole-sa.png)
+
+![Whole-domain center-plane wake speed evolution](whole-wake-speed.png)
+
+![Whole-domain center-plane wake Mach evolution](whole-wake-mach.png)
+
 ![Whole-domain center-plane wake SA-state evolution](whole-wake-sa.png)
 
 The plane at \(z=0\) is now an internal cut, not an enforced symmetry boundary. The displayed trace uses the negative-z parent cells, labelled \(z=0^-\), with their cell-average colors; it is neither a reconstructed face value nor an average of both sides. The initial state is symmetric; removing the boundary alone does not impose a perturbation or guarantee rapid symmetry breaking. These fields do not yet establish a developed whole-domain wake.
+
+The full-plane speed and Mach plots show little change in bow-shock position or the broad low-speed wake envelope over \(t=135\)–145, a span of one diameter convection time. The wake enlargements expose localized changes immediately behind the capsule and along the upper shear layer that are harder to see in the full view. There is no comparable global field distortion to the failed O4 trials. The log-scaled SA plots retain a broad elevated transported-state region in the upper wake; that observation alone does not determine the eddy viscosity or prove that resolved fluctuations are being suppressed.
 
 ### Three-dimensional structures at the selected Q level
 
@@ -384,6 +394,8 @@ The current selected display level is **\(Q^*=5\)**, colored by speed. One view 
 Q is estimated by VTK post-processing from cell-average velocity, rather than an exported solver gradient. Coincident points are merged and Q is averaged to vertices to extract a surface; triangle colors retain parent-cell speed. There is no surface smoothing or removal of connected components. This geometrical interpolation is specific to isosurface extraction; the plane contours retain cell values.
 
 Level 5 removes weak outer patches and gives a cleaner picture of strong structures. It also hides weaker vortical regions. Neither surface triangle count nor apparent visual richness is a resolution or turbulence-quality measure, particularly near stretched wall cells and boundaries.
+
+The oblique and positive-y views show persistent near-body structures and long streamwise surfaces around the support, with changes in their local shape rather than a dramatic breakup across the three saved times. This complements the relatively persistent plane-contour envelope. It does not show that the wake is physically steady or incapable of instability: the observation interval is short, the initial field was reflected, and the displayed Q level selects only stronger structures. A quantitative asymmetry history and longer sampled interval would be needed to assess how removing the symmetry constraint changes the wake.
 
 ## 11. What the collected attempts support
 
