@@ -397,6 +397,47 @@ Level 5 removes weak outer patches and gives a cleaner picture of strong structu
 
 The oblique and positive-y views show persistent near-body structures and long streamwise surfaces around the support, with changes in their local shape rather than a dramatic breakup across the three saved times. This complements the relatively persistent plane-contour envelope. It does not show that the wake is physically steady or incapable of instability: the observation interval is short, the initial field was reflected, and the displayed Q level selects only stronger structures. A quantitative asymmetry history and longer sampled interval would be needed to assess how removing the symmetry constraint changes the wake.
 
+### Is the high-viscosity wake still RANS, or approaching SGS behavior?
+
+The sting's placement must be interpreted with the \(28^\circ\) incoming-flow direction, not just the body x axis. It can intercept upstream flow; it is not merely a passive downstream extension. To distinguish its wall-layer shielding from the broader separated wake, the following maps replay the **current corrected, ft2-off model** on the saved whole-domain state at \(t=145\).
+
+Let \(d_w\) be nearest-wall distance and \(h_{max}\) the maximum full width of the inertia-oriented cell box. The implemented filter and effective lengths, with unavailable wall-normal spacing omitted, are
+
+$$
+\Delta=\min\{\max(0.15d_w,0.15h_{max}),h_{max}\},\qquad
+\ell_{LES}=0.65\psi\Delta,
+$$
+$$
+\ell_{IDDES}=\widetilde f_d(1+f_e)d_w+(1-\widetilde f_d)\ell_{LES}.
+$$
+
+Here \(\widetilde f_d\) is the RANS blend weight: zero selects the SGS branch and one selects the shielded RANS branch. The nonnegative \(f_e\) elevates the shielded length, and \(\psi\in[1,10]\) is the SA low-Re correction. The ratio \(\ell_{IDDES}/d_w\) measures shortening relative to a RANS wall-distance length; \(\ell_{IDDES}/h_{max}\) measures the effective length against cell size. Neither ratio alone proves that turbulence is resolved. In an unshielded region with \(d_w\gg h_{max}\) and \(\psi\simeq1\), the second ratio approaches 0.65.
+
+![Whole-domain plane: RANS blend, effective lengths and modeled viscosity](iddes-length-full.png)
+
+![Wake detail: RANS blend, effective lengths and modeled viscosity](iddes-length-wake.png)
+
+The broad upper wake is predominantly on the SGS side of the blend. RANS shielding is concentrated in thin wall-adjacent layers, rather than covering the entire region of elevated transported SA state. The upper wake also has an effective length substantially below wall distance and roughly comparable to local cell size. Thus the high-viscosity region is not explained by that entire region remaining shielded RANS.
+
+![Wake cell width and low-Re length correction](iddes-length-grid.png)
+
+This comparison also narrows the earlier possible explanations: **the high-viscosity upper wake mostly has \(\psi\simeq1\)**. Large \(\psi\) occurs mainly in lower-viscosity regions below the sting. Inflation by the low-Re factor therefore is not the main explanation for the broad high-viscosity upper region in this frame. A large length/cell ratio in low-turbulence fluid can nevertheless coexist with an SGS-side blend weight.
+
+| Offline estimate in the selected wake-plane window | Area fraction |
+|---|---:|
+| RANS blend weight below 0.5 | 97.86% |
+| Effective length below \(0.9d_w\) | 94.77% |
+| Effective length below \(h_{max}\) | 38.63% |
+| RANS/SGS classifications differing between 16- and 32-neighbor gradients | 0.122% |
+
+The window is \(0.65<x/D<2.5\), \(|y/D|<0.8\), on the negative-parent \(z=0\) trace. These are **plane-area fractions**, not full-volume results. A red RANS-weight region in undisturbed freestream identifies the selected length branch; it does not imply developed turbulence there.
+
+The plotted conservative SA state also requires its solver scaling. Calling that plotted value \(q\), the viscosity ratio is obtained from \(\chi=\mu_{ref}q/\mu\) and \(\mu_t/\mu=\chi^4/(\chi^3+7.1^3)\), with \(\mu_{ref}=3.183248494125077\times10^{-6}\) and local Sutherland viscosity \(\mu\). A separate every-4096th-cell sample contains 2,209 cells in \(0.65<x/D<2.5\), \(|y/D|<0.8\), \(|z/D|<0.8\). Its viscosity-ratio median, 90th percentile and maximum are 0.00350, 3.48 and 94.0; 17.2% of sampled cells exceed one. Those are **unweighted sampled-cell statistics**, distinct from the plane-area statistics above. They show locally substantial modeled viscosity, not uniformly high viscosity throughout the wake.
+
+IDDES retains finite SGS viscosity rather than forcing the SA state to zero. Production, convection, diffusion and destruction continue to balance in this branch. Whether the modeled stress is excessive still requires resolved fluctuations, modeled/resolved stress comparisons and shear-layer resolution measurements. The new maps make widespread RANS shielding and upper-wake \(\psi\) inflation less convincing explanations; they do not isolate numerical dissipation or establish a correct turbulence budget.
+
+These maps are explicitly **offline estimates**. Velocity gradients use inverse-distance-weighted three-dimensional least squares over 16/32 neighboring cell centers, not the solver's limited gradients. Cell lengths use element quadrature and inertia-oriented boxes. About 0.378% of the selected plane area has a 32-neighbor least-squares condition number above \(10^{10}\); near-wall estimates deserve particular caution. The stencil comparison is a sensitivity check, not exact-gradient validation. Actual volume row identifiers are retained before cutting, and field colors remain cell-associated. No simulation or model was changed for this diagnostic.
+
 ## 11. What the collected attempts support
 
 1. **O2/WBAP is the practical Orion baseline obtained so far.** It has supported the longest corrected-model intervals and the transition from half to whole domain. This is robustness evidence on the current setup, not a DNS/LES-quality claim.
