@@ -1,0 +1,101 @@
+{
+  "article": "index.md",
+  "source_study": "limited_variational_reconstruction/studies/2026-11-13_orion_transient_synthesis",
+  "images": [
+    {
+      "file": "mesh-redraw3_half_iddes_roe.png",
+      "sha256": "6fea111cf09e27394981f2549de7a8d03e21bec0956274622f4e3ac4e8d2fe0f",
+      "bytes": 2705355
+    },
+    {
+      "file": "mesh-redraw3_full_iddes_roe.png",
+      "sha256": "8806b6348a81097a13a9654d2a72f2e345142e093c12fac5b18f55c3e38118fb",
+      "bytes": 2704238
+    },
+    {
+      "file": "mesh-redraw4f_half_ns_ausm.png",
+      "sha256": "5d601f1db2f09f72770247104b52e2031c4d8b6b1fb27fd50bceebb32bf00dc5",
+      "bytes": 2561912
+    },
+    {
+      "file": "mesh-redraw4add_half_iddes_ausm.png",
+      "sha256": "8949c8389d27a13a68ebe62cd92c33f861aff02edfe5fe3a6453adcfc4a70bc0",
+      "bytes": 2831441
+    },
+    {
+      "file": "redraw3_half_iddes_roe.png",
+      "sha256": "d5ab914a79d029887a8b619f0b417f0e9835bee1b3d47aebb8ef53e0f2f82fbd",
+      "bytes": 885514
+    },
+    {
+      "file": "redraw3_full_iddes_roe.png",
+      "sha256": "98fcffc520fd8b801717f6bf4c3cca82cbd928ff0bcdbe8208a89cf4b58f29aa",
+      "bytes": 1099411
+    },
+    {
+      "file": "redraw3_full_ns_roe.png",
+      "sha256": "c5b0651ebc95f27f072a48d6f09b98227eab87d390d41eb003699d35ff19ce0a",
+      "bytes": 1090307
+    },
+    {
+      "file": "redraw3_full_ns_ausm.png",
+      "sha256": "86dcc756208a59933448e800c9135d6dbbd65c62fac8c2eb4dc76a28e2d33401",
+      "bytes": 1249399
+    },
+    {
+      "file": "redraw3_full_o4_ausm.png",
+      "sha256": "61d3871d257ca75abd86c947a6f05dc5d1389ee5d6a7c83cb52a4007d80c1450",
+      "bytes": 1369546
+    },
+    {
+      "file": "redraw4f_half_ns_ausm.png",
+      "sha256": "db7cdd6adc54b074786ef201a791759d654ff93fb6d8d3f2c4ca9f58ed0e99df",
+      "bytes": 1110729
+    },
+    {
+      "file": "redraw4add_half_iddes_ausm.png",
+      "sha256": "d78a4cb10f5e1d64d2864c1f55e8caf9dfe1070312bb49f4d697f714fd514dee",
+      "bytes": 969571
+    },
+    {
+      "file": "redraw4add_half_ns_ausm.png",
+      "sha256": "998ceedeb03cd82a6eeb3947f77ac181f844816c2b29a20966ab36b438a095f3",
+      "bytes": 1058275
+    },
+    {
+      "file": "redraw4add_half_o4_ausm.png",
+      "sha256": "a08217185661e9f54a00ba27da2265b5e762fcce6dc605c909700f4a17916d78",
+      "bytes": 1129246
+    },
+    {
+      "file": "earlier-lvr-forebody-spikes.png",
+      "sha256": "df5b841dbcae8327c8a2db481ad1474e906714f49548e39f97c82772defdef0c",
+      "bytes": 324236
+    },
+    {
+      "file": "earlier-3wbap-support-spike.png",
+      "sha256": "0d0d41166cfa023754729594a59954abf49f86bc121bc956587cd2836e625ac3",
+      "bytes": 241780
+    },
+    {
+      "file": "iddes-step20-forebody-hotspot.png",
+      "sha256": "248e37af2c77e2fccdbcf393366d60e003fb25d3bd9dadf1bad2cf011d54b96b",
+      "bytes": 43473
+    },
+    {
+      "file": "iddes-step20-pressure-slices.png",
+      "sha256": "29da1e698d31540c2ab36c640bef75b4d211ed20aeffedd5eb888749dc365660",
+      "bytes": 83510
+    },
+    {
+      "file": "iddes-step20-sa-slices.png",
+      "sha256": "dc419c2dcf0288b81619459d817631cb9efed15a293b541a9b17e63d5ff5d570",
+      "bytes": 147445
+    },
+    {
+      "file": "cover-artistic.png",
+      "sha256": "1cb36ea55a72802f7699dadb2ddaecf75d1d4a128d63181e083411d7cccd93f8",
+      "bytes": 1831933
+    }
+  ]
+}
