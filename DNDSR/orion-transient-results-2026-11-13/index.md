@@ -57,11 +57,20 @@ The mesh family changes both the support geometry and the wake resolution. Full-
 
 The point counts are the points stored in the corresponding VTKHDF volume datasets, which can include coincident copies. They should not be interpreted as counts of distinct CGNS mesh nodes. The redraw4-F-add mesh adds 1,622,696 cells, about 10.8%, over redraw4-F.
 
-![Redraw3 half-domain mesh at the symmetry plane](mesh-redraw3_half_iddes_roe.png)
+<figure>
+<img src="mesh-redraw3_half_iddes_roe.png" alt="Redraw3 half-domain mesh at the symmetry plane" loading="lazy" style="display:block;width:100%;height:auto">
+<figcaption>Redraw3 half-domain mesh at the symmetry plane.</figcaption>
+</figure>
 
-![Redraw3 full-domain mesh on the internal center plane](mesh-redraw3_full_iddes_roe.png)
+<figure>
+<img src="mesh-redraw3_full_iddes_roe.png" alt="Redraw3 full-domain mesh on the internal center plane" loading="lazy" style="display:block;width:100%;height:auto">
+<figcaption>Redraw3 full-domain mesh on the internal center plane.</figcaption>
+</figure>
 
-![Rod-free redraw4-F mesh at the symmetry plane](mesh-redraw4f_half_ns_ausm.png)
+<figure>
+<img src="mesh-redraw4f_half_ns_ausm.png" alt="Rod-free redraw4-F mesh at the symmetry plane" loading="lazy" style="display:block;width:100%;height:auto">
+<figcaption>Rod-free redraw4-F mesh at the symmetry plane.</figcaption>
+</figure>
 
 ![Redraw4-F-add mesh at the symmetry plane](mesh-redraw4add_half_iddes_ausm.png)
 
@@ -149,7 +158,10 @@ The changed model and restart history matter: the starting wake was produced by 
 
 The selected long O4 LVR run continues from the completed O2 NS checkpoint. Its latest checked saved snapshot is **step 5000**, cumulative time **185**. At the November 13 check it had completed step **5106** and was still advancing. The latest complete logged density range was 0.02779–13.4946 and total-energy-density range 0.007848–2.57675; the figure represents the earlier, completed saved state.
 
-![Latest redraw4-F-add O4 LVR NS, saved step 5000 at time 185](redraw4add_half_o4_ausm.png)
+<figure>
+<img src="redraw4add_half_o4_ausm.png" alt="Latest redraw4-F-add O4 LVR NS, saved step 5000 at time 185" loading="lazy" style="display:block;width:100%;height:auto">
+<figcaption>Latest redraw4-F-add O4 LVR NS, saved step 5000 at time 185.</figcaption>
+</figure>
 
 This is the strongest sustained high-order result in the present rod-free sequence. It shows that the method can advance a developed no-model transient for thousands of steps. It does not resolve the SA-IDDES stability problem: those runs solve a different coupled system, even when they share reconstruction and flux controls.
 
