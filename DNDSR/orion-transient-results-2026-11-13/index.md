@@ -214,6 +214,98 @@ Enabling $f_{t2}$ makes this particular startup markedly worse. That observation
 
 The additional AUSMPW+ trial changes geometric weight power from 0 to 0.5, retaining powers 4 and $f_{t2}$ off. At the checked cutoff it is queued and has produced no numerical output; it therefore supplies no result to rank against the completed cases.
 
+## Wall heating compared with the archived experiment
+
+The flow pictures are only part of the comparison. The available wall-output series also let us compare time-averaged heat transfer with the archived wind-tunnel measurements: six forebody records and 33 afterbody records distributed over nine azimuths. The local archive supplies the values but no measurement-uncertainty estimates, so the plots do not invent experimental error bars.
+
+The saved energy flux `F4` is a flux density. For this normalization, positive heat transfer into the wall is $q_w=-F4\rho_\infty U_\infty^3$, where $\rho_\infty U_\infty^3=2.58014\times10^8$ W/m². Both calculations and experiments are plotted in kW/m². The comparison also maps experimental upward coordinates to numerical $y$ and azimuth to $\operatorname{atan2}(y,z)$; numerical lengths are multiplied by 0.0254 to recover metres. Boundary-zone identifiers are checked separately for each mesh family.
+
+Each case uses its own retained, evolved boundary snapshots and a trapezoidal time average. The initial step-0 boundary flux is excluded because output can precede flux evaluation: initial O4 files contained enormous spurious fluxes, and an O2 file contained all zeros. This exclusion concerns the boundary flux, not the validity of the starting volume state. We first match wall faces by position and zone, then area-average within narrow physical-coordinate bins and interpolate to supported sensor positions. The shaded temporal standard deviation describes how the saved values varied across that window; it is neither a standard error nor experimental uncertainty. These means include the evolved startup interval beginning at the first valid boundary output and should not be read as statistically converged turbulent averages.
+
+
+The nine cases use 5–20 valid evolved boundary snapshots each, at 500-step spacing (5 solver time units). Initial step-0 boundary flux is excluded consistently because it can precede RHS evaluation: an initial cached flux is not a physical heating measurement. The mean is a trapezoidal integral divided by the recorded window duration. Windows and physical models differ, so the table is not a matched-time method ranking.
+
+Heat flux into the wall is positive, in kW/m². The summary columns are **arithmetic averages over supported experimental sensor locations**, after temporal averaging; they are not whole-surface area means. MAE is the mean absolute discrepancy at those sensor locations. The four supported forebody experimental values average 279.66 kW/m²; the 31 supported aftbody values average 14.07 kW/m². All 39 measurements remain in the tables and figures, but only 35 per case have numerical support with the documented interpolation rule. No extrapolation is used.
+
+| Case | Valid snapshots | Cumulative time window | Forebody mean / MAE | Aftbody mean / MAE |
+|---|---:|---|---:|---:|
+| redraw3 half O2 IDDES, Roe M9/M2 | 14 | 70–135 | 240.30 / 48.91 | 16.67 / 4.12 |
+| redraw3 full O2 IDDES, Roe M9/M2 | 20 | 140–235 | 241.53 / 48.32 | 16.64 / 3.97 |
+| redraw3 full O2 NS, Roe M9/M2 | 5 | 150–170 | 98.83 / 180.83 | 6.47 / 8.49 |
+| redraw3 full O2 NS, AUSMPW+ | 20 | 150–245 | 96.68 / 182.98 | 5.44 / 8.73 |
+| redraw3 full O4 LVR NS, AUSMPW+ | 7 | 150.1–180.1 | 107.60 / 172.06 | 6.25 / 9.05 |
+| redraw4-F half O2 NS, AUSMPW+ | 20 | 5–100 | 112.95 / 166.71 | 7.44 / 9.16 |
+| redraw4-F-add half O2 IDDES, AUSMPW+ | 20 | 5–100 | 265.18 / 74.58 | 17.50 / 5.59 |
+| redraw4-F-add half O2 NS, AUSMPW+ | 20 | 40–135 | 117.64 / 162.02 | 6.51 / 9.17 |
+| redraw4-F-add half O4 LVR NS, AUSMPW+ | 10 | 140–185 | 140.83 / 138.83 | 7.33 / 8.06 |
+
+All numerical entries in the last two columns are kW/m². The 351-row [sensor table](heat-all_sensors.csv) retains every case/sensor pair, including unsupported entries. [Summary CSV](heat-summary.csv), [time-series manifest](heat-series_manifest.json), [area validation](heat-norm_area_validation.json) and [initial-cache audit](heat-initial_cache_audit.json) record the calculation.
+
+### What the heating differences show
+
+The no-model NS cases underpredict the forebody sensor heating substantially. Adding O4 LVR increases the forebody sensor mean in each mesh family in these windows (redraw3 approximately 97 to 108 kW/m²; redraw4-F-add approximately 118 to 141 kW/m²), but all remain well below the supported experimental mean. Because windows and initial histories differ, that difference is not an isolated reconstruction-order error estimate.
+
+The IDDES results are closer on average: forebody sensor means are approximately 240–265 kW/m² and aftbody means 16.6–17.5 kW/m². Agreement is not uniform: the rod-free IDDES forebody mean is nearer the experimental mean while its sensor-wise MAE is larger than the redraw3 IDDES cases. Thus agreement of a single aggregate mean can conceal a misplaced heating distribution. The full angle plots and sensor table expose those differences.
+
+The shaded bands below show time-weighted temporal standard deviation of the saved samples. They are not experimental uncertainty, confidence intervals, or standard errors. Sparse 5-unit sampling, unequal averaging windows, startup evolution, spatial binning, unresolved turbulent scales in no-model NS, changed support geometry and absent experimental uncertainty metadata all limit validation claims. Two extreme forebody records lie beyond populated line support, and two aftbody records also lack supported interpolation under the stated spatial-gap rule. They remain shown as measurements rather than being silently clamped.
+
+### Individual heating comparisons
+
+#### redraw3 half O2 IDDES, Roe M9/M2
+
+![Heat-transfer comparison: redraw3 half O2 IDDES, Roe M9/M2](heat-redraw3_half_iddes_roe-summary.png)
+
+[All nine aftbody azimuths](heat-redraw3_half_iddes_roe-aft_all.png) · [Sensor values](heat-redraw3_half_iddes_roe-sensors.csv)
+
+#### redraw3 full O2 IDDES, Roe M9/M2
+
+![Heat-transfer comparison: redraw3 full O2 IDDES, Roe M9/M2](heat-redraw3_full_iddes_roe-summary.png)
+
+[All nine aftbody azimuths](heat-redraw3_full_iddes_roe-aft_all.png) · [Sensor values](heat-redraw3_full_iddes_roe-sensors.csv)
+
+#### redraw3 full O2 NS, Roe M9/M2
+
+![Heat-transfer comparison: redraw3 full O2 NS, Roe M9/M2](heat-redraw3_full_ns_roe-summary.png)
+
+[All nine aftbody azimuths](heat-redraw3_full_ns_roe-aft_all.png) · [Sensor values](heat-redraw3_full_ns_roe-sensors.csv)
+
+#### redraw3 full O2 NS, AUSMPW+
+
+![Heat-transfer comparison: redraw3 full O2 NS, AUSMPW+](heat-redraw3_full_ns_ausm-summary.png)
+
+[All nine aftbody azimuths](heat-redraw3_full_ns_ausm-aft_all.png) · [Sensor values](heat-redraw3_full_ns_ausm-sensors.csv)
+
+#### redraw3 full O4 LVR NS, AUSMPW+
+
+![Heat-transfer comparison: redraw3 full O4 LVR NS, AUSMPW+](heat-redraw3_full_o4_ausm-summary.png)
+
+[All nine aftbody azimuths](heat-redraw3_full_o4_ausm-aft_all.png) · [Sensor values](heat-redraw3_full_o4_ausm-sensors.csv)
+
+#### redraw4-F half O2 NS, AUSMPW+
+
+![Heat-transfer comparison: redraw4-F half O2 NS, AUSMPW+](heat-redraw4f_half_ns_ausm-summary.png)
+
+[All nine aftbody azimuths](heat-redraw4f_half_ns_ausm-aft_all.png) · [Sensor values](heat-redraw4f_half_ns_ausm-sensors.csv)
+
+#### redraw4-F-add half O2 IDDES, AUSMPW+
+
+![Heat-transfer comparison: redraw4-F-add half O2 IDDES, AUSMPW+](heat-redraw4add_half_iddes_ausm-summary.png)
+
+[All nine aftbody azimuths](heat-redraw4add_half_iddes_ausm-aft_all.png) · [Sensor values](heat-redraw4add_half_iddes_ausm-sensors.csv)
+
+#### redraw4-F-add half O2 NS, AUSMPW+
+
+![Heat-transfer comparison: redraw4-F-add half O2 NS, AUSMPW+](heat-redraw4add_half_ns_ausm-summary.png)
+
+[All nine aftbody azimuths](heat-redraw4add_half_ns_ausm-aft_all.png) · [Sensor values](heat-redraw4add_half_ns_ausm-sensors.csv)
+
+#### redraw4-F-add half O4 LVR NS, AUSMPW+
+
+![Heat-transfer comparison: redraw4-F-add half O4 LVR NS, AUSMPW+](heat-redraw4add_half_o4_ausm-summary.png)
+
+[All nine aftbody azimuths](heat-redraw4add_half_o4_ausm-aft_all.png) · [Sensor values](heat-redraw4add_half_o4_ausm-sensors.csv)
+
+
 ## What these results support
 
 The established O2 IDDES and no-model NS runs provide useful baselines across the mesh family. Sustained O4 LVR NS trajectories show that high-order reconstruction can evolve this geometry and produce developed wake structure. The slowly advancing redraw3 O4 run retained meaningful fields when it was stopped for cost; that is different from the clearly unstable O4 IDDES diagnostics.

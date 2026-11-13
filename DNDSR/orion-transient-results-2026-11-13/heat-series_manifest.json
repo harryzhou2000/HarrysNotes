@@ -1,0 +1,1191 @@
+{
+  "cases": [
+    {
+      "case": "redraw3_full_iddes_roe",
+      "N": 20,
+      "first_step": 500,
+      "last_step": 10000,
+      "t_start": 140.0,
+      "t_end": 235.0,
+      "steps": [
+        500,
+        1000,
+        1500,
+        2000,
+        2500,
+        3000,
+        3500,
+        4000,
+        4500,
+        5000,
+        5500,
+        6000,
+        6500,
+        7000,
+        7500,
+        8000,
+        8500,
+        9000,
+        9500,
+        10000
+      ],
+      "temporal_weights": [
+        0.02631578947368421,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.02631578947368421
+      ],
+      "sampling": "trapezoid over validated evolved snapshots, endpoints half weighted for uniform cadence; initial step0 F4 excluded as unvalidated cache",
+      "mapping_max_center_distance_solver": 0.0,
+      "zone_fore": 24,
+      "zone_aft": 25,
+      "bin_width_m": 0.001,
+      "fore_abs_z_solver_lt": 0.07,
+      "aft_phi_band_deg": 2.5,
+      "aft_abs_nx_lt": 0.97,
+      "max_interpolation_gap_m": 0.006,
+      "no_extrapolation": true,
+      "files": [
+        {
+          "step": 500,
+          "file": "orion_whole_o2_rm9m2__500_bnd.vtkhdf",
+          "sha256": "d5bcb27107eedc293f39d9dcc52ba97b63983e3d9521916ff6ba62141becbef8"
+        },
+        {
+          "step": 1000,
+          "file": "orion_whole_o2_rm9m2__1000_bnd.vtkhdf",
+          "sha256": "42c9fe9bdc1f237f17070d248f77715e2ffa28f73cbac78b0c65c84d723097f5"
+        },
+        {
+          "step": 1500,
+          "file": "orion_whole_o2_rm9m2__1500_bnd.vtkhdf",
+          "sha256": "c730f197c8630e11bc2a51104f129f06da740ca13c84b78358663ccff3b2a244"
+        },
+        {
+          "step": 2000,
+          "file": "orion_whole_o2_rm9m2__2000_bnd.vtkhdf",
+          "sha256": "14f8919fa999b462c6b916919b8fb0aa11a5fad20d698af8c46698b325860c7a"
+        },
+        {
+          "step": 2500,
+          "file": "orion_whole_o2_rm9m2__2500_bnd.vtkhdf",
+          "sha256": "c20c23e969bd61fbb4af67fa69e588a9a5c48ae42d9bbe7585c9ac8cfd487907"
+        },
+        {
+          "step": 3000,
+          "file": "orion_whole_o2_rm9m2__3000_bnd.vtkhdf",
+          "sha256": "7db2949ee0c3040b339e1cc12dcd7bf0dccbda5c5a64e9a4bace100ba4e07597"
+        },
+        {
+          "step": 3500,
+          "file": "orion_whole_o2_rm9m2__3500_bnd.vtkhdf",
+          "sha256": "3d559da58b062a1f7b5b2de3c36b0b26680a2c3e33f9c179beedc5e294534461"
+        },
+        {
+          "step": 4000,
+          "file": "orion_whole_o2_rm9m2__4000_bnd.vtkhdf",
+          "sha256": "269c8d93ae3216f40947187dddf3cac8e5e78c28ccfc3f8cf61547978789f70b"
+        },
+        {
+          "step": 4500,
+          "file": "orion_whole_o2_rm9m2__4500_bnd.vtkhdf",
+          "sha256": "5c366a21e8fb53c3ed51c3a6407e8296c11f2b59343b2de30870e0f52fd48f24"
+        },
+        {
+          "step": 5000,
+          "file": "orion_whole_o2_rm9m2__5000_bnd.vtkhdf",
+          "sha256": "46b57ba6479b6a637d75d395fbde1b548e366a7239568f5fba691c98b61698b3"
+        },
+        {
+          "step": 5500,
+          "file": "orion_whole_o2_rm9m2__5500_bnd.vtkhdf",
+          "sha256": "d7ebbf9515500894382d24b43962feef3d580272ff6fd88819f3ccaad7088005"
+        },
+        {
+          "step": 6000,
+          "file": "orion_whole_o2_rm9m2__6000_bnd.vtkhdf",
+          "sha256": "79834f76574c1e2aa5afa93e2415e95fe542c06675e27692c6322d7632f36f62"
+        },
+        {
+          "step": 6500,
+          "file": "orion_whole_o2_rm9m2__6500_bnd.vtkhdf",
+          "sha256": "78445b9a462c11fcc5bba3b270159ac059df2ad4cfc8082e9026e7b88d4d296d"
+        },
+        {
+          "step": 7000,
+          "file": "orion_whole_o2_rm9m2__7000_bnd.vtkhdf",
+          "sha256": "8acc9dc6796f2d8cf38345c16e8b1cd69762cd17120cdf363e92627ebec903cb"
+        },
+        {
+          "step": 7500,
+          "file": "orion_whole_o2_rm9m2__7500_bnd.vtkhdf",
+          "sha256": "82915b1a7ba25160b0fd8005d70339f7fd9bfb79e747fb337fd5f4f1cde080ee"
+        },
+        {
+          "step": 8000,
+          "file": "orion_whole_o2_rm9m2__8000_bnd.vtkhdf",
+          "sha256": "5b259704aebbfd540bb7342c2b2c86ad25f792fc785cc3185560d2f51672afa4"
+        },
+        {
+          "step": 8500,
+          "file": "orion_whole_o2_rm9m2__8500_bnd.vtkhdf",
+          "sha256": "80f9b8576e1eaef23463c8625b2dba1a3a76b87ca1d4af9bad84099983fb7883"
+        },
+        {
+          "step": 9000,
+          "file": "orion_whole_o2_rm9m2__9000_bnd.vtkhdf",
+          "sha256": "05f6419bccaa1f40cfb2fce214a94102dcb94bf78df10ca2f151aaea8487793b"
+        },
+        {
+          "step": 9500,
+          "file": "orion_whole_o2_rm9m2__9500_bnd.vtkhdf",
+          "sha256": "6273667ecde6c060e8716346179d0a21aa1f8b53e218a8ab8234dd966705c75c"
+        },
+        {
+          "step": 10000,
+          "file": "orion_whole_o2_rm9m2__10000_bnd.vtkhdf",
+          "sha256": "f9e285a76bf8eb4f3ac3f4df3c53682ec884fbe177c0a239deb03de46f63e6b9"
+        }
+      ],
+      "n_experimental_rows": 39,
+      "n_supported": 35
+    },
+    {
+      "case": "redraw3_full_ns_ausm",
+      "N": 20,
+      "first_step": 500,
+      "last_step": 10000,
+      "t_start": 150.0,
+      "t_end": 245.0,
+      "steps": [
+        500,
+        1000,
+        1500,
+        2000,
+        2500,
+        3000,
+        3500,
+        4000,
+        4500,
+        5000,
+        5500,
+        6000,
+        6500,
+        7000,
+        7500,
+        8000,
+        8500,
+        9000,
+        9500,
+        10000
+      ],
+      "temporal_weights": [
+        0.02631578947368421,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.02631578947368421
+      ],
+      "sampling": "trapezoid over validated evolved snapshots, endpoints half weighted for uniform cadence; initial step0 F4 excluded as unvalidated cache",
+      "mapping_max_center_distance_solver": 0.0,
+      "zone_fore": 24,
+      "zone_aft": 25,
+      "bin_width_m": 0.001,
+      "fore_abs_z_solver_lt": 0.07,
+      "aft_phi_band_deg": 2.5,
+      "aft_abs_nx_lt": 0.97,
+      "max_interpolation_gap_m": 0.006,
+      "no_extrapolation": true,
+      "files": [
+        {
+          "step": 500,
+          "file": "orion_whole_ns_o2_ausmpw_plus_20261102__500_bnd.vtkhdf",
+          "sha256": "274aceff8df5013194648c070f6d9bdf2689741b3c8a1b003c00353180799d2b"
+        },
+        {
+          "step": 1000,
+          "file": "orion_whole_ns_o2_ausmpw_plus_20261102__1000_bnd.vtkhdf",
+          "sha256": "b77c90a7ba8d35f97e1e37c39bc1a0512ba7b65c4457d6c8478422aeeefc9c36"
+        },
+        {
+          "step": 1500,
+          "file": "orion_whole_ns_o2_ausmpw_plus_20261102__1500_bnd.vtkhdf",
+          "sha256": "c0b271c93aa765fbd077b350ed4965d722ce2b1e91a845b0ccaa9cf933e8f06b"
+        },
+        {
+          "step": 2000,
+          "file": "orion_whole_ns_o2_ausmpw_plus_20261102__2000_bnd.vtkhdf",
+          "sha256": "c648ac66e32d0d285aa2c6b6f7addee38f412159215f49b1dd05c6f2b31918e6"
+        },
+        {
+          "step": 2500,
+          "file": "orion_whole_ns_o2_ausmpw_plus_20261102__2500_bnd.vtkhdf",
+          "sha256": "86a5ff03eff975382e453f89a8ce37e2aec565bcb878ff60703f0b3c4a400e2b"
+        },
+        {
+          "step": 3000,
+          "file": "orion_whole_ns_o2_ausmpw_plus_20261102__3000_bnd.vtkhdf",
+          "sha256": "370a4e595199dcf229d03b1906e64210fe4387b234fa63efee5c14f391ff951c"
+        },
+        {
+          "step": 3500,
+          "file": "orion_whole_ns_o2_ausmpw_plus_20261102__3500_bnd.vtkhdf",
+          "sha256": "554caf5cfb4cd0a769f24bf1794ef7a58b1fa2a414050b3cfe7a56946381e743"
+        },
+        {
+          "step": 4000,
+          "file": "orion_whole_ns_o2_ausmpw_plus_20261102__4000_bnd.vtkhdf",
+          "sha256": "d613106ffa42c752c1a2a131a51602a6ab0c337dd564fe8aba9dc3de58f1801b"
+        },
+        {
+          "step": 4500,
+          "file": "orion_whole_ns_o2_ausmpw_plus_20261102__4500_bnd.vtkhdf",
+          "sha256": "3d2d8e5a2fdd3d426116cbac691c88827ab1a6021bb4912f24d1f7031c166ff8"
+        },
+        {
+          "step": 5000,
+          "file": "orion_whole_ns_o2_ausmpw_plus_20261102__5000_bnd.vtkhdf",
+          "sha256": "c1def6de6c518c74e47d4f37909bec352cd9ceca4e821ea12a7719f7792a2a14"
+        },
+        {
+          "step": 5500,
+          "file": "orion_whole_ns_o2_ausmpw_plus_20261102__5500_bnd.vtkhdf",
+          "sha256": "bf2c807f781362a2e53ab7b1dff2885586d2e4439a3bd5fa1f9d1d307351326c"
+        },
+        {
+          "step": 6000,
+          "file": "orion_whole_ns_o2_ausmpw_plus_20261102__6000_bnd.vtkhdf",
+          "sha256": "922ab7aa81d38096c46a6b1fa79e6e259919fc74348573506781eab726444cfc"
+        },
+        {
+          "step": 6500,
+          "file": "orion_whole_ns_o2_ausmpw_plus_20261102__6500_bnd.vtkhdf",
+          "sha256": "f44c3b175627099b5ae0cedac765314fade33ce1e81ec53334b2a57766beaea2"
+        },
+        {
+          "step": 7000,
+          "file": "orion_whole_ns_o2_ausmpw_plus_20261102__7000_bnd.vtkhdf",
+          "sha256": "63b2fc12ea4022e8ef8d2d7e53e6465a9bfb516cd9e02831667dadf062e87f0b"
+        },
+        {
+          "step": 7500,
+          "file": "orion_whole_ns_o2_ausmpw_plus_20261102__7500_bnd.vtkhdf",
+          "sha256": "7cead5a84097a03d62bad9725e34f7c3d8aaf0a25ededcb811b07a5498c59009"
+        },
+        {
+          "step": 8000,
+          "file": "orion_whole_ns_o2_ausmpw_plus_20261102__8000_bnd.vtkhdf",
+          "sha256": "6104c37255c4e2feac1dbe2efc7c88da88580dd35968a033bdb5eec10657b54f"
+        },
+        {
+          "step": 8500,
+          "file": "orion_whole_ns_o2_ausmpw_plus_20261102__8500_bnd.vtkhdf",
+          "sha256": "3cedc6d096fb2457697a3f88aee315b2d7b4cacb2d2b7ca9dfd260182a39e1f0"
+        },
+        {
+          "step": 9000,
+          "file": "orion_whole_ns_o2_ausmpw_plus_20261102__9000_bnd.vtkhdf",
+          "sha256": "0553b81a918faf5047b2f597c287ee69a175697669003b71ea18c0a26bd53727"
+        },
+        {
+          "step": 9500,
+          "file": "orion_whole_ns_o2_ausmpw_plus_20261102__9500_bnd.vtkhdf",
+          "sha256": "6853160b18fb3cf9b6af9ce1e94e386a49be1e95be99e1644b1e104fb52f123b"
+        },
+        {
+          "step": 10000,
+          "file": "orion_whole_ns_o2_ausmpw_plus_20261102__10000_bnd.vtkhdf",
+          "sha256": "ff53024820dc9ccd1a7a81889019a5b9de699cf6c577d05787c54a8dff4ed42e"
+        }
+      ],
+      "n_experimental_rows": 39,
+      "n_supported": 35
+    },
+    {
+      "case": "redraw3_full_ns_roe",
+      "N": 5,
+      "first_step": 500,
+      "last_step": 2500,
+      "t_start": 150.0,
+      "t_end": 170.0,
+      "steps": [
+        500,
+        1000,
+        1500,
+        2000,
+        2500
+      ],
+      "temporal_weights": [
+        0.125,
+        0.25,
+        0.25,
+        0.25,
+        0.125
+      ],
+      "sampling": "trapezoid over validated evolved snapshots, endpoints half weighted for uniform cadence; initial step0 F4 excluded as unvalidated cache",
+      "mapping_max_center_distance_solver": 0.0,
+      "zone_fore": 24,
+      "zone_aft": 25,
+      "bin_width_m": 0.001,
+      "fore_abs_z_solver_lt": 0.07,
+      "aft_phi_band_deg": 2.5,
+      "aft_abs_nx_lt": 0.97,
+      "max_interpolation_gap_m": 0.006,
+      "no_extrapolation": true,
+      "files": [
+        {
+          "step": 500,
+          "file": "orion_whole_ns_o2_rm9m2_768__500_bnd.vtkhdf",
+          "sha256": "9075b8361323f9d1b823eff1f8c23b3f69421d1a1be8e30f4594a4cc8dde1a55"
+        },
+        {
+          "step": 1000,
+          "file": "orion_whole_ns_o2_rm9m2_768__1000_bnd.vtkhdf",
+          "sha256": "a9e4721b7a38bb6dea7706beea8c3b371b26374238bc9f8aba83025fd178ce50"
+        },
+        {
+          "step": 1500,
+          "file": "orion_whole_ns_o2_rm9m2_768__1500_bnd.vtkhdf",
+          "sha256": "8286696652de15273466751557f469d400f218790747b350b822904768dca7a2"
+        },
+        {
+          "step": 2000,
+          "file": "orion_whole_ns_o2_rm9m2_768__2000_bnd.vtkhdf",
+          "sha256": "95fca7362f7366b91491159da9f0ee024aadb8c10e2c5d41635fc5f1ee009527"
+        },
+        {
+          "step": 2500,
+          "file": "orion_whole_ns_o2_rm9m2_768__2500_bnd.vtkhdf",
+          "sha256": "ac08b2f1ce47e0e60ea4f0e95a7c6f2611708571073a423918c84c3493956f9b"
+        }
+      ],
+      "n_experimental_rows": 39,
+      "n_supported": 35
+    },
+    {
+      "case": "redraw3_full_o4_ausm",
+      "N": 7,
+      "first_step": 500,
+      "last_step": 3500,
+      "t_start": 150.1,
+      "t_end": 180.1,
+      "steps": [
+        500,
+        1000,
+        1500,
+        2000,
+        2500,
+        3000,
+        3500
+      ],
+      "temporal_weights": [
+        0.08333333333333333,
+        0.16666666666666666,
+        0.16666666666666666,
+        0.16666666666666666,
+        0.16666666666666666,
+        0.16666666666666666,
+        0.08333333333333333
+      ],
+      "sampling": "trapezoid over validated evolved snapshots, endpoints half weighted for uniform cadence; initial step0 F4 excluded as unvalidated cache",
+      "mapping_max_center_distance_solver": 0.0,
+      "zone_fore": 24,
+      "zone_aft": 25,
+      "bin_width_m": 0.001,
+      "fore_abs_z_solver_lt": 0.07,
+      "aft_phi_band_deg": 2.5,
+      "aft_abs_nx_lt": 0.97,
+      "max_interpolation_gap_m": 0.006,
+      "no_extrapolation": true,
+      "files": [
+        {
+          "step": 500,
+          "file": "orion_whole_ns_ausmpw_lvr_production_20261103__500_bnd.vtkhdf",
+          "sha256": "b259ab17c6a723369ac23fcd84a7c27a37e42bda699f25f47b21efefb2008e34"
+        },
+        {
+          "step": 1000,
+          "file": "orion_whole_ns_ausmpw_lvr_production_20261103__1000_bnd.vtkhdf",
+          "sha256": "bb807ea487de1b24b6f4a6c5c39e49fba22f5c805c1b6ff63373cdf441206679"
+        },
+        {
+          "step": 1500,
+          "file": "orion_whole_ns_ausmpw_lvr_production_20261103__1500_bnd.vtkhdf",
+          "sha256": "ebc94c8b73857cbed0199cc41ba53fdca69eafcd695cff8773b5faafdf2833f4"
+        },
+        {
+          "step": 2000,
+          "file": "orion_whole_ns_ausmpw_lvr_production_20261103__2000_bnd.vtkhdf",
+          "sha256": "576db478fc593005759d67fedb5e382a34613bbd3e16d3beaacc109d6e3b98ba"
+        },
+        {
+          "step": 2500,
+          "file": "orion_whole_ns_ausmpw_lvr_production_20261103__2500_bnd.vtkhdf",
+          "sha256": "40e3e7dafad347619f5fd4d5169129810e56fcb96f20f30080483d4c82b13186"
+        },
+        {
+          "step": 3000,
+          "file": "orion_whole_ns_ausmpw_lvr_production_20261103__3000_bnd.vtkhdf",
+          "sha256": "786b0d6df909e4a4d653f4df8e04afa8fe9ff0ba3aeb14e9c69267d39cda095f"
+        },
+        {
+          "step": 3500,
+          "file": "orion_whole_ns_ausmpw_lvr_production_20261103__3500_bnd.vtkhdf",
+          "sha256": "60f0b4beb8cf2ce3db6f16ef230a4322d55381ee72aa6af5d3ea28764421010c"
+        }
+      ],
+      "n_experimental_rows": 39,
+      "n_supported": 35
+    },
+    {
+      "case": "redraw3_half_iddes_roe",
+      "N": 14,
+      "first_step": 500,
+      "last_step": 7000,
+      "t_start": 70.0,
+      "t_end": 135.0,
+      "steps": [
+        500,
+        1000,
+        1500,
+        2000,
+        2500,
+        3000,
+        3500,
+        4000,
+        4500,
+        5000,
+        5500,
+        6000,
+        6500,
+        7000
+      ],
+      "temporal_weights": [
+        0.038461538461538464,
+        0.07692307692307693,
+        0.07692307692307693,
+        0.07692307692307693,
+        0.07692307692307693,
+        0.07692307692307693,
+        0.07692307692307693,
+        0.07692307692307693,
+        0.07692307692307693,
+        0.07692307692307693,
+        0.07692307692307693,
+        0.07692307692307693,
+        0.07692307692307693,
+        0.038461538461538464
+      ],
+      "sampling": "trapezoid over validated evolved snapshots, endpoints half weighted for uniform cadence; initial step0 F4 excluded as unvalidated cache",
+      "mapping_max_center_distance_solver": 0.0,
+      "zone_fore": 24,
+      "zone_aft": 25,
+      "bin_width_m": 0.001,
+      "fore_abs_z_solver_lt": 0.07,
+      "aft_phi_band_deg": 2.5,
+      "aft_abs_nx_lt": 0.97,
+      "max_interpolation_gap_m": 0.006,
+      "no_extrapolation": true,
+      "files": [
+        {
+          "step": 500,
+          "file": "orion_iddes_rm9m2_gg_o2_wbap_esdirk3_dt001_cfl5_noft2_sgs0__500_bnd.vtkhdf",
+          "sha256": "a6eec0b0aa9bc075ebc61be73626d0b574fbc9d05749e3eff950d7b8a84c473b"
+        },
+        {
+          "step": 1000,
+          "file": "orion_iddes_rm9m2_gg_o2_wbap_esdirk3_dt001_cfl5_noft2_sgs0__1000_bnd.vtkhdf",
+          "sha256": "35466c086af431e2c70e29cdd1ba45f454fce088f2b029facba422b5f062ccee"
+        },
+        {
+          "step": 1500,
+          "file": "orion_iddes_rm9m2_gg_o2_wbap_esdirk3_dt001_cfl5_noft2_sgs0__1500_bnd.vtkhdf",
+          "sha256": "69bd7524abeec7d9e2b1709374a8d1e48f1f383d431f7be65e50869eaf93a9c4"
+        },
+        {
+          "step": 2000,
+          "file": "orion_iddes_rm9m2_gg_o2_wbap_esdirk3_dt001_cfl5_noft2_sgs0__2000_bnd.vtkhdf",
+          "sha256": "de2bff8b4f788f313f1873fbbb681f70348a4b7ad02b9b37f7d6869fc4bccea6"
+        },
+        {
+          "step": 2500,
+          "file": "orion_iddes_rm9m2_gg_o2_wbap_esdirk3_dt001_cfl5_noft2_sgs0__2500_bnd.vtkhdf",
+          "sha256": "77d80401302202b936fd859f2f1704da65f44100f1ce9d0dc5f36a40701bae90"
+        },
+        {
+          "step": 3000,
+          "file": "orion_iddes_rm9m2_gg_o2_wbap_esdirk3_dt001_cfl5_noft2_sgs0__3000_bnd.vtkhdf",
+          "sha256": "783b5229525d2e6938170885d864bf8da7329ebf415e323c7ed73e0824f81d01"
+        },
+        {
+          "step": 3500,
+          "file": "orion_iddes_rm9m2_gg_o2_wbap_esdirk3_dt001_cfl5_noft2_sgs0__3500_bnd.vtkhdf",
+          "sha256": "2c7942d8d30b8da4cbd48169e422ef725bbd51e38b4c4fb1596b5b1526008fb5"
+        },
+        {
+          "step": 4000,
+          "file": "orion_iddes_rm9m2_gg_o2_wbap_esdirk3_dt001_cfl5_noft2_sgs0__4000_bnd.vtkhdf",
+          "sha256": "9694cbf5cc0f59d90a8edccc3cbded43f37aa646555883c99c21fc0600c7b3dd"
+        },
+        {
+          "step": 4500,
+          "file": "orion_iddes_rm9m2_gg_o2_wbap_esdirk3_dt001_cfl5_noft2_sgs0__4500_bnd.vtkhdf",
+          "sha256": "908defc57f639110ba957be76cd55416db81daa290cc82759869c2e07b76c943"
+        },
+        {
+          "step": 5000,
+          "file": "orion_iddes_rm9m2_gg_o2_wbap_esdirk3_dt001_cfl5_noft2_sgs0__5000_bnd.vtkhdf",
+          "sha256": "2107e6370098415c1cbc19f191570c927ab32ad7a363283a4217d6c30b831724"
+        },
+        {
+          "step": 5500,
+          "file": "orion_iddes_rm9m2_gg_o2_wbap_esdirk3_dt001_cfl5_noft2_sgs0__5500_bnd.vtkhdf",
+          "sha256": "1714a875aecebe7eea1bead6522439d9af09aa75f83a4080f0f96c2b95721559"
+        },
+        {
+          "step": 6000,
+          "file": "orion_iddes_rm9m2_gg_o2_wbap_esdirk3_dt001_cfl5_noft2_sgs0__6000_bnd.vtkhdf",
+          "sha256": "6a7b71bc913797ecc6dae5b84b14fbb9d63acaadae3f97b054d46008b2ff3197"
+        },
+        {
+          "step": 6500,
+          "file": "orion_iddes_rm9m2_gg_o2_wbap_esdirk3_dt001_cfl5_noft2_sgs0__6500_bnd.vtkhdf",
+          "sha256": "37163071921f7e0780955f7b56429d24fe17f119f1fae28107bc56af3505122b"
+        },
+        {
+          "step": 7000,
+          "file": "orion_iddes_rm9m2_gg_o2_wbap_esdirk3_dt001_cfl5_noft2_sgs0__7000_bnd.vtkhdf",
+          "sha256": "9e7154bcc927b6e5c1406fa614da4500ee0368b5765d581833c52f7c8f8c73dc"
+        }
+      ],
+      "n_experimental_rows": 39,
+      "n_supported": 35
+    },
+    {
+      "case": "redraw4add_half_iddes_ausm",
+      "N": 20,
+      "first_step": 500,
+      "last_step": 10000,
+      "t_start": 5.0,
+      "t_end": 100.0,
+      "steps": [
+        500,
+        1000,
+        1500,
+        2000,
+        2500,
+        3000,
+        3500,
+        4000,
+        4500,
+        5000,
+        5500,
+        6000,
+        6500,
+        7000,
+        7500,
+        8000,
+        8500,
+        9000,
+        9500,
+        10000
+      ],
+      "temporal_weights": [
+        0.02631578947368421,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.02631578947368421
+      ],
+      "sampling": "trapezoid over validated evolved snapshots, endpoints half weighted for uniform cadence; initial step0 F4 excluded as unvalidated cache",
+      "mapping_max_center_distance_solver": 0.0,
+      "zone_fore": 23,
+      "zone_aft": 24,
+      "bin_width_m": 0.001,
+      "fore_abs_z_solver_lt": 0.07,
+      "aft_phi_band_deg": 2.5,
+      "aft_abs_nx_lt": 0.97,
+      "max_interpolation_gap_m": 0.006,
+      "no_extrapolation": true,
+      "files": [
+        {
+          "step": 500,
+          "file": "redraw4_f_add_iddes_ausmpw_20261104__500_bnd.vtkhdf",
+          "sha256": "b74513143ac25afe387ce5cdb40766b06c70996d852db84ac71aa12c903a2cc9"
+        },
+        {
+          "step": 1000,
+          "file": "redraw4_f_add_iddes_ausmpw_20261104__1000_bnd.vtkhdf",
+          "sha256": "ce3b6cea62921ed24788c5695efc52f025ec6ab1ee089bce9767b0255f93be76"
+        },
+        {
+          "step": 1500,
+          "file": "redraw4_f_add_iddes_ausmpw_20261104__1500_bnd.vtkhdf",
+          "sha256": "0ef6eb1065569e71e3d65360bbcc52cee1734a53758782739384ba0bffd94419"
+        },
+        {
+          "step": 2000,
+          "file": "redraw4_f_add_iddes_ausmpw_20261104__2000_bnd.vtkhdf",
+          "sha256": "ac3cac61899f1f8b60f0efb5af1ea1b00baa45770d18053c02e85a69d7496385"
+        },
+        {
+          "step": 2500,
+          "file": "redraw4_f_add_iddes_ausmpw_20261104__2500_bnd.vtkhdf",
+          "sha256": "797498ccc5978ee7076682f4261a94c41a2d977494072a36180a2e020b8e073e"
+        },
+        {
+          "step": 3000,
+          "file": "redraw4_f_add_iddes_ausmpw_20261104__3000_bnd.vtkhdf",
+          "sha256": "6541a8e531b1b88bff049846a8763f254ea21ad801ace56396042d64cba577dc"
+        },
+        {
+          "step": 3500,
+          "file": "redraw4_f_add_iddes_ausmpw_20261104__3500_bnd.vtkhdf",
+          "sha256": "c238f6295fdad84e3f0457fa82e9900660e9d30c1f2760b1ef35927e6ba11bba"
+        },
+        {
+          "step": 4000,
+          "file": "redraw4_f_add_iddes_ausmpw_20261104__4000_bnd.vtkhdf",
+          "sha256": "ac634b58c89853e26dec8c42e9ca58145aaf1113f4003756d11b66eeacbeb681"
+        },
+        {
+          "step": 4500,
+          "file": "redraw4_f_add_iddes_ausmpw_20261104__4500_bnd.vtkhdf",
+          "sha256": "23f5549af07c5eb2f2c1ee1e74ac996fa41e0af77ab1d2fe3683574d20761859"
+        },
+        {
+          "step": 5000,
+          "file": "redraw4_f_add_iddes_ausmpw_20261104__5000_bnd.vtkhdf",
+          "sha256": "c0ed54ad18b657ad02d75b957c70a4664a838827e703d48669dec92442af5121"
+        },
+        {
+          "step": 5500,
+          "file": "redraw4_f_add_iddes_ausmpw_20261104__5500_bnd.vtkhdf",
+          "sha256": "55cbb253c62328d094b8ee44d5a1b0b60eb7a443ec93864bef9008564a7cefd7"
+        },
+        {
+          "step": 6000,
+          "file": "redraw4_f_add_iddes_ausmpw_20261104__6000_bnd.vtkhdf",
+          "sha256": "023a97d20bfdfa0e901045605e7e625847933e5d03922d9d2e106ba32b2a379a"
+        },
+        {
+          "step": 6500,
+          "file": "redraw4_f_add_iddes_ausmpw_20261104__6500_bnd.vtkhdf",
+          "sha256": "572f5eb130838e6a59c2154d96261b6cd8e92c42db32c66ff549de9a8643ff37"
+        },
+        {
+          "step": 7000,
+          "file": "redraw4_f_add_iddes_ausmpw_20261104__7000_bnd.vtkhdf",
+          "sha256": "58d0e7020b7a006c77678d41116260964cfb621a5a1c0e66600fe772d88d1930"
+        },
+        {
+          "step": 7500,
+          "file": "redraw4_f_add_iddes_ausmpw_20261104__7500_bnd.vtkhdf",
+          "sha256": "81689f3628ea05647a3a56312e0641703fee9349663fe3fce99f2bd23830ab4f"
+        },
+        {
+          "step": 8000,
+          "file": "redraw4_f_add_iddes_ausmpw_20261104__8000_bnd.vtkhdf",
+          "sha256": "59b7b3de01e910e4403f1cd2396b0177beb4bf35c3db36007a9b1cd934b822a4"
+        },
+        {
+          "step": 8500,
+          "file": "redraw4_f_add_iddes_ausmpw_20261104__8500_bnd.vtkhdf",
+          "sha256": "817768c7bf3cda0217cfbf8df83038d98db3dd3f063e37a7f5772da87eb1e6c5"
+        },
+        {
+          "step": 9000,
+          "file": "redraw4_f_add_iddes_ausmpw_20261104__9000_bnd.vtkhdf",
+          "sha256": "813f017b8621b06868ea4df203ca19bc8263fab00cb87978f0bb5441658e0141"
+        },
+        {
+          "step": 9500,
+          "file": "redraw4_f_add_iddes_ausmpw_20261104__9500_bnd.vtkhdf",
+          "sha256": "a426c52e1e125be3a5711d067011038b5ad067afeb152361b6386c20dadd5f0d"
+        },
+        {
+          "step": 10000,
+          "file": "redraw4_f_add_iddes_ausmpw_20261104__10000_bnd.vtkhdf",
+          "sha256": "ea77b92b6a8f65d28477dd1f11d55d676f67d49ac57856effb0c2ce314e5cd25"
+        }
+      ],
+      "n_experimental_rows": 39,
+      "n_supported": 35
+    },
+    {
+      "case": "redraw4add_half_ns_ausm",
+      "N": 20,
+      "first_step": 500,
+      "last_step": 10000,
+      "t_start": 40.0,
+      "t_end": 135.0,
+      "steps": [
+        500,
+        1000,
+        1500,
+        2000,
+        2500,
+        3000,
+        3500,
+        4000,
+        4500,
+        5000,
+        5500,
+        6000,
+        6500,
+        7000,
+        7500,
+        8000,
+        8500,
+        9000,
+        9500,
+        10000
+      ],
+      "temporal_weights": [
+        0.02631578947368421,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.02631578947368421
+      ],
+      "sampling": "trapezoid over validated evolved snapshots, endpoints half weighted for uniform cadence; initial step0 F4 excluded as unvalidated cache",
+      "mapping_max_center_distance_solver": 0.0,
+      "zone_fore": 23,
+      "zone_aft": 24,
+      "bin_width_m": 0.001,
+      "fore_abs_z_solver_lt": 0.07,
+      "aft_phi_band_deg": 2.5,
+      "aft_abs_nx_lt": 0.97,
+      "max_interpolation_gap_m": 0.006,
+      "no_extrapolation": true,
+      "files": [
+        {
+          "step": 500,
+          "file": "redraw4_f_add_ns_ausmpw_20261105__500_bnd.vtkhdf",
+          "sha256": "69222d0449dd956275547a45a710a1f1e99f693e38793533a9c701e80c1bcf2d"
+        },
+        {
+          "step": 1000,
+          "file": "redraw4_f_add_ns_ausmpw_20261105__1000_bnd.vtkhdf",
+          "sha256": "76b1e08ad11dc48235f651c2f431fe4fd5e515d772c27b3945a5acb84955eeff"
+        },
+        {
+          "step": 1500,
+          "file": "redraw4_f_add_ns_ausmpw_20261105__1500_bnd.vtkhdf",
+          "sha256": "c1157ec34ea8287518d442b9f7823de97677e5594965e46b358e553535023240"
+        },
+        {
+          "step": 2000,
+          "file": "redraw4_f_add_ns_ausmpw_20261105__2000_bnd.vtkhdf",
+          "sha256": "7dd7f2954e2449c4693cd9c568d1ea07fee52e19f7748f61cade5cd14328c99f"
+        },
+        {
+          "step": 2500,
+          "file": "redraw4_f_add_ns_ausmpw_20261105__2500_bnd.vtkhdf",
+          "sha256": "dffc76dd15d0db2f4f70c07e66e2ad2e417614b441c4cc8504dde9124e917378"
+        },
+        {
+          "step": 3000,
+          "file": "redraw4_f_add_ns_ausmpw_20261105__3000_bnd.vtkhdf",
+          "sha256": "63a949def506c9db42bef1d27456dcab5aa8ec552f5363224e29de6bffc6601b"
+        },
+        {
+          "step": 3500,
+          "file": "redraw4_f_add_ns_ausmpw_20261105__3500_bnd.vtkhdf",
+          "sha256": "0eaa54933d4059128e9554d15800cc3e0b56a25074781fc25450bfeca8b0d856"
+        },
+        {
+          "step": 4000,
+          "file": "redraw4_f_add_ns_ausmpw_20261105__4000_bnd.vtkhdf",
+          "sha256": "d17429f5459eefa462e5945c71f1a2ce911e8e9bed72a8d22353a1a5ecf4686d"
+        },
+        {
+          "step": 4500,
+          "file": "redraw4_f_add_ns_ausmpw_20261105__4500_bnd.vtkhdf",
+          "sha256": "e22f1c9a027d20c8a110f139b9ec04e56cf39a92ff3583899ee1d876ec6d6335"
+        },
+        {
+          "step": 5000,
+          "file": "redraw4_f_add_ns_ausmpw_20261105__5000_bnd.vtkhdf",
+          "sha256": "89f599b6c5bf6e8f19e441c6f1d815d2765d46ed54b3e723a1bf37b3b6da5e35"
+        },
+        {
+          "step": 5500,
+          "file": "redraw4_f_add_ns_ausmpw_20261105__5500_bnd.vtkhdf",
+          "sha256": "e3bda455e274d7d20d33a5d8e1ed0d84cbedc19b8a2cb52ec6877c564bbf22e5"
+        },
+        {
+          "step": 6000,
+          "file": "redraw4_f_add_ns_ausmpw_20261105__6000_bnd.vtkhdf",
+          "sha256": "76b4d0dc1fd4f55fbaeb097e1a46d8aa097323f271b5359e7cab1053f042ea79"
+        },
+        {
+          "step": 6500,
+          "file": "redraw4_f_add_ns_ausmpw_20261105__6500_bnd.vtkhdf",
+          "sha256": "f586f14c3498e526459c7726a8cea7f524eb3694f9190a3dd5fed3350c2b7270"
+        },
+        {
+          "step": 7000,
+          "file": "redraw4_f_add_ns_ausmpw_20261105__7000_bnd.vtkhdf",
+          "sha256": "0c3da43c428aac428397af1af8b7cd682373939ebc93b1bbd05fe0820e7bf8f9"
+        },
+        {
+          "step": 7500,
+          "file": "redraw4_f_add_ns_ausmpw_20261105__7500_bnd.vtkhdf",
+          "sha256": "36ea26fd1b5e7a24887f5e25f1adfebb79a3ca2f885684de2019094079e8147b"
+        },
+        {
+          "step": 8000,
+          "file": "redraw4_f_add_ns_ausmpw_20261105__8000_bnd.vtkhdf",
+          "sha256": "5189e3c221ce2df386a2f08e18d6a1b24eb21939366421b6c0b582ef4e2309f7"
+        },
+        {
+          "step": 8500,
+          "file": "redraw4_f_add_ns_ausmpw_20261105__8500_bnd.vtkhdf",
+          "sha256": "2505524eb65ee8c833afb5e26f2795a7242416696afae394c2b4e98a16606df8"
+        },
+        {
+          "step": 9000,
+          "file": "redraw4_f_add_ns_ausmpw_20261105__9000_bnd.vtkhdf",
+          "sha256": "36c07c8780651f8164ed28d4de968459c8e6add67ed9c54dbccbf27d4f8e176e"
+        },
+        {
+          "step": 9500,
+          "file": "redraw4_f_add_ns_ausmpw_20261105__9500_bnd.vtkhdf",
+          "sha256": "9da592ca04d713dd2ce62e8991ee391b550d1ffa0dd716c1ebce9d31420cf67a"
+        },
+        {
+          "step": 10000,
+          "file": "redraw4_f_add_ns_ausmpw_20261105__10000_bnd.vtkhdf",
+          "sha256": "4356c6c782900a6399635c8d1fa65c36f88eb6b975ab503f57372d55f1b84504"
+        }
+      ],
+      "n_experimental_rows": 39,
+      "n_supported": 35
+    },
+    {
+      "case": "redraw4add_half_o4_ausm",
+      "N": 10,
+      "first_step": 500,
+      "last_step": 5000,
+      "t_start": 140.0,
+      "t_end": 185.0,
+      "steps": [
+        500,
+        1000,
+        1500,
+        2000,
+        2500,
+        3000,
+        3500,
+        4000,
+        4500,
+        5000
+      ],
+      "temporal_weights": [
+        0.05555555555555555,
+        0.1111111111111111,
+        0.1111111111111111,
+        0.1111111111111111,
+        0.1111111111111111,
+        0.1111111111111111,
+        0.1111111111111111,
+        0.1111111111111111,
+        0.1111111111111111,
+        0.05555555555555555
+      ],
+      "sampling": "trapezoid over validated evolved snapshots, endpoints half weighted for uniform cadence; initial step0 F4 excluded as unvalidated cache",
+      "mapping_max_center_distance_solver": 0.0,
+      "zone_fore": 23,
+      "zone_aft": 24,
+      "bin_width_m": 0.001,
+      "fore_abs_z_solver_lt": 0.07,
+      "aft_phi_band_deg": 2.5,
+      "aft_abs_nx_lt": 0.97,
+      "max_interpolation_gap_m": 0.006,
+      "no_extrapolation": true,
+      "files": [
+        {
+          "step": 500,
+          "file": "redraw4_f_add_ns_o4_lvr_esdirk3_rec2_sgs0_20261110__500_bnd.vtkhdf",
+          "sha256": "85470e1bfd96a44820e7200a910e5fdab09034412fa726715860139a0d47f4b1"
+        },
+        {
+          "step": 1000,
+          "file": "redraw4_f_add_ns_o4_lvr_esdirk3_rec2_sgs0_20261110__1000_bnd.vtkhdf",
+          "sha256": "1495e03ab1ef7fcbc895f3ff46a085597a97c00f7af23f60013c0f7cc82c4c2e"
+        },
+        {
+          "step": 1500,
+          "file": "redraw4_f_add_ns_o4_lvr_esdirk3_rec2_sgs0_20261110__1500_bnd.vtkhdf",
+          "sha256": "6714bd255bdc6780a943fd8fa9655e2c93dead6def8d2d2e88e7811f1b3e3ad5"
+        },
+        {
+          "step": 2000,
+          "file": "redraw4_f_add_ns_o4_lvr_esdirk3_rec2_sgs0_20261110__2000_bnd.vtkhdf",
+          "sha256": "6038d0513c94fd84010a7229ea5ea0d3355c68dfbd16deaf986e9c62a59623d9"
+        },
+        {
+          "step": 2500,
+          "file": "redraw4_f_add_ns_o4_lvr_esdirk3_rec2_sgs0_20261110__2500_bnd.vtkhdf",
+          "sha256": "261dd1620c03940655e1724a9b0739148a02744ffa319147c7aa60a7bc80d623"
+        },
+        {
+          "step": 3000,
+          "file": "redraw4_f_add_ns_o4_lvr_esdirk3_rec2_sgs0_20261110__3000_bnd.vtkhdf",
+          "sha256": "539283e589d3dbce126efeea62b89bb68c7032020a979ddf14804c39b4086fc9"
+        },
+        {
+          "step": 3500,
+          "file": "redraw4_f_add_ns_o4_lvr_esdirk3_rec2_sgs0_20261110__3500_bnd.vtkhdf",
+          "sha256": "61b8901bb032166cd09f0e292b7657e6f2fccae6917a4ea6777b83dcbd945411"
+        },
+        {
+          "step": 4000,
+          "file": "redraw4_f_add_ns_o4_lvr_esdirk3_rec2_sgs0_20261110__4000_bnd.vtkhdf",
+          "sha256": "7be5a1f16a9879cd73f4af0dcd24ed1b84d8a376696666e094cf41b157b4c42c"
+        },
+        {
+          "step": 4500,
+          "file": "redraw4_f_add_ns_o4_lvr_esdirk3_rec2_sgs0_20261110__4500_bnd.vtkhdf",
+          "sha256": "96b177982a8d7c59f9e8186087fe6623a046c643921c3ecaa96db0354dcec48d"
+        },
+        {
+          "step": 5000,
+          "file": "redraw4_f_add_ns_o4_lvr_esdirk3_rec2_sgs0_20261110__5000_bnd.vtkhdf",
+          "sha256": "e5a03288036444887fd50e7c0de2f427cfbe13540285a5255114029bc75fa6f0"
+        }
+      ],
+      "n_experimental_rows": 39,
+      "n_supported": 35
+    },
+    {
+      "case": "redraw4f_half_ns_ausm",
+      "N": 20,
+      "first_step": 500,
+      "last_step": 10000,
+      "t_start": 5.0,
+      "t_end": 100.0,
+      "steps": [
+        500,
+        1000,
+        1500,
+        2000,
+        2500,
+        3000,
+        3500,
+        4000,
+        4500,
+        5000,
+        5500,
+        6000,
+        6500,
+        7000,
+        7500,
+        8000,
+        8500,
+        9000,
+        9500,
+        10000
+      ],
+      "temporal_weights": [
+        0.02631578947368421,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.05263157894736842,
+        0.02631578947368421
+      ],
+      "sampling": "trapezoid over validated evolved snapshots, endpoints half weighted for uniform cadence; initial step0 F4 excluded as unvalidated cache",
+      "mapping_max_center_distance_solver": 0.0,
+      "zone_fore": 23,
+      "zone_aft": 24,
+      "bin_width_m": 0.001,
+      "fore_abs_z_solver_lt": 0.07,
+      "aft_phi_band_deg": 2.5,
+      "aft_abs_nx_lt": 0.97,
+      "max_interpolation_gap_m": 0.006,
+      "no_extrapolation": true,
+      "files": [
+        {
+          "step": 500,
+          "file": "orion_redraw4_ns_o2_ausmpw_20261103_retry1__500_bnd.vtkhdf",
+          "sha256": "9dc971db47bc3f02e9a4660eeb80d2166c6d02b2f882cc50e929fbc3031d1895"
+        },
+        {
+          "step": 1000,
+          "file": "orion_redraw4_ns_o2_ausmpw_20261103_retry1__1000_bnd.vtkhdf",
+          "sha256": "da50c51384cf5672439d4a8b1f0bf90846782d3b3690dc24c33872f8b3bcfc3e"
+        },
+        {
+          "step": 1500,
+          "file": "orion_redraw4_ns_o2_ausmpw_20261103_retry1__1500_bnd.vtkhdf",
+          "sha256": "8d2135bff14c84b2ccc69f4f1d2ab6a5064cdd775d375b4bbb28955e48a0b3a5"
+        },
+        {
+          "step": 2000,
+          "file": "orion_redraw4_ns_o2_ausmpw_20261103_retry1__2000_bnd.vtkhdf",
+          "sha256": "252ecb12c93201018775e5024f978aa6723c238203594e82718181d283ea4c30"
+        },
+        {
+          "step": 2500,
+          "file": "orion_redraw4_ns_o2_ausmpw_20261103_retry1__2500_bnd.vtkhdf",
+          "sha256": "7086b993fdaba386ae9fcd21985afda23b21f59a190dca23f6fac1fd33ee6226"
+        },
+        {
+          "step": 3000,
+          "file": "orion_redraw4_ns_o2_ausmpw_20261103_retry1__3000_bnd.vtkhdf",
+          "sha256": "de5788561763985004db11d6ef76d0d02f2bc3c733b31869211152165bdf7e22"
+        },
+        {
+          "step": 3500,
+          "file": "orion_redraw4_ns_o2_ausmpw_20261103_retry1__3500_bnd.vtkhdf",
+          "sha256": "f6bb764a5368dcc85fa8d445ba2ec8042613282662b3232c490c34b08a8557cd"
+        },
+        {
+          "step": 4000,
+          "file": "orion_redraw4_ns_o2_ausmpw_20261103_retry1__4000_bnd.vtkhdf",
+          "sha256": "7ba6684de8bc76873184b4742184bd489d968ee8300e8f2b7769d358eb94f0dc"
+        },
+        {
+          "step": 4500,
+          "file": "orion_redraw4_ns_o2_ausmpw_20261103_retry1__4500_bnd.vtkhdf",
+          "sha256": "7d8654cc4744a933440d8d3b0643fa9d17cbb70bcfad2e1cf0628505cb8f7375"
+        },
+        {
+          "step": 5000,
+          "file": "orion_redraw4_ns_o2_ausmpw_20261103_retry1__5000_bnd.vtkhdf",
+          "sha256": "bb438eea6cdd88c23d480a1bd811958ad9c5fb8634203f2125fd44645708b886"
+        },
+        {
+          "step": 5500,
+          "file": "orion_redraw4_ns_o2_ausmpw_20261103_retry1__5500_bnd.vtkhdf",
+          "sha256": "0a8316dd8cf1be21ee55239b3b9668ad44167854cf88a8f3f8affa3f9b37a449"
+        },
+        {
+          "step": 6000,
+          "file": "orion_redraw4_ns_o2_ausmpw_20261103_retry1__6000_bnd.vtkhdf",
+          "sha256": "8afefe19375b6d666e3108a1ee6d1a97da3af0bf3e0636a2c85e81cfbb65993c"
+        },
+        {
+          "step": 6500,
+          "file": "orion_redraw4_ns_o2_ausmpw_20261103_retry1__6500_bnd.vtkhdf",
+          "sha256": "9dcd0c893d858c46725251528f9c0e89d3a87cd38065e786443ff22658238ee6"
+        },
+        {
+          "step": 7000,
+          "file": "orion_redraw4_ns_o2_ausmpw_20261103_retry1__7000_bnd.vtkhdf",
+          "sha256": "26037edab10114a1742f6b3da9634883a19f9e7d217ab10aa30f1a03eb881801"
+        },
+        {
+          "step": 7500,
+          "file": "orion_redraw4_ns_o2_ausmpw_20261103_retry1__7500_bnd.vtkhdf",
+          "sha256": "9bca59359696b4ce6bac9b26d0ed83cae651a69e372366f9f77d0e2c72605e6a"
+        },
+        {
+          "step": 8000,
+          "file": "orion_redraw4_ns_o2_ausmpw_20261103_retry1__8000_bnd.vtkhdf",
+          "sha256": "f250771b2ec043a36bb727d8b5c985dca6fc4410b73b9ff09e9b18ac1e7b4c62"
+        },
+        {
+          "step": 8500,
+          "file": "orion_redraw4_ns_o2_ausmpw_20261103_retry1__8500_bnd.vtkhdf",
+          "sha256": "279abe35a16e1fc24515ba0a5462ed9f4c14b3afd8286f31a3f7847d5db8fd4b"
+        },
+        {
+          "step": 9000,
+          "file": "orion_redraw4_ns_o2_ausmpw_20261103_retry1__9000_bnd.vtkhdf",
+          "sha256": "51f035331c3c39c4a71f3e0ada669e9d7e54ad0f706ff7fd7604278f2109a980"
+        },
+        {
+          "step": 9500,
+          "file": "orion_redraw4_ns_o2_ausmpw_20261103_retry1__9500_bnd.vtkhdf",
+          "sha256": "3bba2b6ac895f0beba4ad6b0d9e6ead603ae7370178424cbcc7fac6445b61339"
+        },
+        {
+          "step": 10000,
+          "file": "orion_redraw4_ns_o2_ausmpw_20261103_retry1__10000_bnd.vtkhdf",
+          "sha256": "5c162b1f9fdc690be952a0bf73173b0458e92ed45978a8c270c32c9aedea5188"
+        }
+      ],
+      "n_experimental_rows": 39,
+      "n_supported": 35
+    }
+  ],
+  "note": "Physical time offset recovered from atlas snapshot; unverified stationarity. q=-F4 rho_inf U_inf^3; values in kW/m2."
+}

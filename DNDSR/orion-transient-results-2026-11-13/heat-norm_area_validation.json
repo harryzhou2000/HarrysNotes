@@ -1,0 +1,101 @@
+[
+  {
+    "case": "redraw3_full_iddes_roe",
+    "n": 68144,
+    "relative_error_p50_p99_max": [
+      5.835883441052351e-16,
+      3.4931404426024093e-15,
+      9.23757503073772e-15
+    ],
+    "norm_median": 0.00251325521504325,
+    "polygon_area_median": 0.0025132552150432495
+  },
+  {
+    "case": "redraw3_full_ns_ausm",
+    "n": 68144,
+    "relative_error_p50_p99_max": [
+      5.835883441052351e-16,
+      3.4931404426024093e-15,
+      9.23757503073772e-15
+    ],
+    "norm_median": 0.00251325521504325,
+    "polygon_area_median": 0.0025132552150432495
+  },
+  {
+    "case": "redraw3_full_ns_roe",
+    "n": 68144,
+    "relative_error_p50_p99_max": [
+      5.835883441052351e-16,
+      3.4931404426024093e-15,
+      9.23757503073772e-15
+    ],
+    "norm_median": 0.00251325521504325,
+    "polygon_area_median": 0.0025132552150432495
+  },
+  {
+    "case": "redraw3_full_o4_ausm",
+    "n": 68144,
+    "relative_error_p50_p99_max": [
+      4.4846052530963305e-15,
+      2.4502150287186123e-07,
+      4.5519385965944385e-07
+    ],
+    "norm_median": 0.0025132552471842052,
+    "polygon_area_median": 0.0025132552150432495
+  },
+  {
+    "case": "redraw3_half_iddes_roe",
+    "n": 34072,
+    "relative_error_p50_p99_max": [
+      5.835883441052621e-16,
+      3.5014181648223015e-15,
+      9.23757503073772e-15
+    ],
+    "norm_median": 0.00251325521504325,
+    "polygon_area_median": 0.0025132552150432495
+  },
+  {
+    "case": "redraw4add_half_iddes_ausm",
+    "n": 60532,
+    "relative_error_p50_p99_max": [
+      6.858186526958007e-16,
+      4.172013601504234e-15,
+      1.0272758758748438e-14
+    ],
+    "norm_median": 0.0015662574798557829,
+    "polygon_area_median": 0.0015662574798557826
+  },
+  {
+    "case": "redraw4add_half_ns_ausm",
+    "n": 60532,
+    "relative_error_p50_p99_max": [
+      6.858186526958007e-16,
+      4.172013601504234e-15,
+      1.0272758758748438e-14
+    ],
+    "norm_median": 0.0015662574798557829,
+    "polygon_area_median": 0.0015662574798557826
+  },
+  {
+    "case": "redraw4add_half_o4_ausm",
+    "n": 60532,
+    "relative_error_p50_p99_max": [
+      2.7569663235054432e-15,
+      1.741450624561269e-07,
+      1.063448797701204e-05
+    ],
+    "norm_median": 0.0015662574804234618,
+    "polygon_area_median": 0.0015662574798557826
+  },
+  {
+    "case": "redraw4f_half_ns_ausm",
+    "n": 60532,
+    "relative_error_p50_p99_max": [
+      6.858186526958007e-16,
+      4.172013601504234e-15,
+      1.0272758758748438e-14
+    ],
+    "norm_median": 0.0015662574798557829,
+    "polygon_area_median": 0.0015662574798557826
+  }
+]
